@@ -1,6 +1,6 @@
 # pgame
 
-Simple looping game engine for Pebble
+Simple looping game engine for Pebble.
 
 ![screenshot](screenshots/screenshot1.png)
 
@@ -13,7 +13,7 @@ Simple looping game engine for Pebble
 2. Add `#include "pgame.h"` to your project's main C file.
 
 3. Implement one of `PGameLogicHandler`, `PGameRenderHandler` and
-   `PGameClickHandler.
+   `PGameClickHandler`.
 
         void loop() {
           
