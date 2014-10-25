@@ -6,6 +6,13 @@ Simple looping game engine for Pebble.
 
 > Example app sees the user control a simple robot.
 
+## Features
+
+- Automatic looping of developer-supplied per-frame logic and rendering.
+- 30 frames per second.
+- `AppTimer`, `LayerUpdateProc` and `Clicks` abstracted away. Implement only
+  your game code.
+
 ## How to Use
 
 1. Copy `src/pgame.h` and `src/pgame.c` to your project's `src` directory.
