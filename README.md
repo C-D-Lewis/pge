@@ -26,7 +26,7 @@ Simple looping game engine for Pebble.
           
         }
 
-        void render(GContext *ctx) {
+        void draw(GContext *ctx) {
           
         }
 
@@ -56,4 +56,6 @@ Simple looping game engine for Pebble.
 ## Features To Do
 
 - List of entities to allow automated execution of their logic and rendering.
-  This will also allow collision checking
+  This will also allow collision checking.
+
+- Grid-restricted mode for implementing RPG-style games.
