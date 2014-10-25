@@ -4,6 +4,8 @@ Simple looping game engine for Pebble
 
 ![screenshot](screenshots/screenshot1.png)
 
+> Example app sees the user control a simple robot.
+
 ## How to Use
 
 1. Copy `src/pgame.h` and `src/pgame.c` to your project's `src` directory.
