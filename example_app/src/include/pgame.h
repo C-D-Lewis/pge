@@ -49,7 +49,7 @@ typedef struct {
 /**
  * Create a full-screen Layer to use as a rendering canvas
  *
- * Note: The Click and Tap handlers can be NULL to not implement
+ * Note: The Click handler can be NULL to not implement
  */
 PGame* pgame_begin(Window *parent, PGameLogicHandler *logic_handler, PGameRenderHandler *render_handler, PGameClickHandler *click_handler);
 
