@@ -1,0 +1,17 @@
+{
+  "uuid": "67cf3796-296c-4812-9fa1-e74eb7a0b954",
+  "shortName": "pgame example",
+  "longName": "pgame example",
+  "companyName": "Chris Lewis",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
