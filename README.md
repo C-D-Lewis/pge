@@ -55,7 +55,7 @@ Simple looping game engine for Pebble.
 
 ## Features To Do
 
-- List of entities to allow automated execution of their logic and rendering.
+- Add-on lib for list of Entity structures to allow automated execution of their logic and rendering.
   This will also allow collision checking.
 
 - Grid-restricted mode for implementing RPG-style games.
