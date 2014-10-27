@@ -1,4 +1,4 @@
-# pgame
+# pge
 
 Simple looping game engine for Pebble.
 
@@ -15,12 +15,12 @@ Simple looping game engine for Pebble.
 
 ## How to Use
 
-1. Copy `src/pgame.h` and `src/pgame.c` to your project's `src` directory.
+1. Copy `src/pge.h` and `src/pge.c` to your project's `src` directory.
 
-2. Add `#include "pgame.h"` to your project's main C file.
+2. Add `#include "pge.h"` to your project's main C file.
 
-3. Implement one of `PGameLogicHandler`, `PGameRenderHandler` and
-   `PGameClickHandler`.
+3. Implement one of `PGELogicHandler`, `PGERenderHandler` and
+   `PGEClickHandler`.
 
         void loop() {
           
@@ -34,23 +34,23 @@ Simple looping game engine for Pebble.
           
         }
 
-4. Create an instance of `PGame`, supplying the `Window` it will reside in.
+4. Create an instance of `PGE`, supplying the `Window` it will reside in.
 
-        static PGame *s_game;
+        static PGE *s_game;
 
         ...
 
-        s_game = pgame_begin(s_window, loop, draw, click);
+        s_game = pge_begin(s_window, loop, draw, click);
 
 5. Furnish `loop()`, `render()` and `click()` to implement your own game items
    and logic. See `example_app` for an example implementation.
 
 6. When done (i.e: when the host Window is being destroyed), destroy your
-   `PGame`.
+   `PGE`.
 
         static void main_window_unload(Window *window) {
           // Destroy all game resources
-          pgame_finish(s_game);
+          pge_finish(s_game);
         }
 
 ## Features To Do

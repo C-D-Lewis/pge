@@ -1,6 +1,6 @@
 /**
- * PGame Example App - simple robot
- * https://github.com/C-D-Lewis/pgame
+ * PGE Example App - simple robot
+ * https://github.com/C-D-Lewis/pge
  *
  * Author:
  * Chris Lewis
@@ -12,7 +12,7 @@
 #include "main.h"
 
 static Window *s_main_window;
-static PGame *s_game;
+static PGE *s_game;
 static Robot *s_robot;
 
 static int s_direction;
@@ -62,7 +62,7 @@ static void main_window_load(Window *window) {
   s_robot = robot_create(0, 0);
 
   // Create game canvas and begin render loop
-  s_game = pgame_begin(window, loop, draw, click);
+  s_game = pge_begin(window, loop, draw, click);
 }
 
 static void main_window_unload(Window *window) {
@@ -70,7 +70,7 @@ static void main_window_unload(Window *window) {
   robot_destroy(s_robot);
 
   // Destroy all game resources
-  pgame_finish(s_game);
+  pge_finish(s_game);
 }
 
 static void init(void) {

@@ -1,15 +1,15 @@
-#include "pgame.h"
+#include "pge.h"
 
 // Internal prototypes
 static void delta_handler(void *context);
 static void canvas_update_proc(Layer *layer, GContext *ctx);
-static void stop_rendering(PGame *this);
-static void start_rendering(PGame *this);
-static void destroy(PGame *this);
+static void stop_rendering(PGE *this);
+static void start_rendering(PGE *this);
+static void destroy(PGE *this);
 static void click_config_provider(void *context);
 
-PGame* pgame_begin(Window *parent, PGameLogicHandler *logic_handler, PGameRenderHandler *render_handler, PGameClickHandler *click_handler) {
-  PGame *this = malloc(sizeof(PGame));
+PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
+  PGE *this = malloc(sizeof(PGE));
 
   // Allocate
   this->parent = parent;
@@ -29,14 +29,14 @@ PGame* pgame_begin(Window *parent, PGameLogicHandler *logic_handler, PGameRender
 
   // Hack to get ref of this into LayerUpdateProc
   void *ptr = layer_get_data(this->canvas);
-  *((PGame*)ptr) = *(this);
+  *((PGE*)ptr) = *(this);
 
   // Go!
   start_rendering(this);
   return this;
 }
 
-void pgame_finish(PGame *this) {
+void pge_finish(PGE *this) {
   // Stop the game
   stop_rendering(this);
 }
@@ -44,7 +44,7 @@ void pgame_finish(PGame *this) {
 /**************************** Internal Functions ******************************/
 
 static void delta_handler(void *context) {
-  PGame *this = (PGame*)context;
+  PGE *this = (PGE*)context;
 
   if(this->logic_handler != NULL && this->render_handler != NULL) {
     // Do this frame
@@ -56,7 +56,7 @@ static void delta_handler(void *context) {
 
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Woo hack!
-  PGame *this = (PGame*)layer_get_data(layer);
+  PGE *this = (PGE*)layer_get_data(layer);
 
   // Render and logic
   if(this->logic_handler != NULL && this->render_handler != NULL) {
@@ -65,7 +65,7 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
     // Next frame, only if stop has not been registered
     if(this->is_running == true) {
-      this->render_timer = app_timer_register(PGAME_RENDER_DELTA, delta_handler, this);
+      this->render_timer = app_timer_register(PGE_RENDER_DELTA, delta_handler, this);
     } else {
       destroy(this);
     }
@@ -74,7 +74,7 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   }
 }
 
-static void stop_rendering(PGame *this) {
+static void stop_rendering(PGE *this) {
   if(this->render_timer != NULL) {
     // Cancel any Timer
     app_timer_cancel(this->render_timer);
@@ -85,17 +85,17 @@ static void stop_rendering(PGame *this) {
   this->is_running = false;
 }
 
-static void start_rendering(PGame *this) {
+static void start_rendering(PGE *this) {
   // Stop any current Timer
   stop_rendering(this);
 
   this->is_running = true;
 
   // Register new Timer to begin frame rendering loop
-  this->render_timer = app_timer_register(PGAME_RENDER_DELTA, delta_handler, this);
+  this->render_timer = app_timer_register(PGE_RENDER_DELTA, delta_handler, this);
 }
 
-static void destroy(PGame *this) {
+static void destroy(PGE *this) {
   // Destroy canvas
   layer_destroy(this->canvas);
 
@@ -103,17 +103,17 @@ static void destroy(PGame *this) {
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  PGame *this = (PGame*)context;
+  PGE *this = (PGE*)context;
   this->click_handler(BUTTON_ID_SELECT);
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  PGame *this = (PGame*)context;
+  PGE *this = (PGE*)context;
   this->click_handler(BUTTON_ID_UP);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  PGame *this = (PGame*)context;
+  PGE *this = (PGE*)context;
   this->click_handler(BUTTON_ID_DOWN);
 }
 
