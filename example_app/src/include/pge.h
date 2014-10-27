@@ -22,6 +22,8 @@
 #ifndef PGE_H
 #define PGE_H
 
+ /********************************** Engine ***********************************/
+
 // Function for user to place their per-frame game logic
 typedef void (PGELogicHandler)();
 
@@ -52,5 +54,30 @@ bool pge_get_button_state(ButtonId button);
  * Set the desired framerate (0 - 30)
  */
 void pge_set_framerate(int new_rate);
+
+/********************************** Sprite ************************************/
+
+#define PGE_MAX_SPRITES 16
+
+// Sprite base object. Include in your own objects for collision etc
+typedef struct {
+  GBitmap *bitmap;
+  BitmapLayer *layer;
+} PGESprite;
+
+/**
+ * Create a sprite object
+ */
+PGESprite* pge_sprite_create(GRect position, int initial_resource_id);
+
+/**
+ * Destroy a sprite object
+ */
+void pge_sprite_destroy(PGESprite *this);
+
+/**
+ * Set the current animation frame
+ */
+void pge_sprite_set_frame(PGESprite *this, int resource_id);
 
 #endif

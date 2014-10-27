@@ -22,6 +22,8 @@ static void destroy();
 static void click_config_provider(void *context);
 static int get_delta_from_framerate();
 
+/*********************************** Engine ***********************************/
+
 void pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   // Allocate
   s_parent = parent;
@@ -70,7 +72,7 @@ void pge_set_framerate(int new_rate) {
   s_framerate = new_rate;
 }
 
-/**************************** Internal Functions ******************************/
+/************************* Engine Internal Functions **************************/
 
 static int get_delta_from_framerate() {
   return 1000 / s_framerate;
@@ -173,3 +175,22 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
 }
+
+/********************************** Sprite ************************************/
+
+PGESprite* pge_sprite_create(GRect position, int initial_resource_id) {
+  PGESprite *this = malloc(sizeof(PGESprite));
+
+  // Finally
+  return this;
+}
+
+void pge_sprite_destroy(PGESprite *this) {
+  free(this);
+}
+
+void pge_sprite_set_frame(PGESprite *this, int resource_id) {
+
+}
+
+/************************** Sprite Internal Functions *************************/
