@@ -27,6 +27,11 @@ PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler 
     window_set_click_config_provider_with_context(this->parent, click_config_provider, this);
   }
 
+  // Init button states (may be redundant)
+  for(int i = 0; i < 3; i++) {
+    this->button_states[i] = false;
+  }
+
   // Hack to get ref of this into LayerUpdateProc
   void *ptr = layer_get_data(this->canvas);
   *((PGE*)ptr) = *(this);
@@ -39,6 +44,19 @@ PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler 
 void pge_finish(PGE *this) {
   // Stop the game
   stop_rendering(this);
+}
+
+bool pge_get_button_state(PGE *this, ButtonId button) {
+  switch(button) {
+    case BUTTON_ID_UP:
+      return this->button_states[0];
+    case BUTTON_ID_SELECT:
+      return this->button_states[1];
+    case BUTTON_ID_DOWN:
+      return this->button_states[2];
+    default: 
+      return false;
+  }
 }
 
 /**************************** Internal Functions ******************************/
@@ -102,6 +120,36 @@ static void destroy(PGE *this) {
   free(this);
 }
 
+static void up_pressed_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[0] = true;
+}
+
+static void up_released_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[0] = false;
+}
+
+static void select_pressed_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[1] = true;
+}
+
+static void select_released_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[1] = false;
+}
+
+static void down_pressed_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[2] = true;
+}
+
+static void down_released_click_handler(ClickRecognizerRef recognizer, void *context) {
+  PGE *this = (PGE*)context;
+  this->button_states[2] = false;
+}
+
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   PGE *this = (PGE*)context;
   this->click_handler(BUTTON_ID_SELECT);
@@ -118,6 +166,10 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void click_config_provider(void *context) {
+  window_raw_click_subscribe(BUTTON_ID_UP, up_pressed_click_handler, up_released_click_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_SELECT, select_pressed_click_handler, select_released_click_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_DOWN, down_pressed_click_handler, down_released_click_handler, NULL);
+
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);

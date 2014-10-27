@@ -22,6 +22,13 @@ static bool s_moving;
 
 static void loop() {
   robot_loop(s_robot);
+
+  if(pge_get_button_state(s_game, BUTTON_ID_SELECT)) {
+    s_moving = false;
+  } else {
+    s_moving = true;
+  }
+  robot_set_is_moving(s_robot, s_moving);
 }
 
 static void draw(GContext *ctx) {
@@ -39,7 +46,7 @@ static void click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
-      s_moving = !s_moving;
+      // s_moving = !s_moving;
       break;
 
     case BUTTON_ID_DOWN:
@@ -52,7 +59,6 @@ static void click(int button_id) {
 
   // Update the Robot entity
   robot_set_direction(s_robot, s_direction);
-  robot_set_is_moving(s_robot, s_moving);
 }
 
 /******************************** App *****************************************/

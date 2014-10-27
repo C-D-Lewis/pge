@@ -11,7 +11,7 @@
  * Features:
  * - 30 frames per second
  * - Automatic game loop using PGELogicHandler and PGERenderHandler
- * - Easy to use button events
+ * - Easy to use button events, as well as query functions
  *
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
@@ -44,6 +44,7 @@ typedef struct {
   PGEClickHandler *click_handler;
 
   bool is_running;
+  bool button_states[3];
 } PGE;
 
 /**
@@ -57,5 +58,10 @@ PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler 
  * Finish the game and clean up
  */
 void pge_finish(PGE *this);
+
+/**
+ * Query the current state of a button
+ */
+bool pge_get_button_state(PGE *this, ButtonId button);
 
 #endif
