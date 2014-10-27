@@ -12,7 +12,6 @@
 #include "main.h"
 
 static Window *s_main_window;
-static PGE *s_game;
 static Robot *s_robot;
 
 static int s_direction;
@@ -23,7 +22,7 @@ static bool s_moving;
 static void loop() {
   robot_loop(s_robot);
 
-  if(pge_get_button_state(s_game, BUTTON_ID_SELECT)) {
+  if(pge_get_button_state(BUTTON_ID_SELECT)) {
     s_moving = false;
   } else {
     s_moving = true;
@@ -46,7 +45,7 @@ static void click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
-      // s_moving = !s_moving;
+
       break;
 
     case BUTTON_ID_DOWN:
@@ -68,7 +67,7 @@ static void main_window_load(Window *window) {
   s_robot = robot_create(0, 0);
 
   // Create game canvas and begin render loop
-  s_game = pge_begin(window, loop, draw, click);
+  pge_begin(window, loop, draw, click);
 }
 
 static void main_window_unload(Window *window) {
@@ -76,7 +75,7 @@ static void main_window_unload(Window *window) {
   robot_destroy(s_robot);
 
   // Destroy all game resources
-  pge_finish(s_game);
+  pge_finish();
 }
 
 static void init(void) {
