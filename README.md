@@ -30,6 +30,7 @@ Simple looping game engine for Pebble.
           
         }
 
+        // Optional, can be NULL if only using pge_get_button_state()
         void click(int button_id) {
           
         }
