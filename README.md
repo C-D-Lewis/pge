@@ -41,7 +41,7 @@ Simple looping game engine for Pebble.
 
         ...
 
-        s_game = pge_begin(s_window, loop, draw, click);
+        s_game = pge_begin(s_window, logic, draw, click);
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
    and logic. See `/example_app/src/main.c` for an example implementation.
