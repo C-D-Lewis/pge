@@ -12,7 +12,6 @@
 #include "main.h"
 
 static Window *s_main_window;
-static PGE *s_game;
 static Robot *s_robot;
 
 static int s_direction;
@@ -22,6 +21,13 @@ static bool s_moving = true;
 
 static void loop() {
   robot_loop(s_robot);
+
+  if(pge_get_button_state(BUTTON_ID_SELECT)) {
+    s_moving = false;
+  } else {
+    s_moving = true;
+  }
+  robot_set_is_moving(s_robot, s_moving);
 }
 
 static void draw(GContext *ctx) {
@@ -39,7 +45,7 @@ static void click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
-      s_moving = !s_moving;
+      pge_set_framerate(30);
       break;
 
     case BUTTON_ID_DOWN:
@@ -52,7 +58,6 @@ static void click(int button_id) {
 
   // Update the Robot entity
   robot_set_direction(s_robot, s_direction);
-  robot_set_is_moving(s_robot, s_moving);
 }
 
 /******************************** App *****************************************/
@@ -62,8 +67,8 @@ static void main_window_load(Window *window) {
   s_robot = robot_create(30, 30);
 
   // Create game canvas and begin render loop
-  s_game = pge_begin(window, loop, draw, click);
-  pge_set_framerate(s_game, 10);
+  pge_begin(window, loop, draw, click);
+  pge_set_framerate(10);
 }
 
 static void main_window_unload(Window *window) {
@@ -71,7 +76,7 @@ static void main_window_unload(Window *window) {
   robot_destroy(s_robot);
 
   // Destroy all game resources
-  pge_finish(s_game);
+  pge_finish();
 }
 
 static void init(void) {

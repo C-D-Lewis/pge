@@ -11,8 +11,8 @@
  * Features:
  * - 30 frames per second
  * - Automatic game loop using PGELogicHandler and PGERenderHandler
- * - Easy to use button events
  * - Customizable framerate
+ * - Easy to use button events, as well as query functions
  *
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
@@ -32,35 +32,26 @@ typedef void (PGERenderHandler)(GContext *ctx);
 // Function for user to implement button clicks
 typedef void (PGEClickHandler)(int button_id);
 
-// Structure containing internal game items
-typedef struct {
-  Window *parent;
-  Layer *canvas;
-  AppTimer *render_timer;
-
-  PGELogicHandler *logic_handler;
-  PGERenderHandler *render_handler;
-  PGEClickHandler *click_handler;
-
-  bool is_running;
-  int framerate;
-} PGE;
-
 /**
  * Create a full-screen Layer to use as a rendering canvas
  *
  * Note: The Click handler can be NULL to not implement
  */
-PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
+void pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
 
 /**
  * Finish the game and clean up
  */
-void pge_finish(PGE *this);
+void pge_finish();
+
+/**
+ * Query the current state of a button
+ */
+bool pge_get_button_state(ButtonId button);
 
 /**
  * Set the desired framerate (0 - 30)
  */
-void pge_set_framerate(PGE *this, int new_rate);
+void pge_set_framerate(int new_rate);
 
 #endif
