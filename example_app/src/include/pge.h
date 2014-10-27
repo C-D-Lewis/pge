@@ -58,6 +58,9 @@ PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler 
  */
 void pge_finish(PGE *this);
 
+/**
+ * Set the desired framerate (0 - 30)
+ */
 void pge_set_framerate(PGE *this, int new_rate);
 
 #endif

@@ -63,7 +63,7 @@ static void main_window_load(Window *window) {
 
   // Create game canvas and begin render loop
   s_game = pge_begin(window, loop, draw, click);
-  pge_set_framerate(s_game, 0);
+  pge_set_framerate(s_game, 10);
 }
 
 static void main_window_unload(Window *window) {
