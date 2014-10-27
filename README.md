@@ -35,23 +35,18 @@ Simple looping game engine for Pebble.
           
         }
 
-4. Create an instance of `PGE`, supplying the `Window` it will reside in.
+4. Call `pge_begin()`, supplying the `Window` it will reside in as well as your callbacks.
 
-        static PGE *s_game;
-
-        ...
-
-        s_game = pge_begin(s_window, logic, draw, click);
+        pge_begin(s_window, logic, draw, click);
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
    and logic. See `/example_app/src/main.c` for an example implementation.
 
-6. When done (i.e: when the host Window is being destroyed), destroy your
-   `PGE`.
+6. When done (i.e: when the host Window is being destroyed), destroy the engine:
 
         static void main_window_unload(Window *window) {
           // Destroy all game resources
-          pge_finish(s_game);
+          pge_finish();
         }
 
 ## Features To Do
