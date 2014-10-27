@@ -20,7 +20,7 @@ static bool s_moving = true;
 /******************************** Game ****************************************/
 
 static void loop() {
-  robot_loop(s_robot);
+  robot_logic(s_robot);
 
   if(pge_get_button_state(BUTTON_ID_SELECT)) {
     s_moving = false;
@@ -64,7 +64,7 @@ static void click(int button_id) {
 
 static void main_window_load(Window *window) {
   // Create a Robot
-  s_robot = robot_create(30, 30);
+  s_robot = robot_create(GPoint(30, 30));
 
   // Create game canvas and begin render loop
   pge_begin(window, loop, draw, click);

@@ -13,13 +13,12 @@
 
 // An extension of PGameEntity with extra logic attributes
 typedef struct {
+  PGESprite *sprite;
   int direction;
-  int pos_x;
-  int pos_y;
   bool moving;
 } Robot;
 
-Robot* robot_create(int start_x, int start_y);
+Robot* robot_create(GPoint start_position);
 
 void robot_destroy(Robot *this);
 
@@ -27,7 +26,7 @@ void robot_set_direction(Robot *this, int new_direction);
 
 void robot_set_is_moving(Robot *this, bool new_state);
 
-void robot_loop(Robot *this);
+void robot_logic(Robot *this);
 
 void robot_render(Robot *this, GContext *ctx);
 

@@ -12,8 +12,9 @@ Simple looping game engine for Pebble.
 - 30 frames per second.
 - `AppTimer`, `LayerUpdateProc` and `Clicks` abstracted away. Implement only
   your game code.
+- `PGESPrite` base object to implement game entities.
 
-## How to Use
+## Engine Use
 
 1. Copy `src/pge.h` and `src/pge.c` to your project's `src` directory.
 
@@ -49,9 +50,59 @@ Simple looping game engine for Pebble.
           pge_finish();
         }
 
+## Sprite Use
+
+The `PGESprite` structure allows creation of a bitmap sprite-based game entity
+and a set of convenience functions to manage it.
+
+1. Create a structure containing a `PGESprite`.
+
+        typedef struct {
+          PGESprite *sprite;
+          int direction;
+          bool moving;
+        } Robot;
+
+2. Create the `PGESprite` when the entity is created.
+
+        this->sprite = pge_sprite_create(start_position, RESOURCE_ID_ROBOT_UP);
+
+3. Update the sprite's bitmap as the player plays the game.
+
+        // Set the sprite bitmap
+        switch(this->direction) {
+          case DIRECTION_UP:
+            pge_sprite_set_frame(this->sprite, RESOURCE_ID_ROBOT_UP);
+            break;
+          case DIRECTION_RIGHT:
+            pge_sprite_set_frame(this->sprite, RESOURCE_ID_ROBOT_RIGHT);
+            break;
+          case DIRECTION_DOWN:
+            pge_sprite_set_frame(this->sprite, RESOURCE_ID_ROBOT_DOWN);
+            break;
+          case DIRECTION_LEFT:
+            pge_sprite_set_frame(this->sprite, RESOURCE_ID_ROBOT_LEFT);
+            break;
+        }
+
+4. Update the entity's position.
+
+        GPoint pos = GPoint(25 + dx, 25 + dy);
+        pge_sprite_set_position(this->sprite, pos);
+
+5. Draw the entity's bitmap.
+
+        pge_sprite_draw(this->sprite, ctx);
+
+6. Destroy the entity's `PGESprite` when destroying the app.
+
+        void robot_destroy(Robot *this) {
+          pge_sprite_destroy(this->sprite);
+          free(this);
+        }
+
 ## Features To Do
 
-- Add-on lib for list of Entity structures to allow automated execution of their logic and rendering.
-  This will also allow collision checking.
+- Entity list for automated updating, rendering and collision.
 
 - Grid-restricted mode for implementing RPG-style games.

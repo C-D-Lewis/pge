@@ -57,18 +57,16 @@ void pge_set_framerate(int new_rate);
 
 /********************************** Sprite ************************************/
 
-#define PGE_MAX_SPRITES 16
-
-// Sprite base object. Include in your own objects for collision etc
+// Sprite base object
 typedef struct {
   GBitmap *bitmap;
-  BitmapLayer *layer;
+  GPoint position;
 } PGESprite;
 
 /**
  * Create a sprite object
  */
-PGESprite* pge_sprite_create(GRect position, int initial_resource_id);
+PGESprite* pge_sprite_create(GPoint position, int initial_resource_id);
 
 /**
  * Destroy a sprite object
@@ -79,5 +77,20 @@ void pge_sprite_destroy(PGESprite *this);
  * Set the current animation frame
  */
 void pge_sprite_set_frame(PGESprite *this, int resource_id);
+
+/**
+ * Draw the sprite's bitmap to the graphics context
+ */
+void pge_sprite_draw(PGESprite *this, GContext *ctx);
+
+/**
+ * Set the position of the sprite
+ */
+void pge_sprite_set_position(PGESprite *this, GPoint new_position);
+
+/**
+ * Get the position of the sprite
+ */
+GPoint pge_sprite_get_position(PGESprite *this);
 
 #endif

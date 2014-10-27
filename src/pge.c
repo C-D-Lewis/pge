@@ -22,6 +22,8 @@ static void destroy();
 static void click_config_provider(void *context);
 static int get_delta_from_framerate();
 
+/*********************************** Engine ***********************************/
+
 void pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   // Allocate
   s_parent = parent;
@@ -70,7 +72,7 @@ void pge_set_framerate(int new_rate) {
   s_framerate = new_rate;
 }
 
-/**************************** Internal Functions ******************************/
+/************************* Engine Internal Functions **************************/
 
 static int get_delta_from_framerate() {
   return 1000 / s_framerate;
@@ -172,4 +174,40 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+}
+
+/********************************** Sprite ************************************/
+
+PGESprite* pge_sprite_create(GPoint position, int initial_resource_id) {
+  PGESprite *this = malloc(sizeof(PGESprite));
+
+  // Allocate
+  this->bitmap = gbitmap_create_with_resource(initial_resource_id);
+  this->position = position;
+
+  // Finally
+  return this;
+}
+
+void pge_sprite_destroy(PGESprite *this) {
+  gbitmap_destroy(this->bitmap);
+
+  free(this);
+}
+
+void pge_sprite_set_frame(PGESprite *this, int resource_id) {
+  gbitmap_destroy(this->bitmap);
+  this->bitmap = gbitmap_create_with_resource(resource_id);
+}
+
+void pge_sprite_draw(PGESprite *this, GContext *ctx) {
+  graphics_draw_bitmap_in_rect(ctx, this->bitmap, GRect(this->position.x, this->position.y, this->bitmap->bounds.size.w, this->bitmap->bounds.size.h));
+}
+
+void pge_sprite_set_position(PGESprite *this, GPoint new_position) {
+  this->position = new_position;
+}
+
+GPoint pge_sprite_get_position(PGESprite *this) {
+  return this->position;
 }
