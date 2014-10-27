@@ -12,6 +12,7 @@
  * - 30 frames per second
  * - Automatic game loop using PGELogicHandler and PGERenderHandler
  * - Easy to use button events
+ * - Customizable framerate
  *
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
@@ -21,8 +22,6 @@
 
 #ifndef PGE_H
 #define PGE_H
-
-#define PGE_RENDER_DELTA 34 
 
 // Function for user to place their per-frame game logic
 typedef void (PGELogicHandler)();
@@ -44,6 +43,7 @@ typedef struct {
   PGEClickHandler *click_handler;
 
   bool is_running;
+  int framerate;
 } PGE;
 
 /**
@@ -57,5 +57,7 @@ PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler 
  * Finish the game and clean up
  */
 void pge_finish(PGE *this);
+
+void pge_set_framerate(PGE *this, int new_rate);
 
 #endif

@@ -16,7 +16,7 @@ static PGE *s_game;
 static Robot *s_robot;
 
 static int s_direction;
-static bool s_moving;
+static bool s_moving = true;
 
 /******************************** Game ****************************************/
 
@@ -59,10 +59,11 @@ static void click(int button_id) {
 
 static void main_window_load(Window *window) {
   // Create a Robot
-  s_robot = robot_create(0, 0);
+  s_robot = robot_create(30, 30);
 
   // Create game canvas and begin render loop
   s_game = pge_begin(window, loop, draw, click);
+  pge_set_framerate(s_game, 0);
 }
 
 static void main_window_unload(Window *window) {

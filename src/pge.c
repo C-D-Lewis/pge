@@ -7,27 +7,30 @@ static void stop_rendering(PGE *this);
 static void start_rendering(PGE *this);
 static void destroy(PGE *this);
 static void click_config_provider(void *context);
+static int get_delta_from_framerate(PGE *this);
 
 PGE* pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   PGE *this = malloc(sizeof(PGE));
 
   // Allocate
-  this->parent = parent;
   this->canvas = layer_create_with_data(GRect(0, 0, 144, 168), sizeof(uint8_t));
 
-  // Set up
+  // Set up members
+  this->parent = parent;
   this->is_running = true; // Required for first draw
   layer_set_update_proc(this->canvas, canvas_update_proc);
   layer_add_child(window_get_root_layer(this->parent), this->canvas);
+  this->framerate = 30;
+
+  // Set handlers
   this->logic_handler = logic_handler;
   this->render_handler = render_handler;
-
   if(click_handler != NULL) {
     this->click_handler = click_handler;
     window_set_click_config_provider_with_context(this->parent, click_config_provider, this);
   }
 
-  // Hack to get ref of this into LayerUpdateProc
+  // Get ref of this PGE into LayerUpdateProc
   void *ptr = layer_get_data(this->canvas);
   *((PGE*)ptr) = *(this);
 
@@ -41,7 +44,15 @@ void pge_finish(PGE *this) {
   stop_rendering(this);
 }
 
+void pge_set_framerate(PGE *this, int new_rate) {
+  this->framerate = new_rate;
+}
+
 /**************************** Internal Functions ******************************/
+
+static int get_delta_from_framerate(PGE *this) {
+  return 1000 / this->framerate;
+}
 
 static void delta_handler(void *context) {
   PGE *this = (PGE*)context;
@@ -65,8 +76,9 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
     // Next frame, only if stop has not been registered
     if(this->is_running == true) {
-      this->render_timer = app_timer_register(PGE_RENDER_DELTA, delta_handler, this);
+      this->render_timer = app_timer_register(get_delta_from_framerate(this), delta_handler, this);
     } else {
+      // Time to quit
       destroy(this);
     }
   } else {
@@ -92,7 +104,7 @@ static void start_rendering(PGE *this) {
   this->is_running = true;
 
   // Register new Timer to begin frame rendering loop
-  this->render_timer = app_timer_register(PGE_RENDER_DELTA, delta_handler, this);
+  this->render_timer = app_timer_register(get_delta_from_framerate(this), delta_handler, this);
 }
 
 static void destroy(PGE *this) {
