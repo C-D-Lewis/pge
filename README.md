@@ -22,7 +22,7 @@ Simple looping game engine for Pebble.
 3. Implement one of `PGELogicHandler`, `PGERenderHandler` and
    `PGEClickHandler`.
 
-        void loop() {
+        void logic() {
           
         }
 
@@ -43,8 +43,8 @@ Simple looping game engine for Pebble.
 
         s_game = pge_begin(s_window, loop, draw, click);
 
-5. Furnish `loop()`, `render()` and `click()` to implement your own game items
-   and logic. See `example_app` for an example implementation.
+5. Furnish `logic()`, `render()` and `click()` to implement your own game items
+   and logic. See `/example_app/src/main.c` for an example implementation.
 
 6. When done (i.e: when the host Window is being destroyed), destroy your
    `PGE`.
