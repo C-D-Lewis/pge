@@ -12,7 +12,7 @@
 #include "main.h"
 
 static Window *s_main_window;
-static Robot *s_robot;
+static Robot *s_robot, *s_robot2;
 
 static int s_direction;
 static bool s_moving = true;
@@ -22,16 +22,13 @@ static bool s_moving = true;
 static void loop() {
   robot_logic(s_robot);
 
-  if(pge_get_button_state(BUTTON_ID_SELECT)) {
-    s_moving = false;
-  } else {
-    s_moving = true;
-  }
-  robot_set_is_moving(s_robot, s_moving);
+  bool collided = pge_collide(s_robot->sprite, s_robot2->sprite);
+  robot_set_is_moving(s_robot, !collided);
 }
 
 static void draw(GContext *ctx) {
   robot_render(s_robot, ctx);
+  robot_render(s_robot2, ctx);
 }
 
 static void click(int button_id) {
@@ -45,7 +42,7 @@ static void click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
-      pge_set_framerate(30);
+
       break;
 
     case BUTTON_ID_DOWN:
@@ -65,15 +62,16 @@ static void click(int button_id) {
 static void main_window_load(Window *window) {
   // Create a Robot
   s_robot = robot_create(GPoint(30, 30));
+  s_robot2 = robot_create(GPoint(100, 100));
 
   // Create game canvas and begin render loop
   pge_begin(window, loop, draw, click);
-  pge_set_framerate(10);
 }
 
 static void main_window_unload(Window *window) {
   // Destroy the Robot
   robot_destroy(s_robot);
+  robot_destroy(s_robot2);
 
   // Destroy all game resources
   pge_finish();

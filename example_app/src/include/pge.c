@@ -211,3 +211,23 @@ void pge_sprite_set_position(PGESprite *this, GPoint new_position) {
 GPoint pge_sprite_get_position(PGESprite *this) {
   return this->position;
 }
+
+/********************************* Collision **********************************/
+
+bool pge_collide(PGESprite* sprite1, PGESprite *sprite2) {
+  GRect rect = GRect(sprite1->position.x, sprite1->position.y, sprite1->bitmap->bounds.size.w, sprite1->bitmap->bounds.size.h);
+
+  // Test each corner of the other rect
+  return
+        // Top left point
+        grect_contains_point(&rect, &GPoint(sprite2->position.x, sprite2->position.y))
+
+        // Top right point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x + sprite2->bitmap->bounds.size.w, sprite2->position.y))
+
+        // Bottom right point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x + sprite2->bitmap->bounds.size.w, sprite2->position.y + sprite2->bitmap->bounds.size.h))
+
+        // Bottom left point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x, sprite2->position.y + sprite2->bitmap->bounds.size.h));
+}

@@ -93,4 +93,8 @@ void pge_sprite_set_position(PGESprite *this, GPoint new_position);
  */
 GPoint pge_sprite_get_position(PGESprite *this);
 
+/********************************** Collision *********************************/
+
+bool pge_collide(PGESprite* sprite1, PGESprite *sprite2);
+
 #endif
