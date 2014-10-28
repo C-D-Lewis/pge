@@ -214,7 +214,7 @@ GPoint pge_sprite_get_position(PGESprite *this) {
 
 /********************************* Collision **********************************/
 
-bool pge_collide(PGESprite* sprite1, PGESprite *sprite2) {
+bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2) {
   GRect rect = GRect(sprite1->position.x, sprite1->position.y, sprite1->bitmap->bounds.size.w, sprite1->bitmap->bounds.size.h);
 
   // Test each corner of the other rect

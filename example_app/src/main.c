@@ -22,8 +22,14 @@ static bool s_moving = true;
 static void loop() {
   robot_logic(s_robot);
 
-  bool collided = pge_collide(s_robot->sprite, s_robot2->sprite);
-  robot_set_is_moving(s_robot, !collided);
+  // Destroy robots collided with
+  bool collided = pge_check_collision(s_robot->sprite, s_robot2->sprite);
+  if(collided) {
+    robot_destroy(s_robot2);
+
+    // Create new at random location
+    s_robot2 = robot_create(GPoint(rand() % 130, rand() % 140));
+  }
 }
 
 static void draw(GContext *ctx) {
@@ -42,7 +48,8 @@ static void click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
-
+      s_moving = !s_moving;
+      robot_set_is_moving(s_robot, s_moving);
       break;
 
     case BUTTON_ID_DOWN:

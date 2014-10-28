@@ -10,3 +10,6 @@
 
 ### 1.3.0
 - Added `PGESprite` to enable bitmap-based game entities.
+
+### 1.4.0
+- Added basic collision checking for `PGESprite`s.
