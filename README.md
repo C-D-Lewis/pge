@@ -17,9 +17,9 @@ Simple looping game engine for Pebble.
 
 ## Engine Use
 
-1. Copy `src/pge.h` and `src/pge.c` to your project's `src` directory.
+1. Copy `src/pge/` to your project's `src` directory.
 
-2. Add `#include "pge.h"` to your project's main C file.
+2. Add `#include "pge/pge.h"` to your project's main C file.
 
 3. Implement one of `PGELogicHandler`, `PGERenderHandler` and
    `PGEClickHandler`.
@@ -56,7 +56,9 @@ Simple looping game engine for Pebble.
 The `PGESprite` structure allows creation of a bitmap sprite-based game entity
 and a set of convenience functions to manage it.
 
-1. Create a structure containing a `PGESprite`.
+1. Include `pge/pge_sprite.h` in your main C file.
+
+2. Create a structure containing a `PGESprite` pointer member.
 
         typedef struct {
           PGESprite *sprite;
@@ -64,11 +66,11 @@ and a set of convenience functions to manage it.
           bool moving;
         } Robot;
 
-2. Create the `PGESprite` when the entity is created.
+3. Create the `PGESprite` when the entity is created.
 
         this->sprite = pge_sprite_create(start_position, RESOURCE_ID_ROBOT_UP);
 
-3. Update the sprite's bitmap as the player plays the game.
+4. Update the sprite's bitmap as the player plays the game.
 
         // Set the sprite bitmap
         switch(this->direction) {
@@ -86,16 +88,16 @@ and a set of convenience functions to manage it.
             break;
         }
 
-4. Update the entity's position.
+5. Update the entity's position.
 
         GPoint pos = GPoint(25 + dx, 25 + dy);
         pge_sprite_set_position(this->sprite, pos);
 
-5. Draw the entity's bitmap.
+6. Draw the entity's bitmap.
 
         pge_sprite_draw(this->sprite, ctx);
 
-6. Destroy the entity's `PGESprite` when destroying the app.
+7. Destroy the entity's `PGESprite` when destroying the app.
 
         void robot_destroy(Robot *this) {
           pge_sprite_destroy(this->sprite);

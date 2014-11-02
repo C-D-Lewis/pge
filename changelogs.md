@@ -13,3 +13,6 @@
 
 ### 1.4.0
 - Added basic collision checking for `PGESprite`s.
+
+### 1.5.0
+- Extracted PGESprite to separate optional library file.
