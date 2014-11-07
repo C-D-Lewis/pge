@@ -14,7 +14,8 @@ Simple looping game engine for Pebble.
   your game code.
 - `PGESprite` base object to implement game entities.
 - Basic collision checking between `PGESprite`s.
-- Basic game title screen helper.
+- Basic game title screen template.
+- Simple highscore mechanism.
 
 ## Starting and Stopping Your Game
 
@@ -146,6 +147,15 @@ action.
         static void deinit(void) {
           pge_title_pop();
         }
+
+## Using Highscores
+
+PGE supports basic highest-score recording that persists across app launches:
+
+        int score = 9001;
+        pge_title_set_highscore(score);
+
+        int highscore = pge_title_get_highscore();
 
 ## Features To Do
 

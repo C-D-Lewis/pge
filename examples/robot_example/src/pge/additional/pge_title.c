@@ -133,3 +133,15 @@ void pge_title_pop() {
   // Should self-destroy
   window_stack_pop(true);
 }
+
+void pge_title_set_highscore(int new_highscore) {
+  persist_write_int(PGE_TITLE_HIGHSCORE_PS_KEY, new_highscore);
+}
+
+int pge_title_get_highscore() {
+  if(persist_exists(PGE_TITLE_HIGHSCORE_PS_KEY)) {
+    return persist_read_int(PGE_TITLE_HIGHSCORE_PS_KEY);
+  } else {
+    return 0;
+  }
+}
