@@ -98,6 +98,9 @@ and a set of convenience functions to manage it.
 
 or to move by a certain number of pixels:
 
+        // Move by (10, 0)
+        pge_sprite_move(this->sprite, 10, 0);
+
  * Draw the entity's bitmap:
 
         pge_sprite_draw(this->sprite, ctx);
