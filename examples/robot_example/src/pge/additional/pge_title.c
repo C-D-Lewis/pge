@@ -12,15 +12,18 @@ static PGEClickHandler *s_click_handler;
 static int s_background_res_id;
 static GColor s_title_color;
 static char s_title_buffer[PGE_TITLE_LENGTH_MAX];
+static bool s_light_on;
 
 /*********************************** Clicks ***********************************/
 
-static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_SELECT);
+static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  // Toggle light
+  s_light_on = !s_light_on;
+  light_enable(s_light_on);
 }
 
-static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_UP);
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  s_click_handler(BUTTON_ID_SELECT);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -51,7 +54,7 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bg_layer));
 
   // Title
-  s_title_layer = text_layer_create(GRect(0, 5, window_bounds.size.w, 60));
+  s_title_layer = text_layer_create(GRect(10, 5, window_bounds.size.w - 20, 60));
   text_layer_set_text_color(s_title_layer, s_title_color);
   text_layer_set_background_color(s_title_layer, GColorClear);
   text_layer_set_text_alignment(s_title_layer, GTextAlignmentCenter);

@@ -117,7 +117,11 @@ or to move by a certain number of pixels:
 
 Using `pge_title.h` allows easy creation of a simple game title screen. It is
 assumed that the title screen will be the first thing the user sees, and so at
-the bottom of the Window stack.
+the bottom of the Window stack. 
+
+The default button configuration assigns the UP button to toggling the backlight
+permanently on or off for the life of the app. Thus, developers should choose
+either SELECT or DOWN to start their game and perform one additional action.
 
 1. Include the header file:
 
