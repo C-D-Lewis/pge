@@ -22,7 +22,7 @@ Simple looping game engine for Pebble.
 2. Add `#include "pge/pge.h"` to your project's main C file.
 
 3. Implement one of `PGELogicHandler`, `PGERenderHandler` and
-   `PGEClickHandler`.
+   `PGEClickHandler`:
 
         void logic() {
           
@@ -37,12 +37,13 @@ Simple looping game engine for Pebble.
           
         }
 
-4. Call `pge_begin()`, supplying the `Window` it will reside in as well as your callbacks.
+4. Call `pge_begin()`, supplying the `Window` it will reside in as well as your
+   callbacks:
 
         pge_begin(s_window, logic, draw, click);
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
-   and logic. See `/example_app/src/main.c` for an example implementation.
+   and logic. See `examples` for an example implementation.
 
 6. When done (i.e: when the host Window is being destroyed), destroy the engine:
 
@@ -51,14 +52,16 @@ Simple looping game engine for Pebble.
           pge_finish();
         }
 
-## Sprite Use
+## Creating Game Sprites
 
 The `PGESprite` structure allows creation of a bitmap sprite-based game entity
 and a set of convenience functions to manage it.
 
-1. Include `pge/pge_sprite.h` in your main C file.
+ * Include `pge/additional/pge_sprite.h` in your main C file:
 
-2. Create a structure containing a `PGESprite` pointer member.
+        #include "pge/additional/pge_sprite.h"
+
+ * Create a structure containing a `PGESprite` pointer member:
 
         typedef struct {
           PGESprite *sprite;
@@ -66,11 +69,11 @@ and a set of convenience functions to manage it.
           bool moving;
         } Robot;
 
-3. Create the `PGESprite` when the entity is created.
+ * Create the `PGESprite` when the entity is created:
 
         this->sprite = pge_sprite_create(start_position, RESOURCE_ID_ROBOT_UP);
 
-4. Update the sprite's bitmap as the player plays the game.
+ * Update the sprite's bitmap as the player plays the game:
 
         // Set the sprite bitmap
         switch(this->direction) {
@@ -88,16 +91,18 @@ and a set of convenience functions to manage it.
             break;
         }
 
-5. Update the entity's position.
+ * Update the entity's position:
 
         GPoint pos = GPoint(25 + dx, 25 + dy);
         pge_sprite_set_position(this->sprite, pos);
 
-6. Draw the entity's bitmap.
+or to move by a certain number of pixels:
+
+ * Draw the entity's bitmap:
 
         pge_sprite_draw(this->sprite, ctx);
 
-7. Destroy the entity's `PGESprite` when destroying the app.
+ * Destroy the entity's `PGESprite` when destroying the app:
 
         void robot_destroy(Robot *this) {
           pge_sprite_destroy(this->sprite);
@@ -109,3 +114,7 @@ and a set of convenience functions to manage it.
 - Proper docs
 
 - Grid-restricted mode for implementing RPG-style games.
+
+- Title screen
+
+- Highscores
