@@ -16,3 +16,7 @@
 
 ### 1.5.0
 - Extracted PGESprite to separate optional library file.
+
+### 1.6.0
+ - Moved additional files (such as `pge_sprite.h`) to pge/additional
+ - Added `pge_sprite_move()`

@@ -34,6 +34,13 @@ GPoint pge_sprite_get_position(PGESprite *this) {
   return this->position;
 }
 
+void pge_sprite_move(PGESprite *this, int dx, int dy) {
+  GPoint pos = pge_sprite_get_position(this);
+  pos.x += dx;
+  pos.y += dy;
+  pge_sprite_set_position(this, pos);
+}
+
 bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2) {
   GRect rect = GRect(sprite1->position.x, sprite1->position.y, sprite1->bitmap->bounds.size.w, sprite1->bitmap->bounds.size.h);
 
