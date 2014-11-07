@@ -2,7 +2,7 @@
 
 // UI
 static Window *s_window;
-static TextLayer *s_title_layer;
+static TextLayer *s_title_layer, *s_light_layer;
 static BitmapLayer *s_bg_layer;
 static GBitmap *s_bg_bitmap;
 
@@ -54,7 +54,7 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bg_layer));
 
   // Title
-  s_title_layer = text_layer_create(GRect(10, 5, window_bounds.size.w - 20, 60));
+  s_title_layer = text_layer_create(GRect(10, 40, window_bounds.size.w - 20, 60));
   text_layer_set_text_color(s_title_layer, s_title_color);
   text_layer_set_background_color(s_title_layer, GColorClear);
   text_layer_set_text_alignment(s_title_layer, GTextAlignmentCenter);
@@ -62,12 +62,22 @@ static void window_load(Window *window) {
   text_layer_set_font(s_title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
   text_layer_set_text(s_title_layer, s_title_buffer);
   layer_add_child(window_layer, text_layer_get_layer(s_title_layer));
+
+  // Light TextLayer
+  s_light_layer = text_layer_create(GRect(0, 20, window_bounds.size.w, 30));
+  text_layer_set_text_color(s_light_layer, s_title_color);
+  text_layer_set_background_color(s_light_layer, GColorClear);
+  text_layer_set_text_alignment(s_light_layer, GTextAlignmentRight);
+  text_layer_set_font(s_light_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  text_layer_set_text(s_light_layer, "LIGHT >");
+  layer_add_child(window_layer, text_layer_get_layer(s_light_layer));
 }
 
 static void window_unload(Window *window) {
   gbitmap_destroy(s_bg_bitmap);
   bitmap_layer_destroy(s_bg_layer);
   text_layer_destroy(s_title_layer);
+  text_layer_destroy(s_light_layer);
 
   // Finally
   window_destroy(window);
