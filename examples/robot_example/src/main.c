@@ -96,6 +96,10 @@ static void title_click(int button_id) {
       break;
 
     case BUTTON_ID_SELECT:
+      
+      break;
+
+    case BUTTON_ID_DOWN:
       // Go to game!
       s_main_window = window_create();
       window_set_background_color(s_main_window, GColorBlack);
@@ -106,17 +110,13 @@ static void title_click(int button_id) {
       });
       window_stack_push(s_main_window, true);
       break;
-
-    case BUTTON_ID_DOWN:
-
-      break;
   }
 }
 
 /******************************** App *****************************************/
 
 static void init(void) {
-  pge_title_push("Robot Example Game", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
+  pge_title_push("Robot Example Game", "", "PLAY >", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
 }
 
 static void deinit(void) {

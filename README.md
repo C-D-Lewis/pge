@@ -128,12 +128,12 @@ either SELECT or DOWN to start their game and perform one additional action.
         #include "pge/additional/pge_title.h"
 
 2. Push the title screen window in your app initialization to show it first.
-   Provide a title, the colour of the title text, the resource ID of the
-   background image (144 x 168) and a PGEClickHandler implementation to handle
-   clicks on the title screen:
+   Provide a title, text for the SELECT and DOWN actions, the colour of the
+   text, the resource ID of the background image (144 x 168) and a
+   PGEClickHandler implementation to handle clicks on the title screen:
 
         static void init(void) {
-          pge_title_push("Robot Example Game", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
+          pge_title_push("Robot Example Game", "", "PLAY >", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
         }
 
 3. When your app exits, pop the last window:
