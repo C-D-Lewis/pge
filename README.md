@@ -144,6 +144,4 @@ the bottom of the Window stack.
 
 - Grid-restricted mode for implementing RPG-style games.
 
-- Title screen
-
 - Highscores
