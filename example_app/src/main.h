@@ -4,7 +4,7 @@
 #include <pebble.h>
 
 #include "pge/pge.h"
-#include "pge/pge_sprite.h"
+#include "pge/additional/pge_sprite.h"
 
 #include "entity/robot.h"
 
