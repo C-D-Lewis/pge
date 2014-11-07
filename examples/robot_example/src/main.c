@@ -12,9 +12,11 @@
 #include "main.h"
 
 static Window *s_main_window;
+static TextLayer *s_score_layer;
 static Robot *s_robot, *s_robot2;
 
-static int s_direction;
+static char s_score_buffer[16];
+static int s_direction, s_score;
 static bool s_moving;
 
 /******************************** Game ****************************************/
@@ -26,6 +28,10 @@ static void loop() {
   bool collided = pge_check_collision(s_robot->sprite, s_robot2->sprite);
   if(collided) {
     robot_destroy(s_robot2);
+
+    s_score++;
+    snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d", s_score);
+    text_layer_set_text(s_score_layer, s_score_buffer);
 
     // Create new at random location
     s_robot2 = robot_create(GPoint(rand() % 130, rand() % 140));
@@ -73,12 +79,25 @@ static void main_window_load(Window *window) {
 
   // Create game canvas and begin render loop
   pge_begin(window, loop, draw, click);
+
+  // Setup score TextLayer
+  s_score_layer = text_layer_create(GRect(0, 0, 144, 20));
+  text_layer_set_text_color(s_score_layer, GColorBlack);
+  text_layer_set_background_color(s_score_layer, GColorWhite);
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_score_layer));
+
+  // Show initial score
+  snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d", s_score);
+  text_layer_set_text(s_score_layer, s_score_buffer);
 }
 
 static void main_window_unload(Window *window) {
   // Destroy the Robot
   robot_destroy(s_robot);
   robot_destroy(s_robot2);
+
+  // Score layer
+  text_layer_destroy(s_score_layer);
 
   // Destroy all game resources
   pge_finish();

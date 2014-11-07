@@ -121,7 +121,12 @@ the bottom of the Window stack.
 
 The default button configuration assigns the UP button to toggling the backlight
 permanently on or off for the life of the app. Thus, developers should choose
-either SELECT or DOWN to start their game and perform one additional action.
+the SELECT and DOWN buttons to start their game and perform one additional
+action.
+
+![screenshot2](screenshots/screenshot2.png)
+
+> Example title screen for the robot example game.
 
 1. Include the header file:
 
