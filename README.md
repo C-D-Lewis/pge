@@ -14,8 +14,9 @@ Simple looping game engine for Pebble.
   your game code.
 - `PGESprite` base object to implement game entities.
 - Basic collision checking between `PGESprite`s.
+- Basic game title screen helper.
 
-## Engine Use
+## Starting and Stopping Your Game
 
 1. Copy `src/pge/` to your project's `src` directory.
 
@@ -110,6 +111,28 @@ or to move by a certain number of pixels:
         void robot_destroy(Robot *this) {
           pge_sprite_destroy(this->sprite);
           free(this);
+        }
+
+## Showing a Title Screen
+
+Using `pge_title.h` allows easy creation of a simple game title screen. It is
+assumed that the title screen will be the first thing the user sees, and so at
+the bottom of the Window stack.
+
+1. Include the header file:
+
+        #include "pge/additional/pge_title.h"
+
+2. Push the title screen window in your app initialization to show it first:
+
+        static void init(void) {
+          pge_title_push("Robot Example Game", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
+        }
+
+3. When your app exits, pop the last window:
+
+        static void deinit(void) {
+          pge_title_pop();
         }
 
 ## Features To Do

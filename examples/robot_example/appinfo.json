@@ -32,6 +32,11 @@
         "type":"png",
         "name":"ROBOT_LEFT",
         "file":"images/robot_left.png"
+      },
+      {
+        "type":"png",
+        "name":"TITLE_BG",
+        "file":"images/title_bg.png"
       }
     ]
   }

@@ -18,5 +18,8 @@
 - Extracted PGESprite to separate optional library file.
 
 ### 1.6.0
- - Moved additional files (such as `pge_sprite.h`) to pge/additional
- - Added `pge_sprite_move()`
+ - Moved additional files (such as `pge_sprite.h`) to pge/additional.
+ - Added `pge_sprite_move()`.
+
+### 1.7.0
+ - Added `pge_title.h`, allowing easy creation of a basic game title screen.

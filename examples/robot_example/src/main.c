@@ -15,7 +15,7 @@ static Window *s_main_window;
 static Robot *s_robot, *s_robot2;
 
 static int s_direction;
-static bool s_moving = true;
+static bool s_moving;
 
 /******************************** Game ****************************************/
 
@@ -64,7 +64,7 @@ static void click(int button_id) {
   robot_set_direction(s_robot, s_direction);
 }
 
-/******************************** App *****************************************/
+/******************************* Main Window **********************************/
 
 static void main_window_load(Window *window) {
   // Create a Robot
@@ -82,21 +82,45 @@ static void main_window_unload(Window *window) {
 
   // Destroy all game resources
   pge_finish();
+
+  // Destroy game Window
+  window_destroy(s_main_window);
 }
 
+/******************************** Title ***************************************/
+
+static void title_click(int button_id) {
+  switch(button_id) {
+    case BUTTON_ID_UP:
+
+      break;
+
+    case BUTTON_ID_SELECT:
+      // Go to game!
+      s_main_window = window_create();
+      window_set_background_color(s_main_window, GColorBlack);
+      window_set_fullscreen(s_main_window, true);
+      window_set_window_handlers(s_main_window, (WindowHandlers) {
+        .load = main_window_load,
+        .unload = main_window_unload
+      });
+      window_stack_push(s_main_window, true);
+      break;
+
+    case BUTTON_ID_DOWN:
+
+      break;
+  }
+}
+
+/******************************** App *****************************************/
+
 static void init(void) {
-  s_main_window = window_create();
-  window_set_background_color(s_main_window, GColorBlack);
-  window_set_fullscreen(s_main_window, true);
-  window_set_window_handlers(s_main_window, (WindowHandlers) {
-    .load = main_window_load,
-    .unload = main_window_unload
-  });
-  window_stack_push(s_main_window, true);
+  pge_title_push("Robot Example Game", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
 }
 
 static void deinit(void) {
-  window_destroy(s_main_window);
+  pge_title_pop();
 }
 
 int main(void) {

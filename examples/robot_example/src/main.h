@@ -5,6 +5,7 @@
 
 #include "pge/pge.h"
 #include "pge/additional/pge_sprite.h"
+#include "pge/additional/pge_title.h"
 
 #include "entity/robot.h"
 
