@@ -111,10 +111,7 @@ static void main_window_unload(Window *window) {
 
 static void title_click(int button_id) {
   switch(button_id) {
-    case BUTTON_ID_UP:
-
-      break;
-
+    // Some other action
     case BUTTON_ID_SELECT:
       
       break;
@@ -149,6 +146,9 @@ static void deinit(void) {
 }
 
 int main(void) {
+  // Randomize behavior
+  srand(time(NULL));
+
   init();
   app_event_loop();
   deinit();

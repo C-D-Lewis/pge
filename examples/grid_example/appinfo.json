@@ -1,0 +1,17 @@
+{
+  "uuid": "d201b533-2c2b-4f85-a5ee-6d0a773ce0d7",
+  "shortName": "Grid Eexample",
+  "longName": "Grid Example",
+  "companyName": "Chris Lewis",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
