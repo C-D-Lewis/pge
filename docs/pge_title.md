@@ -11,7 +11,7 @@ permanently on or off for the life of the app. Thus, developers should choose
 the SELECT and DOWN buttons to start their game and perform one additional
 action.
 
-![screenshot2](../../screenshots/screenshot2.png)
+![screenshot2](../screenshots/screenshot2.png)
 
 > Example title screen for the robot example game.
 
