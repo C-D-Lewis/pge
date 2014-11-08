@@ -162,5 +162,3 @@ PGE supports basic highest-score recording that persists across app launches:
 - Proper docs
 
 - Grid-restricted mode for implementing RPG-style games.
-
-- Highscores
