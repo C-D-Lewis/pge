@@ -55,4 +55,9 @@ bool pge_get_button_state(ButtonId button);
  */
 void pge_set_framerate(int new_rate);
 
+/**
+ * Set the fullscreen background image
+ */
+void pge_set_background(int bg_resource_id);
+
 #endif
