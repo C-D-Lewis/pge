@@ -12,6 +12,27 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+      {
+        "type":"png",
+        "name":"ROBOT_UP",
+        "file":"images/robot_up.png"
+      },
+      {
+        "type":"png",
+        "name":"ROBOT_DOWN",
+        "file":"images/robot_down.png"
+      },
+      {
+        "type":"png",
+        "name":"ROBOT_RIGHT",
+        "file":"images/robot_right.png"
+      },
+      {
+        "type":"png",
+        "name":"ROBOT_LEFT",
+        "file":"images/robot_left.png"
+      }
+    ]
   }
 }
