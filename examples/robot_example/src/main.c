@@ -15,7 +15,7 @@ static Window *s_main_window;
 static TextLayer *s_score_layer;
 static Robot *s_robot, *s_robot2;
 
-static char s_score_buffer[16];
+static char s_score_buffer[24];
 static int s_direction, s_score;
 static bool s_moving;
 
@@ -29,8 +29,9 @@ static void loop() {
   if(collided) {
     robot_destroy(s_robot2);
 
+    // Process score
     s_score++;
-    snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d", s_score);
+    snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d (Best: %d)", s_score, pge_title_get_highscore());
     text_layer_set_text(s_score_layer, s_score_buffer);
 
     // Create new at random location
@@ -87,7 +88,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_score_layer));
 
   // Show initial score
-  snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d", s_score);
+  snprintf(s_score_buffer, sizeof(s_score_buffer), "Score: %d (Best: %d)", s_score, pge_title_get_highscore());
   text_layer_set_text(s_score_layer, s_score_buffer);
 }
 
@@ -139,6 +140,11 @@ static void init(void) {
 }
 
 static void deinit(void) {
+  // Save highscore
+  if(s_score > pge_title_get_highscore()) {
+    pge_title_set_highscore(s_score);
+  }
+
   pge_title_pop();
 }
 
