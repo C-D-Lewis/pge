@@ -157,8 +157,12 @@ PGE supports basic highest-score recording that persists across app launches:
 
         int highscore = pge_title_get_highscore();
 
+## Set a Game Background
+
+You can easily set a background image for your game:
+
+        pge_set_background(RESOURCE_ID_GAME_BACKGROUND);
+
 ## Features To Do
 
 - Proper docs
-
-- Grid-restricted mode for implementing RPG-style games.
