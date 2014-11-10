@@ -1,5 +1,3 @@
-#include "math.h" // lrintf (should remove line_line dependence on floating point
-
 #include "pge_collision.h"
 
 #define min(a, b) ((a) < (b)) ? (a) : (b)
@@ -47,62 +45,32 @@ bool collision_rectangle_rectangle(GRect *rect_a, GRect *rect_b) {
 
 bool collision_line_rectangle(GLine *line, GRect *rect) {
   bool retval = false;
-  GPoint temp_point;
 
   retval |= collision_line_line( line, &(GLine){
         {rect->origin.x, rect->origin.y}, 
-        {rect->origin.x + rect->size.w, rect->origin.y}},
-      &temp_point);
+        {rect->origin.x + rect->size.w, rect->origin.y}});
 
   retval |= collision_line_line( line, &(GLine){
         {rect->origin.x + rect->size.w, rect->origin.y}, 
-        {rect->origin.x + rect->size.w, rect->origin.y + rect->size.h}},
-      &temp_point);
+        {rect->origin.x + rect->size.w, rect->origin.y + rect->size.h}});
 
   retval |= collision_line_line( line, &(GLine){
         {rect->origin.x + rect->size.w, rect->origin.y + rect->size.h}, 
-        {rect->origin.x, rect->origin.y + rect->size.h}},
-      &temp_point);
+        {rect->origin.x, rect->origin.y + rect->size.h}});
 
   retval |= collision_line_line( line, &(GLine){
         {rect->origin.x, rect->origin.y + rect->size.h}, 
-        {rect->origin.x, rect->origin.y}},
-      &temp_point);
+        {rect->origin.x, rect->origin.y}});
 
   return retval;
 }
 
-bool collision_line_line(GLine *line_a, GLine *line_b, GPoint *collision_point) {
-
-   float m1, m2, b1, b2;
-   int   den1, den2;
-   bool  retval = true;
-
-   den1 = ( line_a->p2.x - line_a->p1.x );
-   den2 = ( line_b->p2.x - line_b->p1.x );
-
-   m1 = ( line_a->p2.y - line_a->p1.y ) / (float)( den1 );
-   m2 = ( line_b->p2.y - line_b->p1.y ) / (float)( den2 );
-
-   b1 = line_a->p1.y - ( m1 * line_a->p1.x );
-   b2 = line_b->p1.y - ( m2 * line_b->p1.x );
-
-   if ( ( den1 == 0 ) && ( den2 != 0 ) ) {
-      collision_point->x = line_a->p1.x;
-      collision_point->y = lrintf( ( m2 * collision_point->x ) + b2 );
-   } else if ( ( den1 != 0 ) && ( den2 == 0 ) ) {
-      collision_point->x = line_b->p1.x;
-      collision_point->y = lrintf( ( m1 * collision_point->x ) + b1 );
-   } else if ( ( den1 != 0 ) && ( den2 != 0 ) ) {
-      if ( m1 != m2 ) {
-         collision_point->x = lrintf( ( b1 - b2 ) / ( m2 - m1 ) );
-         collision_point->y = lrintf( ( m2 * collision_point->x ) + b2 );
-      } else {
-         retval = false;
-      }
-   } 
-
-   return retval;
+bool collision_line_line(GLine *line_a, GLine *line_b) {
+  // Dot product, positive results mean point is on one side of a line,
+  // checking both ranges shows if intersection is within segments.
+  return 
+    (((line_b->p1.x-line_a->p1.x)*(line_a->p2.y-line_a->p1.y) + (line_b->p1.y-line_a->p1.y)*(line_a->p2.x-line_a->p1.x)) * ((line_b->p2.x-line_a->p1.x)*(line_a->p2.y-line_a->p1.y) + (line_b->p2.y-line_a->p1.y)*(line_a->p2.x-line_a->p1.x)) < 0) &&
+    (((line_a->p1.x-line_b->p1.x)*(line_b->p2.y-line_b->p1.y) + (line_a->p1.y-line_b->p1.y)*(line_b->p2.x-line_b->p1.x)) * ((line_a->p2.x-line_b->p1.x)*(line_b->p2.y-line_b->p1.y) + (line_a->p2.y-line_b->p1.y)*(line_b->p2.x-line_b->p1.x)) < 0);
 }
 
 
