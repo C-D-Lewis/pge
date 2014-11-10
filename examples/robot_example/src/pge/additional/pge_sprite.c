@@ -1,7 +1,5 @@
 #include "pge_sprite.h"
 
-#include "pge_collision.h"
-
 PGESprite* pge_sprite_create(GPoint position, int initial_resource_id) {
   PGESprite *this = malloc(sizeof(PGESprite));
 
@@ -44,14 +42,19 @@ void pge_sprite_move(PGESprite *this, int dx, int dy) {
 }
 
 bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2) {
-  GRect rect_a = (GRect){
-    {sprite1->position.x, sprite1->position.y}, 
-    {sprite1->bitmap->bounds.size.w, sprite1->bitmap->bounds.size.h}};
-
-  GRect rect_b = (GRect){
-    {sprite2->position.x, sprite2->position.y}, 
-    {sprite2->bitmap->bounds.size.w, sprite2->bitmap->bounds.size.h}};
+  GRect rect = GRect(sprite1->position.x, sprite1->position.y, sprite1->bitmap->bounds.size.w, sprite1->bitmap->bounds.size.h);
 
   // Test each corner of the other rect
-  return collision_rectangle_rectangle(&rect_a, &rect_b);
+  return
+        // Top left point
+        grect_contains_point(&rect, &GPoint(sprite2->position.x, sprite2->position.y))
+
+        // Top right point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x + sprite2->bitmap->bounds.size.w, sprite2->position.y))
+
+        // Bottom right point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x + sprite2->bitmap->bounds.size.w, sprite2->position.y + sprite2->bitmap->bounds.size.h))
+
+        // Bottom left point
+    ||  grect_contains_point(&rect, &GPoint(sprite2->position.x, sprite2->position.y + sprite2->bitmap->bounds.size.h));
 }

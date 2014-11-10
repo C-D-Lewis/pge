@@ -22,14 +22,13 @@
 #ifndef PGE_H
 #define PGE_H
 
-
 // Convenience types
 typedef struct GLine {
   GPoint p1;
   GPoint p2;
 } GLine;
 
- /********************************** Engine ***********************************/
+/********************************** Engine ***********************************/
 
 // Function for user to place their per-frame game logic
 typedef void (PGELogicHandler)();
