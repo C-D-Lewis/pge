@@ -4,7 +4,7 @@
 #define max(a, b) ((a) > (b)) ? (a) : (b)
 
 // Uses separated axis theorem where rectangles are aligned with the x and y axis
-bool collision_rectangle_rectangle(GRect *rect_a, GRect *rect_b) {
+bool pge_collision_rectangle_rectangle(GRect *rect_a, GRect *rect_b) {
 
   struct overlap_rect{  
     GPoint ul;  // upper-left
@@ -43,29 +43,29 @@ bool collision_rectangle_rectangle(GRect *rect_a, GRect *rect_b) {
       a_min.y > b_max.y || a_max.y < b_min.y );
 }
 
-bool collision_line_rectangle(GLine *line, GRect *rect) {
+bool pge_collision_line_rectangle(GLine *line, GRect *rect) {
   bool retval = false;
 
-  retval |= collision_line_line( line, &(GLine){
+  retval |= pge_collision_line_line( line, &(GLine){
         {rect->origin.x, rect->origin.y}, 
         {rect->origin.x + rect->size.w, rect->origin.y}});
 
-  retval |= collision_line_line( line, &(GLine){
+  retval |= pge_collision_line_line( line, &(GLine){
         {rect->origin.x + rect->size.w, rect->origin.y}, 
         {rect->origin.x + rect->size.w, rect->origin.y + rect->size.h}});
 
-  retval |= collision_line_line( line, &(GLine){
+  retval |= pge_collision_line_line( line, &(GLine){
         {rect->origin.x + rect->size.w, rect->origin.y + rect->size.h}, 
         {rect->origin.x, rect->origin.y + rect->size.h}});
 
-  retval |= collision_line_line( line, &(GLine){
+  retval |= pge_collision_line_line( line, &(GLine){
         {rect->origin.x, rect->origin.y + rect->size.h}, 
         {rect->origin.x, rect->origin.y}});
 
   return retval;
 }
 
-bool collision_line_line(GLine *line_a, GLine *line_b) {
+bool pge_collision_line_line(GLine *line_a, GLine *line_b) {
   // Dot product, positive results mean point is on one side of a line,
   // checking both ranges shows if intersection is within segments.
   return 
@@ -74,7 +74,7 @@ bool collision_line_line(GLine *line_a, GLine *line_b) {
 }
 
 
-bool collision_point_rectangle(GPoint *point, GRect *rect){
+bool pge_collision_point_rectangle(GPoint *point, GRect *rect){
   return 
       (point->x >= rect->origin.x && point->x <= (rect->origin.x + rect->size.w)) && 
       (point->y >= rect->origin.y && point->y <= (rect->origin.y + rect->size.h));
