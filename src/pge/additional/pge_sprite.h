@@ -56,4 +56,9 @@ void pge_sprite_move(PGESprite *this, int dx, int dy);
  */
 bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2);
 
+/**
+ * Get the on-screen bounds of the PGESprite
+ */
+GRect pge_sprite_get_bounds(PGESprite *this);
+
 #endif

@@ -12,6 +12,12 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+      {
+        "type":"png",
+        "name":"SHIP",
+        "file":"images/ship.png"
+      }
+    ]
   }
 }
