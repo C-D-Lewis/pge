@@ -17,6 +17,11 @@
         "type":"png",
         "name":"SHIP",
         "file":"images/ship.png"
+      },
+      {
+        "type":"png",
+        "name":"SHOT",
+        "file":"images/shot.png"
       }
     ]
   }
