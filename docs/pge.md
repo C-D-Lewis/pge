@@ -28,7 +28,7 @@
         pge_begin(s_window, logic, draw, click);
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
-   and logic. See `examples` for an example implementation.
+   and logic. 
 
 6. When done (i.e: when the host Window is being destroyed), destroy the engine:
 
