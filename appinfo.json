@@ -1,0 +1,17 @@
+{
+  "uuid": "A1E7FAE-6B56-4187-A31C-D6CDA3AE6978",
+  "shortName": "PGE Example",
+  "longName": "PGE Example",
+  "companyName": "Chris Lewis",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
