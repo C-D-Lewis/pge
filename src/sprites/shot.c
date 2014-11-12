@@ -1,3 +1,5 @@
+#include "shot.h"
+
 Shot* shot_create(GPoint pos) {
   Shot *this = malloc(sizeof(Shot));
   this->sprite = pge_sprite_create(pos, RESOURCE_ID_SHOT);
@@ -14,8 +16,10 @@ void shot_draw(Shot *this, GContext *ctx) {
 }
 
 void shot_logic(Shot *this) {
-  // Out of bounds?
   GPoint bounds = shot_get_position(this);
+
+  // Move up
+  shot_move(this, -5);
 }
 
 void shot_move(Shot *this, int dy) {
