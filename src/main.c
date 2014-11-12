@@ -1,10 +1,24 @@
 #include "main.h"
 
+// UI
 static Window *s_main_window;
-static Ship *s_player;
+static TextLayer *s_score_layer;
 
+// Game
+static Ship *s_player;
 static Shot *shot_arr[MAX_OBJECTS];
 static Rock *rock_arr[MAX_OBJECTS];
+
+// State
+static char s_score_buffer[32];
+static int s_lives = 3, s_score = 0;
+
+/******************************** Game functions ******************************/
+
+static void update_status_text() {
+  snprintf(s_score_buffer, sizeof(s_score_buffer), "Lives: %d | Score: %d", s_lives, s_score);
+  text_layer_set_text(s_score_layer, s_score_buffer);
+}
 
 static void fire() {
   GPoint pos = ship_get_position(s_player);
@@ -33,6 +47,15 @@ static void spawn_rock() {
     }
   }
 }
+
+static void spawn_handler(void *context) {
+  spawn_rock();
+
+  // Continue loop
+  app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
+}
+
+/******************************** Engine callbacks ****************************/
 
 static void logic() {
   GPoint pos = ship_get_position(s_player);
@@ -71,8 +94,41 @@ static void logic() {
     }
   }
 
-  // Do shot collision with enemies
+  // Do shot collision with rocks
+  for(int s = 0; s < MAX_OBJECTS; s++) {
+    for(int r = 0; r < MAX_OBJECTS; r++) {
+      if(rock_arr[r] && shot_arr[s]) {
+        if(pge_check_collision(rock_arr[r]->sprite, shot_arr[s]->sprite)) {
+          //Boom!
+          rock_destroy(rock_arr[r]);
+          shot_destroy(shot_arr[s]);
+          rock_arr[r] = NULL;
+          shot_arr[s] = NULL;
 
+          // Award points
+          s_score++;
+          update_status_text();
+        }
+      }
+    }
+  }
+
+  // Do rock collision with player
+  for(int i = 0; i < MAX_OBJECTS; i++) {
+    if(rock_arr[i]) {
+      if(pge_check_collision(s_player->sprite, rock_arr[i]->sprite)) {
+        // Lose a life
+        s_lives--;
+        update_status_text();
+
+        vibes_long_pulse();
+
+        // Destroy rock
+        rock_destroy(rock_arr[i]);
+        rock_arr[i] = NULL;
+      }
+    }
+  }
 }
 
 static void draw(GContext *ctx) {
@@ -102,6 +158,8 @@ static void click(int button_id) {
   }
 }
 
+/******************************** App callbacks *******************************/
+
 static void main_window_load(Window *window) {
   // Create player's Ship
   s_player = ship_create(GPoint(60, 130));
@@ -109,9 +167,22 @@ static void main_window_load(Window *window) {
   // Begin game loop
   pge_begin(s_main_window, logic, draw, click);
   pge_set_framerate(25);
+
+  // Create score layer
+  s_score_layer = text_layer_create(GRect(0, 0, 144, 20));
+  text_layer_set_text_color(s_score_layer, GColorWhite);
+  text_layer_set_background_color(s_score_layer, GColorBlack);
+  text_layer_set_font(s_score_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_score_layer));
+
+  // Setup score
+  update_status_text();
 }
 
 static void main_window_unload(Window *window) {
+  // Destroy score layer
+  text_layer_destroy(s_score_layer);
+
   // End game loop
   pge_finish();
 
@@ -129,12 +200,7 @@ static void main_window_unload(Window *window) {
   ship_destroy(s_player);
 }
 
-static void timer_handler(void *context) {
-  spawn_rock();
-
-  // Continue loop
-  app_timer_register(rand() % MAX_SPAWN_INTERVAL, timer_handler, NULL);
-}
+/********************************* App Foundation *****************************/
 
 static void init() {
   s_main_window = window_create();
@@ -147,7 +213,7 @@ static void init() {
   window_stack_push(s_main_window, true);
 
   // Begin spawn loop
-  app_timer_register(rand() % MAX_SPAWN_INTERVAL, timer_handler, NULL);
+  app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
 }
 
 static void deinit() {
