@@ -7,7 +7,7 @@ Rock* rock_create(GPoint pos) {
 }
 
 void rock_destroy(Rock* this) {
-  free(this->sprite);
+  pge_sprite_destroy(this->sprite);
   free(this);
 }
 

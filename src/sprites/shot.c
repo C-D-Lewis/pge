@@ -7,7 +7,7 @@ Shot* shot_create(GPoint pos) {
 }
 
 void shot_destroy(Shot* this) {
-  free(this->sprite);
+  pge_sprite_destroy(this->sprite);
   free(this);
 }
 

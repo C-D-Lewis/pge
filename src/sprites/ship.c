@@ -7,7 +7,7 @@ Ship* ship_create(GPoint pos) {
 }
 
 void ship_destroy(Ship* this) {
-  free(this->sprite);
+  pge_sprite_destroy(this->sprite);
   free(this);
 }
 

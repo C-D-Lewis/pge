@@ -129,6 +129,12 @@ static void logic() {
       }
     }
   }
+
+  if(s_lives == 0) {
+    window_stack_pop_all(true);
+    return;
+  }
+
 }
 
 static void draw(GContext *ctx) {
