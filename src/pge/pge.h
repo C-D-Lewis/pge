@@ -15,18 +15,13 @@
  *
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
+ * - Window is managed for you
  */
 
 #include <pebble.h>
 
 #ifndef PGE_H
 #define PGE_H
-
-// Convenience types
-typedef struct GLine {
-  GPoint p1;
-  GPoint p2;
-} GLine;
 
 /********************************** Engine ***********************************/
 

@@ -18,7 +18,7 @@ void pge_sprite_destroy(PGESprite *this) {
   free(this);
 }
 
-void pge_sprite_set_frame(PGESprite *this, int resource_id) {
+void pge_sprite_set_anim_frame(PGESprite *this, int resource_id) {
   gbitmap_destroy(this->bitmap);
   this->bitmap = gbitmap_create_with_resource(resource_id);
 }

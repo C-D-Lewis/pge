@@ -16,8 +16,6 @@ void shot_draw(Shot *this, GContext *ctx) {
 }
 
 void shot_logic(Shot *this) {
-  GPoint bounds = shot_get_position(this);
-
   // Move up
   shot_move(this, -5);
 }

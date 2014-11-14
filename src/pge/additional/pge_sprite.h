@@ -29,7 +29,7 @@ void pge_sprite_destroy(PGESprite *this);
 /**
  * Set the current animation frame
  */
-void pge_sprite_set_frame(PGESprite *this, int resource_id);
+void pge_sprite_set_anim_frame(PGESprite *this, int resource_id);
 
 /**
  * Draw the sprite's bitmap to the graphics context

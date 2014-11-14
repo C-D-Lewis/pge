@@ -16,8 +16,6 @@ void rock_draw(Rock *this, GContext *ctx) {
 }
 
 void rock_logic(Rock *this) {
-  GPoint bounds = rock_get_position(this);
-
   // Move up
   rock_move(this, 1);
 }
