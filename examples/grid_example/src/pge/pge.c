@@ -138,6 +138,7 @@ static void destroy() {
   layer_destroy(s_canvas);
   bitmap_layer_destroy(s_bg_layer);
   gbitmap_destroy(s_bg_bitmap);
+  s_bg_bitmap = NULL;
 }
 
 static void up_pressed_click_handler(ClickRecognizerRef recognizer, void *context) {
