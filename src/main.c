@@ -1,7 +1,7 @@
 #include "main.h"
 
 // UI
-static Window *s_main_window;
+static Window *s_game_window;
 static TextLayer *s_score_layer;
 
 // Game
@@ -164,14 +164,14 @@ static void click(int button_id) {
   }
 }
 
-/******************************** App callbacks *******************************/
+/********************************* App Foundation *****************************/
 
-static void main_window_load(Window *window) {
+static void init() {
   // Create player's Ship
   s_player = ship_create(GPoint(60, 130));
 
   // Begin game loop
-  pge_begin(s_main_window, logic, draw, click);
+  s_game_window = pge_create_game_window(logic, draw, click);
   pge_set_framerate(25);
 
   // Create score layer
@@ -179,18 +179,18 @@ static void main_window_load(Window *window) {
   text_layer_set_text_color(s_score_layer, GColorWhite);
   text_layer_set_background_color(s_score_layer, GColorBlack);
   text_layer_set_font(s_score_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_score_layer));
+  layer_add_child(window_get_root_layer(s_game_window), text_layer_get_layer(s_score_layer));
 
   // Setup score
   update_status_text();
+
+  // Begin spawn loop
+  app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
 }
 
-static void main_window_unload(Window *window) {
+static void deinit() {
   // Destroy score layer
   text_layer_destroy(s_score_layer);
-
-  // End game loop
-  pge_finish();
 
   //Free Shots and Rocks
   for(int i = 0; i < MAX_OBJECTS; i++) {
@@ -204,26 +204,9 @@ static void main_window_unload(Window *window) {
 
   // Destroy the player's Ship
   ship_destroy(s_player);
-}
 
-/********************************* App Foundation *****************************/
-
-static void init() {
-  s_main_window = window_create();
-  window_set_fullscreen(s_main_window, true);
-  window_set_background_color(s_main_window, GColorBlack);
-  window_set_window_handlers(s_main_window, (WindowHandlers) {
-    .load = main_window_load,
-    .unload = main_window_unload
-  });
-  window_stack_push(s_main_window, true);
-
-  // Begin spawn loop
-  app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
-}
-
-static void deinit() {
-  window_destroy(s_main_window);
+  // End game loop
+  pge_destroy_game_window();
 }
 
 int main() {

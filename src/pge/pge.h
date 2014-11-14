@@ -40,16 +40,16 @@ typedef void (PGERenderHandler)(GContext *ctx);
 typedef void (PGEClickHandler)(int button_id);
 
 /**
- * Create a full-screen Layer to use as a rendering canvas
+ * Create a full-screen Window and Layer to use as a rendering canvas
  *
  * Note: The Click handler can be NULL to not implement
  */
-void pge_begin(Window *parent, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
+Window* pge_create_game_window(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
 
 /**
  * Finish the game and clean up
  */
-void pge_finish();
+void pge_destroy_game_window();
 
 /**
  * Query the current state of a button
