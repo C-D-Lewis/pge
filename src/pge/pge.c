@@ -29,6 +29,7 @@ Window* pge_create_game_window(PGELogicHandler *logic_handler, PGERenderHandler 
 
   s_game_window = window_create();
   window_set_fullscreen(s_game_window, true);
+  window_set_background_color(s_game_window, GColorBlack);
   window_set_window_handlers(s_game_window, (WindowHandlers) {
     .load = game_window_load,
     .unload = game_window_unload
