@@ -1,0 +1,33 @@
+{
+  "uuid": "701253d4-450d-4bf4-b6d2-7ee99946542a",
+  "shortName": "PGE Example",
+  "longName": "PGE Example",
+  "companyName": "Chris Lewis",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "type":"png",
+        "name":"SHIP",
+        "file":"images/ship.png"
+      },
+      {
+        "type":"png",
+        "name":"SHOT",
+        "file":"images/shot.png"
+      },
+      {
+        "type":"png",
+        "name":"ROCK",
+        "file":"images/rock.png"
+      }
+    ]
+  }
+}

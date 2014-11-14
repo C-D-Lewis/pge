@@ -2,10 +2,6 @@
 
 Simple looping game engine for Pebble.
 
-![screenshot](screenshots/screenshot1.png)
-
-> Example app sees the user control a simple robot.
-
 ## Features
 
 - Automatic looping of developer-supplied per-frame logic and rendering.

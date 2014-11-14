@@ -13,7 +13,7 @@ action.
 
 ![screenshot2](../screenshots/screenshot2.png)
 
-> Example title screen for the robot example game.
+> Example title screen.
 
 1. Include the header file:
 
