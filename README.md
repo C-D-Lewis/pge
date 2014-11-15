@@ -22,22 +22,28 @@ To begin a new game watchapp, begin with the following code:
 
         static Window *s_game_window;
 
+        // Implement per-frame game logic
         static void game_logic() {
 
         }
 
+        // Implement per-frame game drawing
         static void game_draw(GContext *ctx) {
 
         }
 
+        // React to button click events
         static void game_click(int button_id) {
 
         }
 
+        // App setup 
         void pge_init() {
+          // Begin game loop Window
           s_game_window = pge_begin(game_logic, game_draw, game_click);
         }
 
+        // App teardown
         void pge_deinit() {
           pge_finish();
         }
