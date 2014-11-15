@@ -24,12 +24,20 @@ action.
    text, the resource ID of the background image (144 x 168) and a
    PGEClickHandler implementation to handle clicks on the title screen:
 
-        static void init(void) {
+        void pge_init(void) {
           pge_title_push("Robot Example Game", "", "PLAY >", GColorWhite, RESOURCE_ID_TITLE_BG, title_click);
         }
 
-3. When your app exits, pop the last window:
+3. In your title's PGEClickHandler, call `pge_begin()` to launch the main game loop.
 
-        static void deinit(void) {
+      static void title_click(int button_id) {
+        if(button_id == BUTTON_ID_SELECT) {
+          pge_begin(logic, draw, click);
+        }
+      }
+
+4. When your app exits, pop the last window:
+
+        void pge_deinit(void) {
           pge_title_pop();
         }
