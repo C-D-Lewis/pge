@@ -6,8 +6,8 @@ Simple looping game engine for Pebble.
 
 - Automatic looping of developer-supplied per-frame logic and rendering.
 - 30 frames per second.
-- `AppTimer`, `LayerUpdateProc` and `Clicks` abstracted away. Implement only
-  your game code.
+- `AppTimer`, `LayerUpdateProc`, `Clicks`, `Window` and `main` abstracted away.
+  Implement only your game code.
 - `PGESprite` base object to implement game entities.
 - Basic collision checking between `PGESprite`s.
 - Basic game title screen template.

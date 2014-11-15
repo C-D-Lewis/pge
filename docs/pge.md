@@ -22,17 +22,19 @@
           
         }
 
-4. Call `pge_begin()`, supplying the `Window` it will reside in as well as your
-   callbacks:
+4. Implement `pge_init()` and `pge_deinit()` for your app's setup and teardown
+   respectivly, calling `pge_begin()` in `pge_init()`, supplying the callbacks
+   from 3. Optionally keep a reference to the returned `Window` for adding other
+   layers:
 
         pge_begin(s_window, logic, draw, click);
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
    and logic. 
 
-6. When done (i.e: when the host Window is being destroyed), destroy the engine:
+6. Destroy the engine in `pge_deinit()` implementation:
 
-        static void main_window_unload(Window *window) {
+        void pge_deinit() {
           // Destroy all game resources
           pge_finish();
         }

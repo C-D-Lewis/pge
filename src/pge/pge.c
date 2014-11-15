@@ -23,7 +23,16 @@ static void click_config_provider(void *context);
 
 /*********************************** Engine ***********************************/
 
-Window* pge_create_game_window(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
+/**
+ * pge_init() and pge_deinit() should be implemented in app's main C file
+ */
+int main(void) {
+  pge_init();
+  app_event_loop();
+  pge_deinit();
+}
+
+Window* pge_begin(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   s_logic_handler = logic_handler;
   s_render_handler = render_handler;
 
@@ -45,7 +54,7 @@ Window* pge_create_game_window(PGELogicHandler *logic_handler, PGERenderHandler 
   return s_game_window;
 }
 
-void pge_destroy_game_window() {
+void pge_finish() {
   // Stop the game
   if(s_render_timer != NULL) {
     // Cancel any Timer

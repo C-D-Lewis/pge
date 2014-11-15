@@ -166,12 +166,12 @@ static void click(int button_id) {
 
 /********************************* App Foundation *****************************/
 
-static void init() {
+void pge_init() {
   // Create player's Ship
   s_player = ship_create(GPoint(60, 130));
 
   // Begin game loop
-  s_game_window = pge_create_game_window(logic, draw, click);
+  s_game_window = pge_begin(logic, draw, click);
   pge_set_framerate(25);
 
   // Create score layer
@@ -188,7 +188,7 @@ static void init() {
   app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
 }
 
-static void deinit() {
+void pge_deinit() {
   // Destroy score layer
   text_layer_destroy(s_score_layer);
 
@@ -206,11 +206,5 @@ static void deinit() {
   ship_destroy(s_player);
 
   // End game loop
-  pge_destroy_game_window();
-}
-
-int main() {
-  init();
-  app_event_loop();
-  deinit();
+  pge_finish();
 }
