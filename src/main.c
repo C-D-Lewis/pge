@@ -167,6 +167,8 @@ static void click(int button_id) {
 /********************************* App Foundation *****************************/
 
 void pge_init() {
+  srand(time(NULL));
+
   // Create player's Ship
   s_player = ship_create(GPoint(60, 130));
 
