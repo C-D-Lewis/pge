@@ -9,7 +9,7 @@ Simple looping game engine for Pebble.
 - `AppTimer`, `LayerUpdateProc`, `Clicks`, `Window` and `main` abstracted away.
   Implement only your game code.
 - `PGESprite` base object to implement game entities.
-- Basic collision checking between `PGESprite`s.
+- Basic collision checking between `PGESprite`s, GRects, lines and points.
 - Basic game title screen template.
 - Simple highscore mechanism.
 

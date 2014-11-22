@@ -30,11 +30,11 @@ action.
 
 3. In your title's PGEClickHandler, call `pge_begin()` to launch the main game loop.
 
-      static void title_click(int button_id) {
-        if(button_id == BUTTON_ID_SELECT) {
-          pge_begin(logic, draw, click);
+        static void title_click(int button_id) {
+          if(button_id == BUTTON_ID_SELECT) {
+            pge_begin(logic, draw, click);
+          }
         }
-      }
 
 4. When your app exits, pop the last window:
 
