@@ -1,5 +1,4 @@
-#ifndef PGE_TITLE_H
-#define PGE_TITLE_H
+#pragma once
 
 #include <pebble.h>
 #include "../pge.h"
@@ -29,5 +28,3 @@ void pge_title_set_highscore(int new_highscore);
  * Get the last save highscore
  */
 int pge_title_get_highscore();
-
-#endif

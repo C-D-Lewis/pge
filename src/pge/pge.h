@@ -16,12 +16,12 @@
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
  * - Window is managed for you
+ * - main function is managed for you. Implement pge_init() and pge_deinit to use.
  */
 
-#include <pebble.h>
+#pragma once
 
-#ifndef PGE_H
-#define PGE_H
+#include <pebble.h>
 
 /********************************** Engine ***********************************/
 
@@ -66,5 +66,3 @@ void pge_set_framerate(int new_rate);
  * Set the fullscreen background image
  */
 void pge_set_background(int bg_resource_id);
-
-#endif

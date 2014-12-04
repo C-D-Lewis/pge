@@ -1,5 +1,4 @@
-#ifndef PGE_GRID_H
-#define PGE_GRID_H
+#pragma once
 
 #include <pebble.h>
 
@@ -22,5 +21,3 @@ void pge_grid_draw_lines(GContext *ctx, GColor line_color);
  * Move a screen-wise point by a number of grid-wise spaces
  */
 GPoint pge_grid_move(GPoint now, int grid_dx, int grid_dy);
-
-#endif

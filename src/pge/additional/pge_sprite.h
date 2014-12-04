@@ -5,10 +5,9 @@
  * 2. Easy to manage entity position and frame animation
  */
 
+#pragma once
+ 
 #include <pebble.h>
-
-#ifndef PGE_SPRITE_H
-#define PGE_SPRITE_H
 
 // Sprite base object
 typedef struct {
@@ -60,5 +59,3 @@ bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2);
  * Get the on-screen bounds of the PGESprite
  */
 GRect pge_sprite_get_bounds(PGESprite *this);
-
-#endif
