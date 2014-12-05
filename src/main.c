@@ -5,7 +5,7 @@ static Window *s_game_window;
 static TextLayer *s_score_layer;
 
 // Game
-static Ship *s_player;
+static Ship *s_player = NULL;
 static Shot *shot_arr[MAX_OBJECTS];
 static Rock *rock_arr[MAX_OBJECTS];
 
@@ -166,9 +166,7 @@ static void click(int button_id) {
 
 /********************************* App Foundation *****************************/
 
-void pge_init() {
-  srand(time(NULL));
-
+static void splash_done_handler() {
   // Create player's Ship
   s_player = ship_create(GPoint(60, 130));
 
@@ -181,13 +179,19 @@ void pge_init() {
   text_layer_set_text_color(s_score_layer, GColorWhite);
   text_layer_set_background_color(s_score_layer, GColorBlack);
   text_layer_set_font(s_score_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
-  layer_add_child(window_get_root_layer(s_game_window), text_layer_get_layer(s_score_layer));
+  layer_add_child(window_get_root_layer(s_game_window), text_layer_get_layer(s_score_layer));  
 
   // Setup score
   update_status_text();
 
   // Begin spawn loop
   app_timer_register(rand() % MAX_SPAWN_INTERVAL, spawn_handler, NULL);
+}
+
+void pge_init() {
+  srand(time(NULL));
+
+  pge_splash_show(splash_done_handler);
 }
 
 void pge_deinit() {
@@ -205,7 +209,9 @@ void pge_deinit() {
   }
 
   // Destroy the player's Ship
-  ship_destroy(s_player);
+  if(s_player) {
+    ship_destroy(s_player);
+  }
 
   // End game loop
   pge_finish();
