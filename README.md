@@ -15,46 +15,19 @@ Simple looping game engine for Pebble.
 
 ## Basic Template App
 
-To begin a new game watchapp, begin with the following code:
-
-        #include <pebble.h>
-        #include "pge/pge.h"
-
-        static Window *s_game_window;
-
-        // Implement per-frame game logic
-        static void game_logic() {
-
-        }
-
-        // Implement per-frame game drawing
-        static void game_draw(GContext *ctx) {
-
-        }
-
-        // React to button click events
-        static void game_click(int button_id) {
-
-        }
-
-        // App setup 
-        void pge_init() {
-          // Begin game loop Window
-          s_game_window = pge_begin(game_logic, game_draw, game_click);
-        }
-
-        // App teardown
-        void pge_deinit() {
-          pge_finish();
-        }
+To begin a new game watchapp, begin with the template file in `/docs/`.
 
 ## Documentation
 
-[PGE](docs/pge.md)
+[PGE](docs/pge.md) - Main engine documentation.
 
-[PGE Sprite](docs/pge_sprite.md)
+[PGE Sprite](docs/pge_sprite.md) - Sprite class documentation.
 
-[PGE Title](docs/pge_title.md)
+[PGE Title](docs/pge_title.md) - Template title screen documentation.
+
+[PGE Grid](docs/pge_grid.md) - Convenience for grid-based games.
+
+[PGE Splash](docs/pge_splash.md) - Engine splash screen animation documentation.
 
 ## Features To Do
 
