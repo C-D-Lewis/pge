@@ -122,6 +122,9 @@ static void frame_timer_handler(void *context) {
   if(s_logic_handler != NULL && s_render_handler != NULL) {
     // Do this frame
     layer_mark_dirty(s_canvas);
+
+    // Next frame
+    s_render_timer = app_timer_register(1000 / s_framerate, frame_timer_handler, NULL);
   } else {
     APP_LOG(APP_LOG_LEVEL_ERROR, "Loop or Render handler not set!");
   }
@@ -132,9 +135,6 @@ static void draw_frame_update_proc(Layer *layer, GContext *ctx) {
   if(s_logic_handler != NULL && s_render_handler != NULL) {
     s_render_handler(ctx);
     s_logic_handler();
-
-    // Next frame
-    s_render_timer = app_timer_register(1000 / s_framerate, frame_timer_handler, NULL);
   } else {
     APP_LOG(APP_LOG_LEVEL_ERROR, "Loop or Render handler not set!");
   }
