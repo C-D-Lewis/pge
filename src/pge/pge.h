@@ -32,7 +32,7 @@ typedef void (PGELogicHandler)();
 typedef void (PGERenderHandler)(GContext *ctx);
 
 // Function for user to implement button clicks
-typedef void (PGEClickHandler)(int button_id);
+typedef void (PGEClickHandler)(int button_id, bool long_click);
 
 // Implement app setup here
 void pge_init();

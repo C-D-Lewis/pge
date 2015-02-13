@@ -23,11 +23,11 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_SELECT);
+  s_click_handler(BUTTON_ID_SELECT, false);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_DOWN);
+  s_click_handler(BUTTON_ID_DOWN, false);
 }
 
 static void click_config_provider(void *context) {

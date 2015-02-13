@@ -165,15 +165,27 @@ static void down_released_click_handler(ClickRecognizerRef recognizer, void *con
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_SELECT);
+  s_click_handler(BUTTON_ID_SELECT, false);
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_UP);
+  s_click_handler(BUTTON_ID_UP, false);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  s_click_handler(BUTTON_ID_DOWN);
+  s_click_handler(BUTTON_ID_DOWN, false);
+}
+
+static void select_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+  s_click_handler(BUTTON_ID_SELECT, true);
+}
+
+static void up_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+  s_click_handler(BUTTON_ID_UP, true);
+}
+
+static void down_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+  s_click_handler(BUTTON_ID_DOWN, true);
 }
 
 static void click_config_provider(void *context) {
@@ -184,4 +196,8 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+
+  window_long_click_subscribe(BUTTON_ID_SELECT, 500, select_long_click_handler, NULL);
+  window_long_click_subscribe(BUTTON_ID_UP, 500, up_long_click_handler, NULL);
+  window_long_click_subscribe(BUTTON_ID_DOWN, 500, down_long_click_handler, NULL);
 }
