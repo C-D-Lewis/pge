@@ -2,9 +2,10 @@
 
 Simple looping game engine for Pebble.
 
-    Note: This repository will build for both the Aplite and Basalt platforms.
-    If you are still using SDK 2.9, you should rename `wscript-2.x` to
-    `wscript`.
+## Compatibility with SDK 3.0
+
+This repository will build for both the Aplite and Basalt platforms. If you
+are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
 
 ## Features
 
