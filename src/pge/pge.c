@@ -32,13 +32,13 @@ int main(void) {
   pge_deinit();
 }
 
-Window* pge_begin(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
+Window* pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   s_logic_handler = logic_handler;
   s_render_handler = render_handler;
 
   s_game_window = window_create();
   window_set_fullscreen(s_game_window, true);
-  window_set_background_color(s_game_window, GColorBlack);
+  window_set_background_color(s_game_window, window_color);
   window_set_window_handlers(s_game_window, (WindowHandlers) {
     .load = game_window_load,
     .unload = game_window_unload
@@ -89,6 +89,10 @@ void pge_set_background(int bg_resource_id) {
   }
   s_bg_bitmap = gbitmap_create_with_resource(bg_resource_id);
   bitmap_layer_set_bitmap(s_bg_layer, s_bg_bitmap);
+}
+
+void pge_manual_advance() {
+  layer_mark_dirty(s_canvas);
 }
 
 /************************* Engine Internal Functions **************************/

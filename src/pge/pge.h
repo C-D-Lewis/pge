@@ -45,7 +45,7 @@ void pge_deinit();
  *
  * Note: The Click handler can be NULL to not implement
  */
-Window* pge_begin(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
+Window* pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
 
 /**
  * Finish the game and clean up
@@ -66,3 +66,8 @@ void pge_set_framerate(int new_rate);
  * Set the fullscreen background image
  */
 void pge_set_background(int bg_resource_id);
+
+/**
+ * Manually request a new frame to be rendered
+ */
+void pge_manual_advance();

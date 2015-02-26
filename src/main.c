@@ -38,6 +38,9 @@ static void fire() {
 
 static void spawn_rock() {
   GPoint pos = GPoint(rand() % 144, -20);
+  if(pos.x > 144 - 30) {
+    pos.x = 144 - 30;
+  }
 
   // Find slot
   for(int i = 0; i < MAX_OBJECTS; i++) {
@@ -155,7 +158,7 @@ static void draw(GContext *ctx) {
   }
 }
 
-static void click(int button_id) {
+static void click(int button_id, bool long_click) {
   switch(button_id) {
     case BUTTON_ID_SELECT:
       // Fire! Shots will self destroy
@@ -171,7 +174,7 @@ static void splash_done_handler() {
   s_player = ship_create(GPoint(60, 130));
 
   // Begin game loop
-  s_game_window = pge_begin(logic, draw, click);
+  s_game_window = pge_begin(GColorBlack, logic, draw, click);
   pge_set_framerate(25);
 
   // Create score layer

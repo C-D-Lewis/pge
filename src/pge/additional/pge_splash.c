@@ -7,16 +7,8 @@ static PGESplashDoneHandler *s_done_handler;
 
 static bool appeared = false;
 
-static void anim_stop_destroy(Animation *animation, bool finished, void *context) {
-  // Free
-  property_animation_destroy((PropertyAnimation*)animation);
-}
-
 static void animate(Layer *layer, GRect start, GRect finish, int duration, int delay) {
   PropertyAnimation *anim = property_animation_create_layer_frame(layer, &start, &finish);
-  animation_set_handlers((Animation*)anim, (AnimationHandlers) {
-    .stopped = anim_stop_destroy
-  }, NULL);
   animation_set_duration((Animation*)anim, duration);
   animation_set_delay((Animation*)anim, delay);
   animation_set_curve((Animation*)anim, AnimationCurveEaseOut);
