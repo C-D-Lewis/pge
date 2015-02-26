@@ -8,7 +8,7 @@
 
 2. Set the size of a tile, in pixels:
 
-        pge_grid_et_tile_size(12);
+        pge_grid_set_tile_size(12);
 
 3. Use the tile size set to get the best fit grid dimensions for the Pebble
    screen. This is the largest size that will fix but not spill over, so some

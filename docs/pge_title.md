@@ -32,7 +32,7 @@ action.
 
         static void title_click(int button_id) {
           if(button_id == BUTTON_ID_SELECT) {
-            pge_begin(logic, draw, click);
+            pge_begin(GColorBlack, logic, draw, click);
           }
         }
 

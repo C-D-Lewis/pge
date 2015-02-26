@@ -3,6 +3,7 @@
  */
 
 #include <pebble.h>
+ 
 #include "pge/pge.h"
 
 static Window *s_game_window;
@@ -17,14 +18,14 @@ static void game_draw(GContext *ctx) {
 
 }
 
-static void game_click(int button_id) {
+static void game_click(int button_id, bool long_click) {
   // Process click events
 
 }
 
 void pge_init() {
   // Start the game, keep a Window reference for later
-  s_game_window = pge_begin(game_logic, game_draw, game_click);
+  s_game_window = pge_begin(GColorBlack, game_logic, game_draw, game_click);
 }
 
 void pge_deinit() {

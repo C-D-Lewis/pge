@@ -10,7 +10,7 @@ that your game was built with this engine. Help spread the word!
    here for a smooth transition to your main game view:
 
         static void after_splash_callback() {
-          pge_begin(logic, render, click);
+          pge_begin(GColorBlack, logic, render, click);
         }
 
 2. Show the splash screen when your app starts:
