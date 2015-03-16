@@ -19,6 +19,8 @@ def configure(ctx):
 def build(ctx):
     ctx.load('pebble_sdk')
 
+    ctx.define('PBL_PLATFORM_APLITE',1)
+
     ctx.pbl_program(source=ctx.path.ant_glob('src/**/*.c'),
                     target='pebble-app.elf')
 
