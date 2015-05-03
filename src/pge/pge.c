@@ -37,7 +37,9 @@ Window* pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERender
   s_render_handler = render_handler;
 
   s_game_window = window_create();
+#ifdef PBL_SDK_2
   window_set_fullscreen(s_game_window, true);
+#endif
   window_set_background_color(s_game_window, window_color);
   window_set_window_handlers(s_game_window, (WindowHandlers) {
     .load = game_window_load,
