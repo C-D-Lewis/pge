@@ -34,6 +34,8 @@ To begin a new game watchapp, begin with the template file in `/docs/`.
 
 [PGE Splash](docs/pge_splash.md) - Engine splash screen animation documentation.
 
+[PGE Isometric](docs/pge_isometric.md) - Isometric rendering of rects, boxes and textures.
+
 ## Features To Do
 
 - Multiplayer?
