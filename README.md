@@ -15,6 +15,7 @@ are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
   Implement only your game code.
 - `PGESprite` base object to implement game entities.
 - Basic collision checking between `PGESprite`s, GRects, lines and points.
+- Isometric rendering of rects, boxes and textures.
 - Basic game title screen template.
 - Simple highscore mechanism.
 
