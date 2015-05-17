@@ -122,10 +122,10 @@ void pge_isometric_fill_rect(Vec3 origin, GSize size, GColor color) {
 }
 
 void pge_isometric_fill_box(Vec3 origin, GSize size, int z_height, GColor color) {
-  // Draw only front for speed when OPTIMIZE_FILL_BOX is defined
+  // Draw only front for speed when PGE_ISOMETRIC_OPTIMIZE_FILL_BOX is defined
   int z = 0;
   for(z = origin.z; z < origin.z + z_height; z++) {
-#ifdef OPTIMIZE_FILL_BOX
+#ifdef PGE_ISOMETRIC_OPTIMIZE_FILL_BOX
     // Right
     GPoint start = pge_isometric_project(Vec3(origin.x + size.w, origin.y, z));
     GPoint finish = pge_isometric_project(Vec3(origin.x + size.w, origin.y + size.h, z));
