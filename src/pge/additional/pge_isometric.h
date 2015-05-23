@@ -14,9 +14,9 @@
 #define PGE_ISOMETRIC_OPTIMIZE_FILL_BOX // Only draw front of a box to save time
 
 typedef struct {
-  int8_t x;
-  int8_t y;
-  int8_t z;
+  int16_t x;
+  int16_t y;
+  int16_t z;
 } __attribute__((__packed__)) Vec3;
 
 #define Vec3(x, y, z) ((Vec3){(x),(y),(z)})
