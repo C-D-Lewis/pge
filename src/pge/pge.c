@@ -12,7 +12,7 @@ static PGERenderHandler *s_render_handler;
 static PGEClickHandler *s_click_handler;
 
 static bool s_button_states[3];
-static int s_framerate;
+static int s_framerate = 1000 / 30;
 
 // Internal prototypes
 static void game_window_load(Window *window);
