@@ -25,9 +25,12 @@
 4. Implement `pge_init()` and `pge_deinit()` for your app's setup and teardown
    respectivly, calling `pge_begin()` in `pge_init()`, supplying the callbacks
    from 3 as well as the desired background color for the game window.
-   Optionally keep a reference to the returned `Window` for adding other layers:
 
         pge_begin(GColorBlack, s_window, logic, draw, click);
+
+   Optionally keep a reference to the returned `Window` for adding other layers:
+
+        s_some_window = pge_get_window();
 
 5. Furnish `logic()`, `render()` and `click()` to implement your own game items
    and logic. 

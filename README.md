@@ -21,7 +21,47 @@ are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
 
 ## Basic Template App
 
-To begin a new game watchapp, begin with the template file in `/docs/`.
+To begin a new game watchapp, begin with the template file in `/docs/`:
+
+```
+/**
+ * This is the bare minimum to make a looping game with PGE!
+ */
+
+#include <pebble.h>
+ 
+#include "pge/pge.h"
+
+static Window *s_game_window;
+
+static void game_logic() {
+  // Per-frame game logic here
+
+}
+
+static void game_draw(GContext *ctx) {
+  // Per-frame game rendering here
+
+}
+
+static void game_click(int button_id, bool long_click) {
+  // Process click events
+
+}
+
+void pge_init() {
+  // Start the game
+  pge_begin(GColorBlack, game_logic, game_draw, game_click);
+
+  // Keep a Window reference for adding other UI
+  s_game_window = pge_get_window();
+}
+
+void pge_deinit() {
+  // Finish the game
+  pge_finish();
+}
+```
 
 ## Documentation
 

@@ -174,7 +174,8 @@ static void splash_done_handler() {
   s_player = ship_create(GPoint(60, 130));
 
   // Begin game loop
-  s_game_window = pge_begin(GColorBlack, logic, draw, click);
+  pge_begin(GColorBlack, logic, draw, click);
+  s_game_window = pge_get_window();
   pge_set_framerate(25);
 
   // Create score layer

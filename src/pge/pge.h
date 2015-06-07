@@ -45,7 +45,7 @@ void pge_deinit();
  *
  * Note: The Click handler can be NULL to not implement
  */
-Window* pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
+void pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
 
 /**
  * Finish the game and clean up
@@ -71,3 +71,9 @@ void pge_set_background(int bg_resource_id);
  * Manually request a new frame to be rendered
  */
 void pge_manual_advance();
+
+/**
+ * Get the main game Window upon which the renderer runs
+ */
+Window* pge_get_window();
+
