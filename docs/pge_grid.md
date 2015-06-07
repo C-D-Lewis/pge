@@ -4,7 +4,7 @@
 
 1. Include the header file:
 
-        #include "pge/additional/pge_grid.h"
+        #include "pge/modules/pge_grid.h"
 
 2. Set the size of a tile, in pixels:
 

@@ -3,9 +3,9 @@
 #include <pebble.h>
 
 #include "pge/pge.h"
-#include "pge/additional/pge_collision.h"
-#include "pge/additional/pge_sprite.h"
-#include "pge/additional/pge_splash.h"
+#include "pge/modules/pge_collision.h"
+#include "pge/modules/pge_sprite.h"
+#include "pge/modules/pge_splash.h"
 
 #include "sprites/ship.h"
 #include "sprites/shot.h"

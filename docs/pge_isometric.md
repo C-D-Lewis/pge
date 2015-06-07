@@ -7,7 +7,7 @@ library for easy inclusion in games.
 
 1. Include the header file:
         
-        #include "pge/additional/pge_isometric.h"
+        #include "pge/modules/pge_isometric.h"
 
 2. When drawing with a `GContext` object, perform isometric drawing:
 

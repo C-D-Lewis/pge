@@ -5,9 +5,9 @@
 The `PGESprite` structure allows creation of a bitmap sprite-based game entity
 and a set of convenience functions to manage it.
 
- * Include `pge/additional/pge_sprite.h` in your main C file:
+ * Include `pge/modules/pge_sprite.h` in your main C file:
 
-        #include "pge/additional/pge_sprite.h"
+        #include "pge/modules/pge_sprite.h"
 
  * Create a structure containing a `PGESprite` pointer member:
 

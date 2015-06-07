@@ -17,7 +17,7 @@ action.
 
 1. Include the header file:
 
-        #include "pge/additional/pge_title.h"
+        #include "pge/modules/pge_title.h"
 
 2. Push the title screen window in your app initialization to show it first.
    Provide a title, text for the SELECT and DOWN actions, the colour of the
