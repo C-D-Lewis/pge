@@ -9,7 +9,7 @@
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "PGE_WS_URL": 100
   },
   "sdkVersion": "3",
   "targetPlatforms": [
