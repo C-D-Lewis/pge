@@ -1,3 +1,5 @@
+# WORK IN PROGRESS
+
 # PGE WebSocket Documentation
 
 This module is aimed at enabling easy communication from a game to an
