@@ -6,6 +6,15 @@ This module is aimed at enabling easy communication from a game to an
 implementation of the `ws-server` example Node.js server.
 
 
+## About AppMessage Keys
+
+Due to limitations in PebbleKit JS, AppMessage keys must be declared in
+`appinfo.json`. To accomodate for this, 16 intial keys have been declared, named
+`PGE_WS_KEY_X`, where `X` is `0` to `15`. You should repurpose these for app-
+specific data, as shown in the example of `onClientMessage()` shown below. If
+you need more, add them to your own implementation.
+
+
 ## Preparing the Server
 
 Edit `ws-server/app.js` to implement the `onClientConnected()` and

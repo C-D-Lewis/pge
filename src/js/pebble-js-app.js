@@ -14,7 +14,7 @@ var webSocket;
 
 function connectToServer(url) {
   // Url. Example: ws://localhost:5000
-  var webSocket = new WebSocket(url);
+  webSocket = new WebSocket(url);
   webSocket.onopen = function(event) { onOpen(); };
   webSocket.onclose = function(event) { onClose(); };
   webSocket.onmessage = function(event) { onMessage(event.data); };
