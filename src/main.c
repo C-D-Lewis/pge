@@ -27,7 +27,6 @@ static void draw(GContext *ctx) {
 static void click(int button_id, bool long_click) {
   switch(button_id) {
     case BUTTON_ID_SELECT:
-      // Fire! Shots will self destroy
       connect();
       break;
   }
@@ -55,4 +54,5 @@ void pge_deinit() {
 
   // End game loop
   pge_finish();
+  pge_ws_disconnect();
 }

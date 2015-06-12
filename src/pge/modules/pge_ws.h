@@ -27,8 +27,9 @@
 #define PGE_WS_KEY_15 15
 
 // Send URL, receive confirmation
-#define PGE_WS_URL       100
-#define PGE_WS_CLIENT_ID 101
+#define PGE_WS_URL        100
+#define PGE_WS_CLIENT_ID  101
+#define PGE_WS_DISCONNECT 102
 
 // Handler for connection result
 typedef void (PGEWSConnectedHandler)(bool successful);

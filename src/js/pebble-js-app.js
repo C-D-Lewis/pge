@@ -21,17 +21,37 @@ function connectToServer(url) {
   webSocket.onerror = function(event) { onError(); };
 }
 
+function handlePGEWSKeys(dict) {
+  Log('handling keys: ' + JSON.stringify(dict.payload));
+
+  // WS URL from C and connect
+  if(dict.payload['PGE_WS_URL']) {
+    var url = dict.payload['PGE_WS_URL'];
+    Log('Got WS URL: ' + url);
+    connectToServer(url);
+  }
+
+  // Disconnect requested
+  if(dict.payload['PGE_WS_DISCONNECT']) {
+    Log('Disconnect requested');
+    webSocket.close();
+  }
+}
+
+function handleReceiveClientId(data) {
+  if(data.indexOf('id:') == 0) {
+    var dict = {
+      'PGE_WS_URL': 1, // success
+      'PGE_WS_CLIENT_ID': parseInt(data.substring(data.indexOf('id:') + 3))
+    };
+    Pebble.sendAppMessage(dict);
+  }
+}
+
 /**************************** Developer Implemented ***************************/
 
 function onOpen(data) {
-  Log('data: ' + data);
 
-  // Inform client
-  var dict = {
-    'PGE_WS_URL': 1, // success
-    'PGE_WS_CLIENT_ID': parseInt(data)
-  };
-  Pebble.sendAppMessage(dict);
 }
 
 function onClose() {
@@ -44,6 +64,12 @@ function onClose() {
 
 function onMessage(data) {
   // Make Pebble dictionaries and send here
+  Log('onmessage: ' + data);
+
+  // Inform client of successful connection and ID assignment
+  handleReceiveClientId(data);
+
+  // Developer-implemented below here
 
 }
 
@@ -59,19 +85,8 @@ function onError() {
 
 Pebble.addEventListener('ready', function() {
   console.log('PebbleKitJS ready');
-
 });
 
 Pebble.addEventListener('appmessage', function(dict) {
-  // WS URL from C and connect
-  if(dict.payload['PGE_WS_URL']) {
-    var url = dict.payload['PGE_WS_URL'];
-    Log('Got WS URL: ' + url);
-    connectToServer(url);
-
-    return;
-  }
-
-  // Not caught
-  Log('AppMessage with unknown key arrived: ' + JSON.stringify(dict.payload));
+  handlePGEWSKeys(dict);
 });

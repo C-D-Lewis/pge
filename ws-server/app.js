@@ -25,7 +25,7 @@ function addClient(socket) {
   clients.push(client);
 
   // Send back issued ID
-  socket.send(client.id);
+  socket.send('id:' + client.id);
   Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 
@@ -35,7 +35,16 @@ function startServer() {
     addClient(socket);
     onClientConnected(socket);
     socket.on('message', onClientMessage);
+    socket.on('close', function() {
+      // Remove this client
+      var index = clients.indexOf(this);
+      if(index > -1) {
+        Log('Removing closed client ' + clients.get(index).id);
+        clients = clients.splice(index, 1);
+      }
+    });
   });
+
   Log('Server ready on port ' + PORT);
 }
 startServer();
