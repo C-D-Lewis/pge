@@ -74,7 +74,7 @@ function handlePGEWSKeys(dict) {
   // Disconnect requested
   if(hasKey(dict, 'PGE_WS_DISCONNECT')) {
     Log('Disconnect requested');
-    webSocket.send({ 'close': 1 });
+    webSocket.send(JSON.stringify({ 'close': 1 }));
     webSocket.close();
   }
 }

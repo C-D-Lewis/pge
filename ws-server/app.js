@@ -25,7 +25,7 @@ function addClient(socket) {
   clients.push(client);
 
   // Send back issued ID
-  socket.send({ 'id': client.id });
+  socket.send(JSON.stringify({ 'id': client.id }));
   Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 

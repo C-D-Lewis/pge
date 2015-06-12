@@ -8,8 +8,10 @@ static TextLayer *s_output_layer;
 
 static void ws_connection_callback(bool successful) {
   APP_LOG(APP_LOG_LEVEL_INFO, "ws_connection_callback");
-  APP_LOG(APP_LOG_LEVEL_INFO, "%d" + pge_ws_get_client_id());
-  pge_ws_disconnect();
+
+  static char s_buff[32];
+  snprintf(s_buff, sizeof(s_buff), "ID: %d", pge_ws_get_client_id());
+  text_layer_set_text(s_output_layer, s_buff);
 }
 
 static void connect() {
