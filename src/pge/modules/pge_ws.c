@@ -16,7 +16,7 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
         if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connected ? "OK" : "FAILED");
         s_connection_handler(s_connected);
 
-        Tuple *id_tuple = dict_find(PGE_WS_CLIENT_ID);
+        Tuple *id_tuple = dict_find(iter, PGE_WS_CLIENT_ID);
         s_client_id = id_tuple->value->int32;
         break;
 
@@ -39,7 +39,7 @@ void pge_ws_connect(char *url, PGEWSConnectedHandler *handler) {
   // Send URL to JS
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
-  dict_write_cstring(dict, PGE_WS_URL, url);
+  dict_write_cstring(iter, PGE_WS_URL, url);
   app_message_outbox_send();
   if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: URL sent");
 }

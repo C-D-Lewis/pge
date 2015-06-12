@@ -6,7 +6,7 @@
 
 #include <pebble.h>
 
-#define PGW_WS_LOGS true
+#define PGE_WS_LOGS true
 
 // Developer-usable keys, predeclared in appinfo.json
 #define PGE_WS_KEY_0  0
