@@ -49,8 +49,9 @@ Pebble.addEventListener('ready', function() {
 
 Pebble.addEventListener('appmessage', function(dict) {
   // WS URL from C and connect
-  if(dict['PGE_WS_URL']) {
-    Log('Got WS URL: ' + dict['PGE_WS_URL']);
+  if(dict['PGE_WS_URL']) {\
+    var url = dict['PGE_WS_URL'];
+    Log('Got WS URL: ' + url);
     connectToServer(url);
   }
 });

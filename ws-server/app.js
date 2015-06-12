@@ -33,6 +33,6 @@ function onClientConnected(socket) {
 /**
  * React to message from client
  */
-function onClientMessage(message) {
+function onClientMessage(data) {
 
 }
