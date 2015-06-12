@@ -64,9 +64,14 @@ Pebble.addEventListener('ready', function() {
 
 Pebble.addEventListener('appmessage', function(dict) {
   // WS URL from C and connect
-  if(dict['PGE_WS_URL']) {\
-    var url = dict['PGE_WS_URL'];
+  if(dict.payload['PGE_WS_URL']) {
+    var url = dict.payload['PGE_WS_URL'];
     Log('Got WS URL: ' + url);
     connectToServer(url);
+
+    return;
   }
+
+  // Not caught
+  Log('AppMessage with unknown key arrived: ' + JSON.stringify(dict.payload));
 });

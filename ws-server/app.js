@@ -18,7 +18,7 @@ var server = new WebSocketServer({ 'port': PORT });
 server.on('connection', function (socket) {
   onClientConnected(socket);
   socket.on('message', onClientMessage);
-
+});
 Log('Server ready on port ' + PORT);
 
 /******************************* Developer Implementation *********************/

@@ -16,8 +16,8 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
         if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connected ? "OK" : "FAILED");
         s_connection_handler(s_connected);
 
-        Tuple *id_tuple = dict_find(iter, PGE_WS_CLIENT_ID);
-        s_client_id = id_tuple->value->int32;
+      case PGE_WS_CLIENT_ID:
+        s_client_id = tuple->value->int32;
         break;
 
       default:
