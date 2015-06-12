@@ -13,28 +13,40 @@ function Log(message) {
 
 /********************************* Server *************************************/
 
-var server = new WebSocketServer({ 'port': PORT });
+var server;
+var clients = [];
 
-server.on('connection', function (socket) {
-  onClientConnected(socket);
-  socket.on('message', onClientMessage);
-});
-Log('Server ready on port ' + PORT);
+function addClient(socket) {
+  // Create new client object
+  var client = { 
+    'id': Math.floor(Math.random() * 1000000),
+    'socket': socket
+  };
+  clients.push(client);
+
+  // Send back issued ID
+  socket.send(client.id);
+  Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
+}
+
+function startServer() {
+  server = new WebSocketServer({ 'port': PORT });
+  server.on('connection', function (socket) {
+    addClient(socket);
+    onClientConnected(socket);
+    socket.on('message', onClientMessage);
+  });
+  Log('Server ready on port ' + PORT);
+}
+startServer();
 
 /******************************* Developer Implementation *********************/
-
-var clients = [];
 
 /**
  * Set up new client
  */
 function onClientConnected(socket) {
-  // Send client ID and remember
-  var client = { 'id': Math.random() * 10000 };
-  clients.push(client);
-  socket.send(JSON.stringify(client));
 
-  Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 
 /**

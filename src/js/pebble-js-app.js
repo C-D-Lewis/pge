@@ -24,12 +24,12 @@ function connectToServer(url) {
 /**************************** Developer Implemented ***************************/
 
 function onOpen(data) {
-  var json = JSON.parse(data);
+  Log('data: ' + data);
 
   // Inform client
   var dict = {
     'PGE_WS_URL': 1, // success
-    'PGE_WS_CLIENT_ID': data.id
+    'PGE_WS_CLIENT_ID': parseInt(data)
   };
   Pebble.sendAppMessage(dict);
 }
