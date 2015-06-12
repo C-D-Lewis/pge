@@ -6,7 +6,7 @@
 
 #include <pebble.h>
 
-#define PGW_WS_LOGS   true
+#define PGW_WS_LOGS true
 
 // Developer-usable keys, predeclared in appinfo.json
 #define PGE_WS_KEY_0  0
@@ -27,7 +27,8 @@
 #define PGE_WS_KEY_15 15
 
 // Send URL, receive confirmation
-#define PGE_WS_URL    100
+#define PGE_WS_URL       100
+#define PGE_WS_CLIENT_ID 101
 
 // Handler for connection result
 typedef void (PGEWSConnectedHandler)(bool successful);

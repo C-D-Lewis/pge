@@ -15,7 +15,7 @@ var webSocket;
 function connectToServer(url) {
   // Url. Example: ws://localhost:5000
   webSocket = new WebSocket(url);
-  webSocket.onopen = function(event) { onOpen(); };
+  webSocket.onopen = function(event) { onOpen(event.data); };
   webSocket.onclose = function(event) { onClose(); };
   webSocket.onmessage = function(event) { onMessage(event.data); };
   webSocket.onerror = function(event) { onError(); };
@@ -23,21 +23,36 @@ function connectToServer(url) {
 
 /**************************** Developer Implemented ***************************/
 
-function onOpen() {
+function onOpen(data) {
+  var json = JSON.parse(data);
 
+  // Inform client
+  var dict = {
+    'PGE_WS_URL': 1, // success
+    'PGE_WS_CLIENT_ID': data.id
+  };
+  Pebble.sendAppMessage(dict);
 }
 
 function onClose() {
-
+  // Inform client
+  var dict = {
+    'PGE_WS_URL': 0 // no longer connected
+  };
+  Pebble.sendAppMessage(dict);
 }
 
 function onMessage(data) {
-  // Mkae Pebble dictionaries and send here
+  // Make Pebble dictionaries and send here
 
 }
 
 function onError() {
-
+  // Inform client
+  var dict = {
+    'PGE_WS_URL': 0 // failure
+  };
+  Pebble.sendAppMessage(dict);
 }
 
 /****************************** PebbleKit JS **********************************/

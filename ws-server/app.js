@@ -23,11 +23,18 @@ Log('Server ready on port ' + PORT);
 
 /******************************* Developer Implementation *********************/
 
+var clients = [];
+
 /**
  * Set up new client
  */
 function onClientConnected(socket) {
+  // Send client ID and remember
+  var client = { 'id': Math.random() * 10000 };
+  clients.push(client);
+  socket.send(JSON.stringify(client));
 
+  Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 
 /**

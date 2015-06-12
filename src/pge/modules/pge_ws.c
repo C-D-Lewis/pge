@@ -1,19 +1,23 @@
 #include "pge_ws.h"
 
 static bool s_connected;
+static int s_client_id;
 static PGEWSConnectedHandler *s_connection_handler;
 
 static void in_recv_handler(DictionaryIterator *iter, void *context) {
-  Tuple *t = dict_read_first(iter);
-  while(t) {
-    int key = (int)t->key;
+  Tuple *tuple = dict_read_first(iter);
+  while(tuple) {
+    int key = (int)tuple->key;
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Got key %d", key);
 
     switch(key) {
       case PGE_WS_URL:
-        s_connected = (t->value->int32 == 1);
+        s_connected = (tuple->value->int32 == 1);
         if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connected ? "OK" : "FAILED");
         s_connection_handler(s_connected);
+
+        Tuple *id_tuple = dict_find(PGE_WS_CLIENT_ID);
+        s_client_id = id_tuple->value->int32;
         break;
 
       default:
@@ -21,7 +25,7 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
         break;
     }
 
-    t = dict_read_next(iter);
+    tuple = dict_read_next(iter);
   }
 }
 
@@ -49,5 +53,5 @@ bool pge_ws_is_connected() {
 }
 
 int pge_ws_get_client_id() {
-
+  return s_client_id;
 }
