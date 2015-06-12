@@ -29,9 +29,19 @@ function addClient(socket) {
   Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 
-function handleProtocol(data) {
+function handleProtocol(socket, data) {
   var json = JSON.parse(data);
-  
+
+  if(json.close) {
+    // Close this client
+    var index = clients.indexOf(socket);
+    if(index > -1) {
+      Log('Client ' + clients.get(index).id + ' disconnected');
+      clients = clients.splice(index, 1);
+    } else {
+      Log('Closing client not found!');
+    }
+  }
 }
 
 function startServer() {
@@ -40,9 +50,14 @@ function startServer() {
     addClient(socket);
     onClientConnected(socket);
     socket.on('message', function(data) {
-      handleProtocol(data);
-      onClientMessage(data);
+      if(data) {
+        handleProtocol(this, data);
+        onClientMessage(this, data);
+      }
     });
+    socket.on('error', function() {
+      Log('onerror');
+    })
   });
 
   Log('Server ready on port ' + PORT);
@@ -61,6 +76,6 @@ function onClientConnected(socket) {
 /**
  * React to message from client
  */
-function onClientMessage(data) {
+function onClientMessage(socket, data) {
 
 }

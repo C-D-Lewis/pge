@@ -33,16 +33,29 @@ var webSocket;
 function connectToServer(url) {
   // Url. Example: ws://localhost:5000
   webSocket = new WebSocket(url);
-  webSocket.onopen = function(event) { onOpen(event.data); };
+  webSocket.onopen = function(event) { 
+    Log('Connection opened!');
+    if(event.data) {
+      onOpen(event.data); 
+      handleReceiveClientId(event.data);
+    }
+  };
   webSocket.onclose = function(event) { 
+    Log('onclose');
     sendToPebble({ 'PGE_WS_URL': 0 });
     onClose(); 
   };
   webSocket.onmessage = function(event) { 
-    handleReceiveClientId(event.data);
-    onMessage(event.data);
+    Log('onmessage');
+    if(event.data) {
+      handleReceiveClientId(event.data);
+      onMessage(event.data);
+    } else {
+      Log('onmessage with no data!');
+    }
   };
   webSocket.onerror = function(event) { 
+    Log('onerror');
     sendToPebble({ 'PGE_WS_URL': 0 });
     onError(); 
   };
@@ -67,15 +80,13 @@ function handlePGEWSKeys(dict) {
 }
 
 function handleReceiveClientId(data) {
-  if(data) {
-    var json = JSON.parse(data);
+  var json = JSON.parse(data);
 
-    if(json.id) {
-      sendToPebble({
-        'PGE_WS_URL': 1, // success
-        'PGE_WS_CLIENT_ID': parseInt(json.id)
-      });
-    }
+  if(json.id) {
+    sendToPebble({
+      'PGE_WS_URL': 1, // success
+      'PGE_WS_CLIENT_ID': parseInt(json.id)
+    });
   }
 }
 
