@@ -8,6 +8,7 @@ static TextLayer *s_output_layer;
 
 static void ws_connection_callback(bool successful) {
   APP_LOG(APP_LOG_LEVEL_INFO, "ws_connection_callback: %d" + pge_ws_get_client_id());
+  pge_ws_disconnect();
 }
 
 static void connect() {

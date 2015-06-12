@@ -25,8 +25,13 @@ function addClient(socket) {
   clients.push(client);
 
   // Send back issued ID
-  socket.send('id:' + client.id);
+  socket.send({ 'id': client.id });
   Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
+}
+
+function handleProtocol(data) {
+  var json = JSON.parse(data);
+  
 }
 
 function startServer() {
@@ -34,14 +39,9 @@ function startServer() {
   server.on('connection', function (socket) {
     addClient(socket);
     onClientConnected(socket);
-    socket.on('message', onClientMessage);
-    socket.on('close', function() {
-      // Remove this client
-      var index = clients.indexOf(this);
-      if(index > -1) {
-        Log('Removing closed client ' + clients.get(index).id);
-        clients = clients.splice(index, 1);
-      }
+    socket.on('message', function(data) {
+      handleProtocol(data);
+      onClientMessage(data);
     });
   });
 
