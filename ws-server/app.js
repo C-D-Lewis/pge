@@ -4,6 +4,7 @@ var WebSocketServer = require('ws').Server;
 // Config
 var DEBUG = true;
 var PORT = 5000;
+var EXPIRATION_MS = 1000 * 60 * 10;  // 10 minutes
 
 /********************************* Helper *************************************/
 
@@ -16,12 +17,37 @@ function Log(message) {
 var server;
 var clients = [];
 
+function handleTimedOut(client) {
+  // Remove timed out client
+  var index = clients.indexOf(client);
+  if(index > -1) {
+    Log('Removing inactive client ' + client.id);
+    client.socket.close();
+    clients.splice(index, 1);
+    Log('Total clients: ' + clients.length);
+  } else {
+    Log('Expired client not found!');
+  }
+}
+
+function refreshClientTimeout(client) {
+  Log('Refreshing client ' + client.id);
+  clearTimeout(client.timeoutId);
+
+  // Set a new one
+  var timeoutId = setTimeout(handleTimedOut, EXPIRATION_MS, client);
+  client.timeoutId = timeoutId;
+}
+
 function addClient(socket) {
   // Create new client object
   var client = { 
     'id': Math.floor(Math.random() * 1000000),
     'socket': socket
   };
+  // Set timeout ID
+  var timeoutId = setTimeout(handleTimedOut, EXPIRATION_MS, client);
+  client.timeoutId = timeoutId;
   clients.push(client);
 
   // Send back issued ID
@@ -32,14 +58,11 @@ function addClient(socket) {
 function handleProtocol(socket, data) {
   var json = JSON.parse(data);
 
-  if(json.close) {
-    // Close this client
-    var index = clients.indexOf(socket);
-    if(index > -1) {
-      Log('Client ' + clients.get(index).id + ' disconnected');
-      clients = clients.splice(index, 1);
-    } else {
-      Log('Closing client not found!');
+  // Refresh this client
+  for(var i = 0; i < clients.length; i += 1) {
+    if(clients.get(i).socket == socket) {
+      // Refresh this client
+      refreshClientTimeout(client);
     }
   }
 }
