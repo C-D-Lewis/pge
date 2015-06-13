@@ -23,19 +23,20 @@ Edit `ws-server/app.js` to implement the `onClientConnected()` and
 AppMessages. For example:
 
 ```
-function broadcastTotalPlayers() {
-  for(var i = 0; i < clients.length; i += 1) {
-    // Send to each, the total number connected
-    clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
-  }
-}
-
 function onClientConnected(socket) {
-  broadcastTotalPlayers();
+  socket.send(JSON.stringify({ 'PGE_WS_KEY_0': 42 }));
 }
 
 function onClientDisconnected(client) {
-  broadcastTotalPlayers();
+
+}
+
+function onClientMessage(socket, data) {
+  var json = JSON.parse(data);
+
+  if(json['PGE_WS_KEY_0']) {
+    var someValue = json['PGE_WS_KEY_0'];
+  }
 }
 ```
 
@@ -43,9 +44,24 @@ function onClientDisconnected(client) {
 ## Connecting to a Server
 
 The client **MUST** wait for the phone to signal PebbleKit JS is ready with the
-'ready' event. To accomodate for this, prepare PGE WS in app initialization:
+'ready' event. To accomodate for this, prepare PGE WS in app initialization,
+supplying the URL, and two handlers for when the connection attempt returns, and
+when data is received. 
+
+When the 'ready' event is received, the connection will be attempted and the
+result passed to the `PGEWSConnectedHandler`. At this point, each successfully
+connected client is given an ID by the server, and can be read with
+`pge_ws_get_client_id()`:
 
 ```
+static void ws_connection_handler(bool successful) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Got ID: %d", pge_ws_get_client_id());
+}
+
+static void ws_received_handler() {
+  
+}
+
 void pge_init() {
   // Start engine
   pge_begin(GColorBlack, logic, draw, click);
@@ -55,30 +71,23 @@ void pge_init() {
 }
 ```
 
-And providing two handlers for when the connection attempt returns, and when
-data is received. 
-
-
 ## Receiving Data
 
-This mechanism is designed this way so that multiple key
+Read data with `pge_ws_get_value()` inside a `PGEWSReceivedHandler`
+implementation, which is called everytime a packet arrives with at least one
+`Tuple` in the pre-declared `AppMessage` key range (from `0` to
+`PGE_WS_NUM_KEYS`). This mechanism is designed this way so that multiple key
 values can be retrieved at once, useful for retrieving points or vectors. For
 example:
 
 ```
-static void ws_connection_handler(bool successful) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "ws_connection_handler");
-  APP_LOG(APP_LOG_LEVEL_INFO, "Got ID: %d", pge_ws_get_client_id());
-}
+// Attempt to read a value
+int key_0_value = pge_ws_get_value(PGE_WS_KEY_0);
 
-static void ws_received_handler() {
-  int key_0_value = pge_ws_get_value(PGE_WS_KEY_0);
-
-  // Check this packet contains what we want
-  if(key_0_value != PGE_WS_NOT_FOUND) {
-    // Get the value
-    APP_LOG(APP_LOG_LEVEL_INFO, "Got PGE_WS_KEY_0 value: %d", key_0_value);
-  }
+// Check this packet contains what we want
+if(key_0_value != PGE_WS_NOT_FOUND) {
+  // Use the value!
+  APP_LOG(APP_LOG_LEVEL_INFO, "Got PGE_WS_KEY_0 value: %d", key_0_value);
 }
 ```
 
