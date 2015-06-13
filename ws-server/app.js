@@ -60,9 +60,9 @@ function handleProtocol(socket, data) {
 
   // Refresh this client
   for(var i = 0; i < clients.length; i += 1) {
-    if(clients.get(i).socket == socket) {
+    if(clients[i].socket == socket) {
       // Refresh this client
-      refreshClientTimeout(client);
+      refreshClientTimeout(clients[i]);
     }
   }
 }

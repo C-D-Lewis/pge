@@ -81,9 +81,10 @@ function handlePGEWSAppMessageKeys(dict) {
       }
     }
 
-    if(outgoing.length > 0) {
+    var packet = JSON.stringify(outgoing);
+    if(packet.length > 4) {
       // Send this data
-      webSocket.send(JSON.stringify(outgoing));
+      webSocket.send(packet);
       Log('Sent developer data');
     }
   } else {
