@@ -91,6 +91,7 @@ startServer();
 
 /**
  * Set up new client
+ * socket - The web socket this client connected on
  */
 function onClientConnected(socket) {
 
@@ -98,7 +99,9 @@ function onClientConnected(socket) {
 
 /**
  * React to message from client
+ * socket - Web socket this message came from. Use to reply.
+ * data - The data sent from the client in JSON string format
  */
 function onClientMessage(socket, data) {
-
+  Log('Client sent: ' + data);
 }

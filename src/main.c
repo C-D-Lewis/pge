@@ -27,7 +27,15 @@ static void draw(GContext *ctx) {
 static void click(int button_id, bool long_click) {
   switch(button_id) {
     case BUTTON_ID_SELECT:
-      pge_ws_connect("ws://localhost:5000", ws_connection_callback);
+      if(!pge_ws_is_connected()) {
+        pge_ws_connect("ws://localhost:5000", ws_connection_callback);
+      } else {
+        // Send test data
+        if(pge_ws_packet_begin()) {
+          pge_ws_add_int(PGE_WS_KEY_0, 42);
+          pge_ws_packet_send();
+        }
+      }
       break;
   }
 }

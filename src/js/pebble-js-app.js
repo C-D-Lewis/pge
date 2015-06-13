@@ -1,8 +1,11 @@
-/********************* PGE WS Module JS - DO NOT MODIFY ***********************/
+/******************************** Config **************************************/
 
 var DEBUG = true;
+var NUM_APPINFO_KEYS = 16;
 
-var webSocket;
+/********************* PGE WS Module JS - DO NOT MODIFY ***********************/
+
+var webSocket = null;
 
 function Log(message) {
   if(DEBUG) console.log(message);
@@ -12,7 +15,7 @@ function hasKey(dict, key) {
   return typeof dict.payload[key] !== 'undefined';
 }
 
-var getKey = function(dict, key) {
+var getValue = function(dict, key) {
   return hasKey(dict, key) ? dict.payload[key] : null;
 }
 
@@ -60,9 +63,31 @@ function handlePGEWSAppMessageKeys(dict) {
 
   // WS URL from C and connect
   if(hasKey(dict, 'PGE_WS_URL')) {
-    var url = getKey(dict, 'PGE_WS_URL');
+    var url = getValue(dict, 'PGE_WS_URL');
     Log('Got WS URL: ' + url);
     connectToServer(url);
+  }
+
+  // Developer dictionary data
+  if(webSocket) {
+    var outgoing = {};
+
+    // Check all appinfo.json keys
+    for(var i = 0; i < NUM_APPINFO_KEYS; i += 1) {
+      var key = '' + i; // String keys
+      if(hasKey(dict, key)) {
+        outgoing[key] = getValue(dict, key);
+        Log('Added key: ' + key + ', value: ' + outgoing[key]);
+      }
+    }
+
+    if(outgoing.length > 0) {
+      // Send this data
+      webSocket.send(JSON.stringify(outgoing));
+      Log('Sent developer data');
+    }
+  } else {
+    Log('Data send requested, but webSocket is not ready');
   }
 }
 

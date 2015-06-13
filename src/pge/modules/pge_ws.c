@@ -83,7 +83,7 @@ bool pge_ws_packet_begin() {
   }
 }
 
-bool pge_ws_packen_send() {
+bool pge_ws_packet_send() {
   AppMessageResult result = app_message_outbox_send();
   if(result != APP_MSG_OK) {
     parse_result(result);

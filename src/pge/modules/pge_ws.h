@@ -66,7 +66,7 @@ bool pge_ws_packet_begin();
  * Send the PGE WS packet
  * Returns true if send was successful
  */
-bool pge_ws_packen_send();
+bool pge_ws_packet_send();
 
 /**
  * Add an int to the dictionary
