@@ -1,8 +1,8 @@
-/********************************** Config ************************************/
+/********************* PGE WS Module JS - DO NOT MODIFY ***********************/
 
 var DEBUG = true;
 
-/******************************** Helper **************************************/
+var webSocket;
 
 function Log(message) {
   if(DEBUG) console.log(message);
@@ -13,9 +13,7 @@ function hasKey(dict, key) {
 }
 
 var getKey = function(dict, key) {
-  if(hasKey(dict, key)) {
-    return dict.payload[key];
-  }
+  return hasKey(dict, key) ? dict.payload[key] : null;
 }
 
 function sendToPebble(dict) {
@@ -26,10 +24,6 @@ function sendToPebble(dict) {
   });
 }
 
-/******************************* ws module ************************************/
-
-var webSocket;
-
 function connectToServer(url) {
   // Url. Example: ws://localhost:5000
   webSocket = new WebSocket(url);
@@ -37,7 +31,7 @@ function connectToServer(url) {
     Log('Connection opened!');
     if(event.data) {
       onOpen(event.data); 
-      handleReceiveClientId(event.data);
+      handlePGEWSProtocol(event.data);
     }
   };
   webSocket.onclose = function(event) { 
@@ -48,7 +42,7 @@ function connectToServer(url) {
   webSocket.onmessage = function(event) { 
     Log('onmessage');
     if(event.data) {
-      handleReceiveClientId(event.data);
+      handlePGEWSProtocol(event.data);
       onMessage(event.data);
     } else {
       Log('onmessage with no data!');
@@ -61,7 +55,7 @@ function connectToServer(url) {
   };
 }
 
-function handlePGEWSKeys(dict) {
+function handlePGEWSAppMessageKeys(dict) {
   Log('handling keys: ' + JSON.stringify(dict.payload));
 
   // WS URL from C and connect
@@ -70,16 +64,9 @@ function handlePGEWSKeys(dict) {
     Log('Got WS URL: ' + url);
     connectToServer(url);
   }
-
-  // Disconnect requested
-  if(hasKey(dict, 'PGE_WS_DISCONNECT')) {
-    Log('Disconnect requested');
-    webSocket.send(JSON.stringify({ 'close': 1 }));
-    webSocket.close();
-  }
 }
 
-function handleReceiveClientId(data) {
+function handlePGEWSProtocol(data) {
   var json = JSON.parse(data);
 
   if(json.id) {
@@ -90,7 +77,10 @@ function handleReceiveClientId(data) {
   }
 }
 
-/**************************** Developer Implemented ***************************/
+/**************************** End PGE WS Module JS ****************************/
+
+
+/******************* Developer Implemented PGE WS callbacks *******************/
 
 function onOpen(data) {
 
@@ -115,5 +105,5 @@ Pebble.addEventListener('ready', function() {
 });
 
 Pebble.addEventListener('appmessage', function(dict) {
-  handlePGEWSKeys(dict);
+  handlePGEWSAppMessageKeys(dict);
 });

@@ -14,10 +14,6 @@ static void ws_connection_callback(bool successful) {
   text_layer_set_text(s_output_layer, s_buff);
 }
 
-static void connect() {
-  pge_ws_connect("ws://localhost:5000", ws_connection_callback);
-}
-
 /******************************** Engine callbacks ****************************/
 
 static void logic() {
@@ -31,7 +27,7 @@ static void draw(GContext *ctx) {
 static void click(int button_id, bool long_click) {
   switch(button_id) {
     case BUTTON_ID_SELECT:
-      connect();
+      pge_ws_connect("ws://localhost:5000", ws_connection_callback);
       break;
   }
 }
@@ -58,5 +54,4 @@ void pge_deinit() {
 
   // End game loop
   pge_finish();
-  pge_ws_disconnect();
 }

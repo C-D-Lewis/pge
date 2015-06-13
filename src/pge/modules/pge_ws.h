@@ -29,7 +29,12 @@
 // Send URL, receive confirmation
 #define PGE_WS_URL        100
 #define PGE_WS_CLIENT_ID  101
-#define PGE_WS_DISCONNECT 102
+
+typedef enum {
+  PGEWSConnectionStateDisconnected,
+  PGEWSConnectionStateConnecting,
+  PGEWSConnectionStateConnected
+} PGEWSConnectionState;
 
 // Handler for connection result
 typedef void (PGEWSConnectedHandler)(bool successful);
@@ -38,11 +43,6 @@ typedef void (PGEWSConnectedHandler)(bool successful);
  * Connect to server. E.g.: ws://localhost:5000
  */
 void pge_ws_connect(char *url, PGEWSConnectedHandler *handler);
-
-/**
- * Duisconnect from server
- */
-void pge_ws_disconnect();
 
 /**
  * Get connected status

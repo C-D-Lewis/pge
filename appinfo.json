@@ -26,8 +26,7 @@
     "PGE_WS_KEY_14": 14,
     "PGE_WS_KEY_15": 15,
     "PGE_WS_URL": 100,
-    "PGE_WS_CLIENT_ID": 101,
-    "PGE_WS_DISCONNECT": 102
+    "PGE_WS_CLIENT_ID": 101
   },
   "sdkVersion": "3",
   "targetPlatforms": [

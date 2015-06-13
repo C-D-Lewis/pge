@@ -1,14 +1,15 @@
 #include "pge_ws.h"
 
-static bool s_connected;
-static int s_client_id;
 static PGEWSConnectedHandler *s_connection_handler;
+
+static PGEWSConnectionState s_connection_state = PGEWSConnectionStateDisconnected;
+static int s_client_id;
 
 static void in_recv_handler(DictionaryIterator *iter, void *context) {
   Tuple *tuple = dict_find(iter, PGE_WS_URL);
   if(tuple) {
-    s_connected = (tuple->value->int32 == 1);
-    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connected ? "OK" : "FAILED");
+    s_connection_state = (tuple->value->int32 == 1) ? PGEWSConnectionStateConnected : PGEWSConnectionStateDisconnected;
+    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connection_state ? "OK" : "FAILED");
 
     // Store client ID in this bundle
     Tuple *id_tuple = dict_find(iter, PGE_WS_CLIENT_ID);
@@ -16,15 +17,15 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
       s_client_id = id_tuple->value->int32;
       if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_INFO, "Got ID %d", s_client_id);
     } else {
-      s_connected = false;
+      s_connection_state = PGEWSConnectionStateDisconnected;
       if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_ERROR, "CLient ID was not provided by the server.");
     }
-    s_connection_handler(s_connected);
+    s_connection_handler(s_connection_state == PGEWSConnectionStateConnected);
   }
 }
 
 void pge_ws_connect(char *url, PGEWSConnectedHandler *handler) {
-  if(!s_connected) {
+  if(s_connection_state == PGEWSConnectionStateDisconnected) {
     // Set up callbacks
     s_connection_handler = handler;
     app_message_register_inbox_received(in_recv_handler);
@@ -38,23 +39,12 @@ void pge_ws_connect(char *url, PGEWSConnectedHandler *handler) {
     app_message_outbox_send();
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: URL sent");
   } else {
-    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_INFO, "PGE_WS: Already connected!");
+    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_INFO, "PGE_WS: Already connected, or connection in progress!");
   }
 }
 
-void pge_ws_disconnect() {
-  s_connected = false;
-
-  DictionaryIterator *iter;
-  app_message_outbox_begin(&iter);
-  int v = 0;
-  dict_write_int(iter, PGE_WS_DISCONNECT, &v, sizeof(int), true);
-  app_message_outbox_send();
-  if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Disconnect sent");
-}
-
 bool pge_ws_is_connected() {
-  return s_connected;
+  return s_connection_state == PGEWSConnectionStateConnected;
 }
 
 int pge_ws_get_client_id() {
