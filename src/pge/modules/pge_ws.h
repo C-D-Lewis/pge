@@ -26,9 +26,9 @@
 #define PGE_WS_KEY_14 14
 #define PGE_WS_KEY_15 15
 
-// Send URL, receive confirmation
-#define PGE_WS_URL        100
-#define PGE_WS_CLIENT_ID  101
+#define PGE_WS_URL        100  // Send URL, receive confirmation
+#define PGE_WS_CLIENT_ID  101  // Receive client ID from server
+#define PGE_WS_READY      102  // PebbleKit JS is ready
 
 typedef enum {
   PGEWSConnectionStateDisconnected,
@@ -40,11 +40,12 @@ typedef enum {
 typedef void (PGEWSConnectedHandler)(bool successful);
 
 /**
- * Connect to server. 
- * url - The URL of the remote server. E.g.: "ws://localhost:5000"
+ * Connect to server when JS ready event is fired.
+ * NOTE: Must be called during app initialization (before app_event_loop() is called)
+ * url - The URL of the remote server. E.g.: "ws://localhost:5000". Must be long-lived.
  * handler - The PGEWSConnectedHandler called when the connection attempt returns
  */
-void pge_ws_connect(char *url, PGEWSConnectedHandler *handler);
+void pge_ws_begin(char *url, PGEWSConnectedHandler *handler);
 
 /**
  * Returns true if connected, else false

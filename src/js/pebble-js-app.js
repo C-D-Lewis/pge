@@ -1,7 +1,8 @@
 /******************************** Config **************************************/
 
 var DEBUG = true;
-var NUM_APPINFO_KEYS = 16;
+var NUM_APPINFO_KEYS = 16;  // Number of keys declared in appinfo.json 
+                            // with values of 0 -> NUM_APPINFO_KEYS
 
 /********************* PGE WS Module JS - DO NOT MODIFY ***********************/
 
@@ -68,7 +69,7 @@ function handlePGEWSAppMessageKeys(dict) {
     connectToServer(url);
   }
 
-  // Developer dictionary data
+  // Developer dictionary data to send to server
   if(webSocket) {
     var outgoing = {};
 
@@ -103,6 +104,10 @@ function handlePGEWSProtocol(data) {
   }
 }
 
+function handlePGEWSReady() {
+  sendToPebble({ 'PGE_WS_READY': 1 });
+}
+
 /**************************** End PGE WS Module JS ****************************/
 
 
@@ -128,6 +133,7 @@ function onError() {
 
 Pebble.addEventListener('ready', function() {
   console.log('PebbleKitJS ready');
+  handlePGEWSReady();
 });
 
 Pebble.addEventListener('appmessage', function(dict) {

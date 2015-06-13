@@ -5,11 +5,13 @@ static PGEWSConnectedHandler *s_connection_handler;
 static PGEWSConnectionState s_connection_state = PGEWSConnectionStateDisconnected;
 static DictionaryIterator *s_outbox_iter;
 static int s_client_id;
+static bool s_app_message_open, s_js_ready;
+static char *s_url_ptr;
 
 static void in_recv_handler(DictionaryIterator *iter, void *context) {
+  // Was the connection successful?
   Tuple *tuple = dict_find(iter, PGE_WS_URL);
   if(tuple) {
-    // Was the connection successful?
     s_connection_state = (tuple->value->int32 == 1) ? PGEWSConnectionStateConnected : PGEWSConnectionStateDisconnected;
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connection_state ? "OK" : "FAILED");
 
@@ -25,6 +27,19 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
 
     // Call the developer callback
     s_connection_handler(s_connection_state == PGEWSConnectionStateConnected);
+  }
+
+  // JS Ready event?
+  tuple = dict_find(iter, PGE_WS_READY);
+  if(tuple) {
+    s_js_ready = true;
+
+    // Send URL to JS, wait for connected callback
+    DictionaryIterator *iter;
+    app_message_outbox_begin(&iter);
+    dict_write_cstring(iter, PGE_WS_URL, s_url_ptr);
+    app_message_outbox_send();
+    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: URL sent");
   }
 }
 
@@ -46,20 +61,19 @@ static void parse_result(AppMessageResult result) {
   }
 }
 
-void pge_ws_connect(char *url, PGEWSConnectedHandler *handler) {
+void pge_ws_begin(char *url, PGEWSConnectedHandler *handler) {
   if(s_connection_state == PGEWSConnectionStateDisconnected) {
     // Set up callbacks
     s_connection_handler = handler;
-    app_message_register_inbox_received(in_recv_handler);
-    app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: AppMessage opened");
+    s_url_ptr = url;
 
-    // Send URL to JS
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-    dict_write_cstring(iter, PGE_WS_URL, url);
-    app_message_outbox_send();
-    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: URL sent");
+    // Prepare to receive, wait for ready
+    if(!s_app_message_open) {
+      s_app_message_open = true;
+      app_message_register_inbox_received(in_recv_handler);
+      app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+      if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: AppMessage opened");
+    }
   } else {
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_INFO, "PGE_WS: Already connected, or connection in progress!");
   }
