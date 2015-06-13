@@ -23,6 +23,7 @@ function handleTimedOut(client) {
   if(index > -1) {
     Log('Removing inactive client ' + client.id);
     client.socket.close();
+    clearTimeout(client.timeoutId);
     clients.splice(index, 1);
     Log('Total clients: ' + clients.length);
   } else {
