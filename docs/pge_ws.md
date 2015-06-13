@@ -71,6 +71,17 @@ void pge_init() {
 }
 ```
 
+
+## Disconnecting From a Server
+
+Currently, any `AppMessage`s sent during app deinitialization (when the Back
+button causes it to exit) are not successfully sent to the server. Therefore,
+every client will be abandoned by the server after `EXPIRATION_MS` milliseconds
+(default value is 10 minutes). Of course, WebSockets can be manually closed at
+any time, and an app exiting on a real watch will trigger the connection to
+close automatically (tested only on Android 4.4.5).
+
+
 ## Receiving Data
 
 Read data with `pge_ws_get_value()` inside a `PGEWSReceivedHandler`
@@ -90,6 +101,11 @@ if(key_0_value != PGE_WS_NOT_FOUND) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Got PGE_WS_KEY_0 value: %d", key_0_value);
 }
 ```
+
+The alternative paradigm is passing every received value into a callback. This
+does not allow the order of callbacks to be easily determined, and would make
+reading multiple values from one packet more difficult.
+
 
 ## Sending Data
 
