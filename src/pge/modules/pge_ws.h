@@ -8,7 +8,7 @@
 
 #define PGE_WS_LOGS true
 
-// Developer-usable keys, predeclared in appinfo.json
+// Developer-usable keys, MUST be declared in appinfo.json
 #define PGE_WS_KEY_0  0
 #define PGE_WS_KEY_1  1
 #define PGE_WS_KEY_2  2
@@ -40,16 +40,30 @@ typedef enum {
 typedef void (PGEWSConnectedHandler)(bool successful);
 
 /**
- * Connect to server. E.g.: ws://localhost:5000
+ * Connect to server. 
+ * url - The URL of the remote server. E.g.: "ws://localhost:5000"
+ * handler - The PGEWSConnectedHandler called when the connection attempt returns
  */
 void pge_ws_connect(char *url, PGEWSConnectedHandler *handler);
 
 /**
- * Get connected status
+ * Returns true if connected, else false
  */
 bool pge_ws_is_connected();
 
 /**
- * Get client ID once connected
+ * Returns the client ID from the server
  */
 int pge_ws_get_client_id();
+
+/*
+ * Begin creating a PGE WS packet
+ * Returns true if creation was successful
+ */
+bool pge_ws_packet_begin();
+
+/**
+ * Send the PGE WS packet
+ * Returns true if send was successful
+ */
+bool pge_ws_packen_send();

@@ -3,11 +3,13 @@
 static PGEWSConnectedHandler *s_connection_handler;
 
 static PGEWSConnectionState s_connection_state = PGEWSConnectionStateDisconnected;
+static DictionaryIterator *s_outbox_iter;
 static int s_client_id;
 
 static void in_recv_handler(DictionaryIterator *iter, void *context) {
   Tuple *tuple = dict_find(iter, PGE_WS_URL);
   if(tuple) {
+    // Was the connection successful?
     s_connection_state = (tuple->value->int32 == 1) ? PGEWSConnectionStateConnected : PGEWSConnectionStateDisconnected;
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: Connection result: %s", s_connection_state ? "OK" : "FAILED");
 
@@ -20,7 +22,27 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
       s_connection_state = PGEWSConnectionStateDisconnected;
       if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_ERROR, "CLient ID was not provided by the server.");
     }
+
+    // Call the developer callback
     s_connection_handler(s_connection_state == PGEWSConnectionStateConnected);
+  }
+}
+
+static void parse_result(AppMessageResult result) {
+  switch(result) {
+    case APP_MSG_OK: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_OK"); break;
+    case APP_MSG_SEND_TIMEOUT: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_SEND_TIMEOUT"); break;
+    case APP_MSG_SEND_REJECTED: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_SEND_REJECTED"); break;
+    case APP_MSG_NOT_CONNECTED: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_NOT_CONNECTED"); break;
+    case APP_MSG_APP_NOT_RUNNING: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_APP_NOT_RUNNING"); break;
+    case APP_MSG_INVALID_ARGS: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_INVALID_ARGS"); break;
+    case APP_MSG_BUSY: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_BUSY"); break;
+    case APP_MSG_BUFFER_OVERFLOW: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_BUFFER_OVERFLOW"); break;
+    case APP_MSG_ALREADY_RELEASED: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_ALREADY_RELEASED"); break;
+    case APP_MSG_CALLBACK_ALREADY_REGISTERED: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_CALLBACK_ALREADY_REGISTERED"); break;
+    case APP_MSG_CALLBACK_NOT_REGISTERED: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_CALLBACK_NOT_REGISTERED"); break;
+    case APP_MSG_OUT_OF_MEMORY: APP_LOG(APP_LOG_LEVEL_DEBUG, "APP_MSG_OUT_OF_MEMORY"); break;
+    default: break;
   }
 }
 
@@ -49,4 +71,24 @@ bool pge_ws_is_connected() {
 
 int pge_ws_get_client_id() {
   return s_client_id;
+}
+
+bool pge_ws_packet_begin() {
+  AppMessageResult result = app_message_outbox_begin(&s_outbox_iter);
+  if(result != APP_MSG_OK) {
+    parse_result(result);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+bool pge_ws_packen_send() {
+  AppMessageResult result = app_message_outbox_send();
+  if(result != APP_MSG_OK) {
+    parse_result(result);
+    return false;
+  } else {
+    return true;
+  }
 }
