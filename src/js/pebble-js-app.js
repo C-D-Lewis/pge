@@ -122,7 +122,12 @@ function onClose() {
 }
 
 function onMessage(data) {
+  var json = JSON.parse(data);
 
+  if(json['PGE_WS_KEY_0']) {
+    // Send total number connected
+    sendToPebble({ 'PGE_WS_KEY_0': parseInt(json['PGE_WS_KEY_0']) });
+  }
 }
 
 function onError() {

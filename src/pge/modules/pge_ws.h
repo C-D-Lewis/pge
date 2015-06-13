@@ -8,6 +8,8 @@
 
 #define PGE_WS_LOGS true
 
+#define PGE_WS_NOT_FOUND -7678942 // Unlikely number
+
 // Developer-usable keys, MUST be declared in appinfo.json
 #define PGE_WS_KEY_0  0
 #define PGE_WS_KEY_1  1
@@ -25,6 +27,7 @@
 #define PGE_WS_KEY_13 13
 #define PGE_WS_KEY_14 14
 #define PGE_WS_KEY_15 15
+#define PGE_WS_NUM_KEYS 16  // Update this if you add more keys to appinfo.json
 
 #define PGE_WS_URL        100  // Send URL, receive confirmation
 #define PGE_WS_CLIENT_ID  101  // Receive client ID from server
@@ -39,13 +42,17 @@ typedef enum {
 // Handler for connection result
 typedef void (PGEWSConnectedHandler)(bool successful);
 
+// Handlers for received values. Use pge_ws_get_value() to get your data
+typedef void (PGEWSReceivedHandler)();
+
 /**
  * Connect to server when JS ready event is fired.
  * NOTE: Must be called during app initialization (before app_event_loop() is called)
  * url - The URL of the remote server. E.g.: "ws://localhost:5000". Must be long-lived.
  * handler - The PGEWSConnectedHandler called when the connection attempt returns
+ * recv_handler - The PGEWSReceivedHandler called when at least one PGE_WS_KEY has been received
  */
-void pge_ws_begin(char *url, PGEWSConnectedHandler *handler);
+void pge_ws_begin(char *url, PGEWSConnectedHandler *handler, PGEWSReceivedHandler *recv_handler);
 
 /**
  * Returns true if connected, else false
@@ -78,9 +85,7 @@ bool pge_ws_packet_send();
 bool pge_ws_add_int(int key, int value);
 
 /**
- * Add a C string to the dictionary
- * key - The integer key associated with the value
- * value - The value to be added
- * Returns true if the add succeeded, false if it failed or pge_ws_packet_begin() has not been called
+ * Gets a value from the incoming packet, if called in a PGEWSReceivedHandler
+ * Returns the value, PGE_WS_NOT_FOUND if not found
  */
-bool pge_ws_add_cstring(int key, char *cstring);
+int pge_ws_get_value(int key);

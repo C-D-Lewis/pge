@@ -1,14 +1,18 @@
 #include "pge_ws.h"
 
 static PGEWSConnectedHandler *s_connection_handler;
+static PGEWSReceivedHandler *s_recv_handler;
 
 static PGEWSConnectionState s_connection_state = PGEWSConnectionStateDisconnected;
-static DictionaryIterator *s_outbox_iter;
+static DictionaryIterator *s_outbox_iter, *s_inbox_iter;
 static int s_client_id;
 static bool s_app_message_open, s_js_ready;
 static char *s_url_ptr;
 
 static void in_recv_handler(DictionaryIterator *iter, void *context) {
+  // Probably temporary. Used to get data in s_recv_handler
+  s_inbox_iter = iter;
+
   // Was the connection successful?
   Tuple *tuple = dict_find(iter, PGE_WS_URL);
   if(tuple) {
@@ -41,6 +45,18 @@ static void in_recv_handler(DictionaryIterator *iter, void *context) {
     app_message_outbox_send();
     if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: URL sent");
   }
+
+  // Developer-implemented keys? Callback if at least one. Use pge_ws_get_value() to get values
+  for(int i = 0; i < PGE_WS_NUM_KEYS; i++) {
+    tuple = dict_find(iter, i);
+    if(tuple) {
+      s_recv_handler();  // Use pge_ws_get_value() in here
+      break;
+    }
+  }
+
+  // Iterator expires here
+  s_inbox_iter = NULL;
 }
 
 static void parse_result(AppMessageResult result) {
@@ -61,10 +77,11 @@ static void parse_result(AppMessageResult result) {
   }
 }
 
-void pge_ws_begin(char *url, PGEWSConnectedHandler *handler) {
+void pge_ws_begin(char *url, PGEWSConnectedHandler *handler, PGEWSReceivedHandler *recv_handler) {
   if(s_connection_state == PGEWSConnectionStateDisconnected) {
     // Set up callbacks
     s_connection_handler = handler;
+    s_recv_handler = recv_handler;
     s_url_ptr = url;
 
     // Prepare to receive, wait for ready
@@ -110,7 +127,7 @@ bool pge_ws_packet_send() {
 
 bool pge_ws_add_int(int key, int value) {
   if(!s_outbox_iter) {
-    APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_packet_begin() has not been called!");
+    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_packet_begin() has not been called!");
     return false;
   }
 
@@ -123,17 +140,21 @@ bool pge_ws_add_int(int key, int value) {
   return true;
 }
 
-bool pge_ws_add_cstring(int key, char *cstring) {
-  if(!s_outbox_iter) {
-    APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_packet_begin() has not been called!");
-    return false;
-  }
+int pge_ws_get_value(int key) {
+  if(s_inbox_iter) {
+    Tuple *tuple;
+    for(int i = 0; i < PGE_WS_NUM_KEYS; i++) {
+      tuple = dict_find(s_inbox_iter, i);
+      if(tuple) {
+        // Found it!
+        return tuple->value->int32;
+      }
+    }
 
-  AppMessageResult result = dict_write_cstring(s_outbox_iter, key, cstring);
-  if(result != APP_MSG_OK) {
-    parse_result(result);
-    return false;
+    // Failed 
+    return PGE_WS_NOT_FOUND;
+  } else {
+    if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_get_value() must be called within a PGEWSReceivedHandler!");
+    return PGE_WS_NOT_FOUND;
   }
-
-  return true;
 }

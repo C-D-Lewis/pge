@@ -80,6 +80,18 @@ function startServer() {
     });
     socket.on('error', function() {
       Log('onerror');
+    });
+    socket.on('close', function() {
+      Log('onclose');
+
+      // Find client
+      for(var i = 0; i < clients.length; i += 1) {
+        if(clients[i].socket == this) {
+          Log('Client disconnected. Calling developer callback...');
+          handleTimedOut(clients[i]);
+          onClientDisconnected(clients[i]);
+        }
+      }
     })
   });
 
@@ -87,14 +99,29 @@ function startServer() {
 }
 startServer();
 
-/******************************* Developer Implementation *********************/
+/**************************** Developer Implementation ************************/
+
+function broadcastTotalPlayers() {
+  for(var i = 0; i < clients.length; i += 1) {
+    // Send to each, the total number connected
+    clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
+  }
+}
 
 /**
  * Set up new client
  * socket - The web socket this client connected on
  */
 function onClientConnected(socket) {
+  broadcastTotalPlayers();
+}
 
+/**
+ * Client has disconnected or timed out
+ * client - The disconnected client object
+ */
+function onClientDisconnected(client) {
+  broadcastTotalPlayers();
 }
 
 /**
@@ -103,5 +130,5 @@ function onClientConnected(socket) {
  * data - The data sent from the client in JSON string format
  */
 function onClientMessage(socket, data) {
-  Log('Client sent: ' + data);
+
 }

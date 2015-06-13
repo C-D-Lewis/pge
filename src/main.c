@@ -2,9 +2,9 @@
 
 // UI
 static Window *s_game_window;
-static TextLayer *s_output_layer;
+static TextLayer *s_output_layer, *s_players_layer;
 
-/******************************** WS Test *************************************/
+/******************************** WS Callbacks ********************************/
 
 static void ws_connection_handler(bool successful) {
   APP_LOG(APP_LOG_LEVEL_INFO, "ws_connection_handler");
@@ -12,6 +12,16 @@ static void ws_connection_handler(bool successful) {
   static char s_buff[32];
   snprintf(s_buff, sizeof(s_buff), "ID: %d", pge_ws_get_client_id());
   text_layer_set_text(s_output_layer, s_buff);
+}
+
+static void ws_received_handler() {
+  int player_count = pge_ws_get_value(PGE_WS_KEY_0);
+  if(player_count != PGE_WS_NOT_FOUND) {
+    // Use this value
+    static char s_buff[32];
+    snprintf(s_buff, sizeof(s_buff), "Players: %d", player_count);
+    text_layer_set_text(s_players_layer, s_buff);
+  }
 }
 
 /******************************** Engine callbacks ****************************/
@@ -43,9 +53,10 @@ static void click(int button_id, bool long_click) {
 void pge_init() {
   // Begin game loop
   pge_begin(GColorBlack, logic, draw, click);
-  s_game_window = pge_get_window();
 
-  pge_ws_begin("ws://192.168.1.4:5000", ws_connection_handler);
+  pge_ws_begin("ws://192.168.1.4:5000", ws_connection_handler, ws_received_handler);
+
+  s_game_window = pge_get_window();
 
   // Create score layer
   s_output_layer = text_layer_create(GRect(0, 0, 144, 20));
@@ -53,6 +64,12 @@ void pge_init() {
   text_layer_set_background_color(s_output_layer, GColorBlack);
   text_layer_set_font(s_output_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
   layer_add_child(window_get_root_layer(s_game_window), text_layer_get_layer(s_output_layer)); 
+
+  s_players_layer = text_layer_create(GRect(0, 80, 144, 20));
+  text_layer_set_text_color(s_players_layer, GColorWhite);
+  text_layer_set_background_color(s_players_layer, GColorBlack);
+  text_layer_set_font(s_players_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  layer_add_child(window_get_root_layer(s_game_window), text_layer_get_layer(s_players_layer)); 
 }
 
 void pge_deinit() {
