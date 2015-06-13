@@ -67,3 +67,19 @@ bool pge_ws_packet_begin();
  * Returns true if send was successful
  */
 bool pge_ws_packen_send();
+
+/**
+ * Add an int to the dictionary
+ * key - The integer key associated with the value
+ * value - The value to be added
+ * Returns true if the add succeeded, false if it failed or pge_ws_packet_begin() has not been called
+ */
+bool pge_ws_add_int(int key, int value);
+
+/**
+ * Add a C string to the dictionary
+ * key - The integer key associated with the value
+ * value - The value to be added
+ * Returns true if the add succeeded, false if it failed or pge_ws_packet_begin() has not been called
+ */
+bool pge_ws_add_cstring(int key, char *cstring);

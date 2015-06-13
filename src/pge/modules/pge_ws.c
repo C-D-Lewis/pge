@@ -89,6 +89,37 @@ bool pge_ws_packen_send() {
     parse_result(result);
     return false;
   } else {
+    s_outbox_iter = NULL;
     return true;
   }
+}
+
+bool pge_ws_add_int(int key, int value) {
+  if(!s_outbox_iter) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_packet_begin() has not been called!");
+    return false;
+  }
+
+  AppMessageResult result = dict_write_int(s_outbox_iter, key, &value, sizeof(int), true);
+  if(result != APP_MSG_OK) {
+    parse_result(result);
+    return false;
+  }
+
+  return true;
+}
+
+bool pge_ws_add_cstring(int key, char *cstring) {
+  if(!s_outbox_iter) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "pge_ws_packet_begin() has not been called!");
+    return false;
+  }
+
+  AppMessageResult result = dict_write_cstring(s_outbox_iter, key, cstring);
+  if(result != APP_MSG_OK) {
+    parse_result(result);
+    return false;
+  }
+
+  return true;
 }
