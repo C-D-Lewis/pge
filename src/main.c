@@ -40,6 +40,7 @@ static void draw(GContext *ctx) {
 }
 
 static void click(int button_id, bool long_click) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "CLICK");
   switch(button_id) {
     case BUTTON_ID_SELECT:
       if(pge_ws_is_connected()) {
@@ -59,7 +60,7 @@ void pge_init() {
   // Begin game loop
   pge_begin(GColorBlack, logic, draw, click);
 
-  pge_ws_begin("ws://192.168.1.4:5500", ws_connection_handler, ws_received_handler);
+  pge_ws_begin("ws://192.168.1.15:5500", ws_connection_handler, ws_received_handler);
 
   // Create score layer
   s_output_layer = text_layer_create(GRect(0, 0, 144, 168));

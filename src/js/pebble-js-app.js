@@ -79,7 +79,7 @@ function PGEWSForwardToServer(dict) {
 
     // Check all appinfo.json keys
     for(var i = 0; i < NUM_APPINFO_KEYS; i += 1) {
-      var key = '' + i; // String keys
+      var key = 'PGE_WS_KEY_' + i; // String keys
       if(hasKey(dict, key)) {
         outgoing[key] = getValue(dict, key);
         Log('Added key: ' + key + ', value: ' + outgoing[key]);
