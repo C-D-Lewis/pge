@@ -1,6 +1,7 @@
 /******************************** Config **************************************/
 
 var DEBUG = true;
+var VERBOSE = true;
 var NUM_APPINFO_KEYS = 16;  // Number of keys declared in appinfo.json 
                             // with values of 0 -> NUM_APPINFO_KEYS
 
@@ -8,8 +9,16 @@ var NUM_APPINFO_KEYS = 16;  // Number of keys declared in appinfo.json
 
 var webSocket = null;
 
-function Log(message) {
-  if(DEBUG) console.log(message);
+function logVerbose(message) {
+  if(VERBOSE) console.log(message);
+}
+
+function logDebug(message) {
+  if(DEBUG) console.log(message); 
+}
+
+function log(message) {
+  console.log(message);
 }
 
 function hasKey(dict, key) {
@@ -22,9 +31,9 @@ var getValue = function(dict, key) {
 
 function sendToPebble(dict) {
   Pebble.sendAppMessage(dict, function() {
-    Log('Success: ' + JSON.stringify(dict));
+    logVerbose('Success: ' + JSON.stringify(dict));
   }, function() {
-    Log('Failed: ' + JSON.stringify(dict));
+    logVerbose('Failed: ' + JSON.stringify(dict));
   });
 }
 
@@ -32,42 +41,42 @@ function connectToServer(url) {
   // Url. Example: ws://localhost:5000
   webSocket = new WebSocket(url);
   webSocket.onopen = function(event) { 
-    Log('Connection opened!');
+    logVerbose('Connection opened!');
     if(event.data) {
       onSocketOpen(event.data); 
       PGEWSSocketProtocol(event.data);
     }
   };
   webSocket.onclose = function(event) { 
-    Log('onclose');
+    logVerbose('onclose');
     sendToPebble({ 'PGE_WS_URL': 0 });
     onSocketClose(); 
   };
   webSocket.onmessage = function(event) { 
-    Log('onmessage');
+    logVerbose('onmessage');
     if(event.data) {
       if(!PGEWSSocketProtocol(event.data)) {
         // This was not a protocol message
         onSocketMessage(event.data);
       }
     } else {
-      Log('onmessage with no data!');
+      logVerbose('onmessage with no data!');
     }
   };
   webSocket.onerror = function(event) { 
-    Log('onerror');
+    logVerbose('onerror');
     sendToPebble({ 'PGE_WS_URL': 0 });
     onSocketError(); 
   };
 }
 
 function PGEWSAppMessageProtocol(dict) {
-  Log('handling keys: ' + JSON.stringify(dict.payload));
+  logVerbose('handling keys: ' + JSON.stringify(dict.payload));
 
   // WS URL from C and connect
   if(hasKey(dict, 'PGE_WS_URL')) {
     var url = getValue(dict, 'PGE_WS_URL');
-    Log('Got WS URL: ' + url);
+    logDebug('Got WS URL: ' + url);
     connectToServer(url);
   }
 }
@@ -82,18 +91,18 @@ function PGEWSForwardToServer(dict) {
       var key = 'PGE_WS_KEY_' + i; // String keys
       if(hasKey(dict, key)) {
         outgoing[key] = getValue(dict, key);
-        Log('Added key: ' + key + ', value: ' + outgoing[key]);
+        logVerbose('Added key: ' + key + ', value: ' + outgoing[key]);
       }
     }
 
     var packet = JSON.stringify(outgoing);
     if(packet.length > 4) {
       // Send this data
+      logVerbose('Forwarding data to server: ' + packet);
       webSocket.send(packet);
-      Log('Sent developer data');
     }
   } else {
-    Log('Data send requested, but webSocket is not ready');
+    logVerbose('Data send requested, but webSocket is not ready');
   }
 }
 
@@ -107,6 +116,7 @@ function PGEWSForwardToPebble(data) {
       outgoing[key] = parseInt(json[key]);
     }
   }
+  logVerbose('Forwarding data to Pebble: ' + JSON.stringify(outgoing));
   sendToPebble(outgoing);
 }
 
