@@ -3,13 +3,22 @@ var WebSocketServer = require('ws').Server;
 
 // Config
 var DEBUG = true;
+var VERBOSE = true;
 var PORT = 5500;
 var EXPIRATION_MS = 1000 * 60 * 10;  // 10 minutes
 
 /********************************* Helper *************************************/
 
-function Log(message) {
-  if(DEBUG) console.log(message);
+function logVerbose(message) {
+  if(VERBOSE) console.log(message);
+}
+
+function logDebug(message) {
+  if(DEBUG) console.log(message); 
+}
+
+function log(message) {
+  console.log(message);
 }
 
 /********************************* Server *************************************/
@@ -30,18 +39,18 @@ function handleTimedOut(client) {
   // Remove timed out client
   var index = clients.indexOf(client);
   if(index > -1) {
-    Log('Removing inactive client ' + client.id);
+    log('Removing inactive client ' + client.id);
     client.socket.close();
     clearTimeout(client.timeoutId);
     clients.splice(index, 1);
-    Log('Total clients: ' + clients.length);
+    logVerbose('Total clients: ' + clients.length);
   } else {
-    Log('Expired client not found!');
+    logVerbose('Expired client not found!');
   }
 }
 
 function refreshClientTimeout(client) {
-  Log('Refreshing client ' + client.id);
+  logVerbose('Refreshing client ' + client.id);
   clearTimeout(client.timeoutId);
 
   // Set a new one
@@ -62,11 +71,12 @@ function addClient(socket) {
 
   // Send back issued ID
   socket.send(JSON.stringify({ 'id': client.id }));
-  Log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
+  log('Client ' + client.id + ' connected. Total clients: ' + clients.length);
 }
 
 function handleProtocol(socket, data) {
   var json = JSON.parse(data);
+  logVerbose('Handing protocol');
 
   // Refresh this client
   refreshClientTimeout(clientFromSocket(socket));
@@ -78,27 +88,27 @@ function startServer() {
     addClient(socket);
     onClientConnected(socket);
     socket.on('message', function(data) {
+      logVerbose('onmessage');
       if(data) {
         handleProtocol(this, data);
         onClientMessage(this, data);
       }
     });
     socket.on('error', function() {
-      Log('onerror');
+      logVerbose('onerror');
     });
     socket.on('close', function() {
-      Log('onclose');
+      logVerbose('onclose');
 
       // Find client
       var client = clientFromSocket(this);
-      Log('Client disconnected. Calling developer callback...');
+      log('Client ' + client.id + ' disconnected.');
       handleTimedOut(client);
       onClientDisconnected(client);
     });
   });
   onStartServer();
-
-  Log('Server ready on port ' + PORT);
+  log('Server ready on port ' + PORT);
 }
 startServer();
 
@@ -106,6 +116,7 @@ startServer();
 
 function broadcastTotalPlayers() {
   setTimeout(function() {
+    log('There are ' + clients.length + ' players connected.');
     for(var i = 0; i < clients.length; i += 1) {
       // Send to each, the total number connected
       clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
@@ -146,7 +157,7 @@ function onClientMessage(socket, data) {
 
   if(json['PGE_WS_KEY_1']) {
     // Buzz all players
-    Log('Buzzing...');
+    log('Buzzing...');
     for(var i = 0; i < clients.length; i += 1) {
       clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_1': 1 }));
     }
