@@ -3,7 +3,7 @@ var WebSocketServer = require('ws').Server;
 
 // Config
 var DEBUG = true;
-var PORT = 5000;
+var PORT = 5500;
 var EXPIRATION_MS = 1000 * 60 * 10;  // 10 minutes
 
 /********************************* Helper *************************************/
