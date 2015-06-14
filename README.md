@@ -18,7 +18,7 @@ are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
 - Isometric rendering of rects, boxes and textures.
 - Basic game title screen template.
 - Simple highscore mechanism.
-- Centralized multiplayer through websockets
+- WebSocket-based client-server abstraction.
 
 
 ## Basic Template App
@@ -79,4 +79,4 @@ void pge_deinit() {
 
 [PGE Isometric](docs/pge_isometric.md) - Isometric rendering of rects, boxes and textures.
 
-[PGE WS](docs/pge_ws/md) - WekSocket-based multiplayer with centralized server.
+[PGE WS](docs/pge_ws.md) - WebSocket-based client-server abstraction.
