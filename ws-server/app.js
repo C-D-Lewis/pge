@@ -17,6 +17,15 @@ function Log(message) {
 var server;
 var clients = [];
 
+var clientFromSocket = function(socket) {
+  for(var i = 0; i < clients.length; i += 1) {
+    if(clients[i].socket == socket) {
+      return clients[i];
+    }
+  }
+  return null;
+};
+
 function handleTimedOut(client) {
   // Remove timed out client
   var index = clients.indexOf(client);
@@ -60,12 +69,7 @@ function handleProtocol(socket, data) {
   var json = JSON.parse(data);
 
   // Refresh this client
-  for(var i = 0; i < clients.length; i += 1) {
-    if(clients[i].socket == socket) {
-      // Refresh this client
-      refreshClientTimeout(clients[i]);
-    }
-  }
+  refreshClientTimeout(clientFromSocket(socket));
 }
 
 function startServer() {
@@ -86,15 +90,13 @@ function startServer() {
       Log('onclose');
 
       // Find client
-      for(var i = 0; i < clients.length; i += 1) {
-        if(clients[i].socket == this) {
-          Log('Client disconnected. Calling developer callback...');
-          handleTimedOut(clients[i]);
-          onClientDisconnected(clients[i]);
-        }
-      }
-    })
+      var client = clientFromSocket(this);
+      Log('Client disconnected. Calling developer callback...');
+      handleTimedOut(client);
+      onClientDisconnected(client);
+    });
   });
+  onStartServer();
 
   Log('Server ready on port ' + PORT);
 }
@@ -109,6 +111,13 @@ function broadcastTotalPlayers() {
       clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
     }
   }, 1000);
+}
+
+/**
+ * When the server starts
+ */
+function onStartServer() {
+
 }
 
 /**
@@ -133,5 +142,13 @@ function onClientDisconnected(client) {
  * data - The data sent from the client in JSON string format
  */
 function onClientMessage(socket, data) {
+  var json = JSON.parse(data);
 
+  if(json['PGE_WS_KEY_1']) {
+    // Buzz all players
+    Log('BUzzing...');
+    for(var i = 0; i < clients.length; i += 1) {
+      clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_1': 1 }));
+    }
+  }
 }

@@ -89,6 +89,7 @@ void pge_ws_begin(char *url, PGEWSConnectedHandler *handler, PGEWSReceivedHandle
       s_app_message_open = true;
       app_message_register_inbox_received(in_recv_handler);
       app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+      app_comm_set_sniff_interval(SNIFF_INTERVAL_REDUCED);
       if(PGE_WS_LOGS) APP_LOG(APP_LOG_LEVEL_DEBUG, "PGE_WS: AppMessage opened");
     }
   } else {
@@ -142,13 +143,10 @@ bool pge_ws_add_int(int key, int value) {
 
 int pge_ws_get_value(int key) {
   if(s_inbox_iter) {
-    Tuple *tuple;
-    for(int i = 0; i < PGE_WS_NUM_KEYS; i++) {
-      tuple = dict_find(s_inbox_iter, i);
-      if(tuple) {
-        // Found it!
-        return tuple->value->int32;
-      }
+    Tuple *tuple = dict_find(s_inbox_iter, key);
+    if(tuple) {
+      // Found it!
+      return tuple->value->int32;
     }
 
     // Failed 
