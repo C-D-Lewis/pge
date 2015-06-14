@@ -108,7 +108,7 @@ function broadcastTotalPlayers() {
       // Send to each, the total number connected
       clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
     }
-  }, 3000);
+  }, 1000);
 }
 
 /**

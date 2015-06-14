@@ -136,9 +136,10 @@ These values are then automatically sent to the server in
 
 ## Implementing a JS client
 
-Use the four functions `onOpen()`, `onClose()`, `onMessage()`, and `onError()`
-to implement client logic in `pebble-js-app.js`. Any data received from the C
-side is automatically forwarded to the server in `handlePGEWSAppMessageKeys()`.
+Use the four functions `onSocketOpen()`, `onSocketClose()`, `onSocketMessage()`,
+and `onSocketError()` to implement client logic in `pebble-js-app.js`. Any data
+received from the C side is automatically forwarded to the server in
+`handlePGEWSAppMessageKeys()`.
 
 Manual messages can be sent to the server using the global `webSocket` (only
 available after `connectToServer()` is called. For example, using the first

@@ -54,7 +54,7 @@ void pge_init() {
   // Begin game loop
   pge_begin(GColorBlack, logic, draw, click);
 
-  pge_ws_begin("ws://192.168.1.4:5000", ws_connection_handler, ws_received_handler);
+  pge_ws_begin("ws://192.168.1.4:5500", ws_connection_handler, ws_received_handler);
 
   s_game_window = pge_get_window();
 

@@ -34,20 +34,20 @@ function connectToServer(url) {
   webSocket.onopen = function(event) { 
     Log('Connection opened!');
     if(event.data) {
-      onOpen(event.data); 
-      handlePGEWSProtocol(event.data);
+      onSocketOpen(event.data); 
+      PGEWSSocketProtocol(event.data);
     }
   };
   webSocket.onclose = function(event) { 
     Log('onclose');
     sendToPebble({ 'PGE_WS_URL': 0 });
-    onClose(); 
+    onSocketClose(); 
   };
   webSocket.onmessage = function(event) { 
     Log('onmessage');
     if(event.data) {
-      handlePGEWSProtocol(event.data);
-      onMessage(event.data);
+      PGEWSSocketProtocol(event.data);
+      onSocketMessage(event.data);
     } else {
       Log('onmessage with no data!');
     }
@@ -55,11 +55,11 @@ function connectToServer(url) {
   webSocket.onerror = function(event) { 
     Log('onerror');
     sendToPebble({ 'PGE_WS_URL': 0 });
-    onError(); 
+    onSocketError(); 
   };
 }
 
-function handlePGEWSAppMessageKeys(dict) {
+function PGEWSAppMessageProtocol(dict) {
   Log('handling keys: ' + JSON.stringify(dict.payload));
 
   // WS URL from C and connect
@@ -68,7 +68,9 @@ function handlePGEWSAppMessageKeys(dict) {
     Log('Got WS URL: ' + url);
     connectToServer(url);
   }
+}
 
+function PGEWSForwardToServer(dict) {
   // Developer dictionary data to send to server
   if(webSocket) {
     var outgoing = {};
@@ -93,7 +95,20 @@ function handlePGEWSAppMessageKeys(dict) {
   }
 }
 
-function handlePGEWSProtocol(data) {
+function PGEWSForwardToPebble(data) {
+  var json = JSON.parse(data);
+  var outgoing = {};
+
+  for(var i = 0; i < NUM_APPINFO_KEYS; i += 1) {
+    var key = 'PGE_WS_KEY_' + i;
+    if(json[key]) {
+      outgoing[key] = parseInt(json[key]);
+    }
+  }
+  sendToPebble(outgoing);
+}
+
+function PGEWSSocketProtocol(data) {
   var json = JSON.parse(data);
 
   if(json.id) {
@@ -104,7 +119,7 @@ function handlePGEWSProtocol(data) {
   }
 }
 
-function handlePGEWSReady() {
+function PGEWSReady() {
   sendToPebble({ 'PGE_WS_READY': 1 });
 }
 
@@ -113,24 +128,20 @@ function handlePGEWSReady() {
 
 /******************* Developer Implemented PGE WS callbacks *******************/
 
-function onOpen(data) {
+function onSocketOpen(data) {
 
 }
 
-function onClose() {
+function onSocketClose() {
 
 }
 
-function onMessage(data) {
-  var json = JSON.parse(data);
-
-  if(json['PGE_WS_KEY_0']) {
-    // Send total number connected
-    sendToPebble({ 'PGE_WS_KEY_0': parseInt(json['PGE_WS_KEY_0']) });
-  }
+function onSocketMessage(data) {
+  // Auto-forward to Pebble
+  PGEWSForwardToPebble(data);
 }
 
-function onError() {
+function onSocketError() {
   
 }
 
@@ -138,9 +149,12 @@ function onError() {
 
 Pebble.addEventListener('ready', function() {
   console.log('PebbleKitJS ready');
-  handlePGEWSReady();
+  PGEWSReady();
 });
 
 Pebble.addEventListener('appmessage', function(dict) {
-  handlePGEWSAppMessageKeys(dict);
+  PGEWSAppMessageProtocol(dict);
+
+  // Auto-forward to server
+  PGEWSForwardToServer(dict);
 });
