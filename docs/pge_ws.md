@@ -24,6 +24,7 @@ AppMessages. For example:
 
 ```
 function onClientConnected(socket) {
+  // Send text to server
   socket.send(JSON.stringify({ 'PGE_WS_KEY_0': 42 }));
 }
 
@@ -34,8 +35,12 @@ function onClientDisconnected(client) {
 function onClientMessage(socket, data) {
   var json = JSON.parse(data);
 
+  // Process data from server
   if(json['PGE_WS_KEY_0']) {
     var someValue = json['PGE_WS_KEY_0'];
+
+    // Send data on to Pebble
+    Pebble.sendAppMessage({ 'PGE_WS_KEY_0': parseInt(someValue) });
   }
 }
 ```
