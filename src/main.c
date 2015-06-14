@@ -40,7 +40,6 @@ static void draw(GContext *ctx) {
 }
 
 static void click(int button_id, bool long_click) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "CLICK");
   switch(button_id) {
     case BUTTON_ID_SELECT:
       if(pge_ws_is_connected()) {
