@@ -46,8 +46,10 @@ function connectToServer(url) {
   webSocket.onmessage = function(event) { 
     Log('onmessage');
     if(event.data) {
-      PGEWSSocketProtocol(event.data);
-      onSocketMessage(event.data);
+      if(!PGEWSSocketProtocol(event.data)) {
+        // This was not a protocol message
+        onSocketMessage(event.data);
+      }
     } else {
       Log('onmessage with no data!');
     }
@@ -108,7 +110,7 @@ function PGEWSForwardToPebble(data) {
   sendToPebble(outgoing);
 }
 
-function PGEWSSocketProtocol(data) {
+var PGEWSSocketProtocol = function(data) {
   var json = JSON.parse(data);
 
   if(json.id) {
@@ -116,7 +118,10 @@ function PGEWSSocketProtocol(data) {
       'PGE_WS_URL': 1, // success
       'PGE_WS_CLIENT_ID': parseInt(json.id)
     });
+    return true;
   }
+
+  return false;
 }
 
 function PGEWSReady() {
