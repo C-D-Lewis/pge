@@ -146,7 +146,7 @@ function onClientMessage(socket, data) {
 
   if(json['PGE_WS_KEY_1']) {
     // Buzz all players
-    Log('BUzzing...');
+    Log('Buzzing...');
     for(var i = 0; i < clients.length; i += 1) {
       clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_1': 1 }));
     }
