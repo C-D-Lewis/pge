@@ -103,10 +103,12 @@ startServer();
 /**************************** Developer Implementation ************************/
 
 function broadcastTotalPlayers() {
-  for(var i = 0; i < clients.length; i += 1) {
-    // Send to each, the total number connected
-    clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
-  }
+  setTimeout(function() {
+    for(var i = 0; i < clients.length; i += 1) {
+      // Send to each, the total number connected
+      clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
+    }
+  }, 3000);
 }
 
 /**
