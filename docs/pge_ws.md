@@ -1,9 +1,7 @@
 # PGE WebSocket Documentation
 
 This module is aimed at enabling easy communication from a game to an
-implementation of the 
-[`ws-server`](https://github.com/C-D-Lewis/pge-examples/tree/websocket-buzz/ws-server) 
-example Node.js server.
+implementation of the `pge-ws-server` example Node.js server.
 
 
 ## About AppMessage Keys
@@ -24,7 +22,7 @@ You should repurpose your keys in the following manner:
 
 ## Preparing the Server
 
-Edit `ws-server/app.js` to implement the `onClientConnected()` and
+Edit `pge-ws-server/app.js` to implement the `onClientConnected()` and
 `onClientMessage()` functions to turn client communication into Pebble
 AppMessages. For example:
 
