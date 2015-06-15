@@ -16,7 +16,7 @@ update the value of `PGE_WS_NUM_KEYS` in `pge/modules/pge_ws.h`!
 You should repurpose your keys in the following manner:
 
 ```
-#define PGE_WS_KEY_0 TOTAL_PLAYERS
+#define TOTAL_PLAYERS PGE_WS_KEY_0
 ```
 
 
