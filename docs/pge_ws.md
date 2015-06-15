@@ -137,7 +137,7 @@ if(pge_ws_is_connected()) {
 ```
 
 These values are then automatically sent to the server in
-`handlePGEWSAppMessageKeys()`.
+`PGEWSForwardToServer()`.
 
 
 ## Implementing a JS client
@@ -145,7 +145,7 @@ These values are then automatically sent to the server in
 Use the four functions `onSocketOpen()`, `onSocketClose()`, `onSocketMessage()`,
 and `onSocketError()` to implement client logic in `pebble-js-app.js`. Any data
 received from the C side is automatically forwarded to the server in
-`handlePGEWSAppMessageKeys()`.
+`PGEWSForwardToServer()`.
 
 Manual messages can be sent to the server using the global `webSocket` (only
 available after `connectToServer()` is called. For example, using the first

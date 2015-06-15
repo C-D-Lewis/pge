@@ -33,7 +33,7 @@ Get example implementations of PGE games in the
 
 ## Basic Template App
 
-To begin a new game watchapp, begin with the template file in `/docs/template.c`:
+To begin a new game watchapp, begin with the template file in `/docs/template.c.sample`:
 
 ```
 /**
