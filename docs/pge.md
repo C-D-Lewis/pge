@@ -2,7 +2,7 @@
 
 ## Starting and Stopping Your Game
 
-1. Copy `src/pge/` to your project's `src` directory.
+1. Copy this repo to your project's `src` directory.
 
 2. Add `#include "pge/pge.h"` to your project's main C file.
 
@@ -24,11 +24,11 @@
 
 4. Implement `pge_init()` and `pge_deinit()` for your app's setup and teardown
    respectivly, calling `pge_begin()` in `pge_init()`, supplying the callbacks
-   from 3 as well as the desired background color for the game window.
+   from 3. as well as the desired background color for the game window (optional).
 
         pge_begin(GColorBlack, s_window, logic, draw, click);
 
-   Optionally keep a reference to the returned `Window` for adding other layers:
+   Optionally keep a reference to the returned `Window` for adding other Layers:
 
         s_some_window = pge_get_window();
 
@@ -41,6 +41,7 @@
           // Destroy all game resources
           pge_finish();
         }
+
 
 ## Using Highscores
 
@@ -56,3 +57,4 @@ PGE supports basic highest-score recording that persists across app launches:
 You can easily set a background image for your game:
 
         pge_set_background(RESOURCE_ID_GAME_BACKGROUND);
+        

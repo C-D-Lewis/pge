@@ -2,15 +2,18 @@
 
 Simple looping game engine for Pebble.
 
-## Compatibility with SDK 3.0
+## Installationi
 
-This repository will build for both the Aplite and Basalt platforms. If you
-are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
+1. `pebble new-project your_game_project`
+2. `cd your_game_project/src`
+3. `git clone https://github.com/C-D-Lewis/pge`
+4. `#include pge/pge.h`
+
 
 ## Features
 
 - Automatic looping of developer-supplied per-frame logic and rendering.
-- 30 frames per second.
+- Up to 30 frames per second.
 - Implement only your game code - `AppTimer`, `LayerUpdateProc`, `Clicks`,
   `Window` and `main` abstracted away.
 - `PGESprite` base object to implement game entities.
@@ -23,7 +26,7 @@ are still using SDK 2.9, you should rename `wscript-2.x` to `wscript`.
 
 ## Basic Template App
 
-To begin a new game watchapp, begin with the template file in `/docs/`:
+To begin a new game watchapp, begin with the template file in `/docs/template.c`:
 
 ```
 /**

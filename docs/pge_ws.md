@@ -1,5 +1,3 @@
-# WORK IN PROGRESS
-
 # PGE WebSocket Documentation
 
 This module is aimed at enabling easy communication from a game to an
@@ -13,7 +11,7 @@ Due to limitations in PebbleKit JS, AppMessage keys must be declared in
 `PGE_WS_KEY_X`, where `X` is `0` to `15`. You should repurpose these for app-
 specific data, as shown in the example of `onClientConnected()` shown below. If
 you need more, add them to your own implementation. If you do, don't forget to
-update the value of `PGE_WS_NUM_KEYS` in `src/pge/modules/pge_ws.h`!
+update the value of `PGE_WS_NUM_KEYS` in `pge/modules/pge_ws.h`!
 
 
 ## Preparing the Server

@@ -1,5 +1,5 @@
 /**
- * Pebble Game Engine - A simple game engine for Pebble
+ * PGE - A simple game engine for Pebble
  *
  * Author: 
  * Chris Lewis
@@ -7,16 +7,11 @@
  * Source and example:
  * https://github.com/C-D-Lewis/pge
  *
- * Features:
- * - 30 frames per second
- * - Automatic game loop using PGELogicHandler and PGERenderHandler
- * - Customizable framerate
- * - Easy to use button events, as well as query functions
- *
  * Abstracted Pebble APIs (DO NOT REIMPLEMENT!):
  * - Clicks using a PGEClickHandler
  * - Window is managed for you
- * - main function is managed for you. Implement pge_init() and pge_deinit to use.
+ * - main() function is managed for you. Implement pge_init() and pge_deinit() for app init/deinit
+ * - If using PGE WS, the marked parts of pebble-js-app-ws.js should not be modified in the app JS file.
  */
 
 #pragma once
