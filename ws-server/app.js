@@ -114,16 +114,6 @@ startServer();
 
 /**************************** Developer Implementation ************************/
 
-function broadcastTotalPlayers() {
-  setTimeout(function() {
-    log('There are ' + clients.length + ' players connected.');
-    for(var i = 0; i < clients.length; i += 1) {
-      // Send to each, the total number connected
-      clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_0': clients.length }));
-    }
-  }, 1000);
-}
-
 /**
  * When the server starts
  */
@@ -136,7 +126,7 @@ function onStartServer() {
  * socket - The web socket this client connected on
  */
 function onClientConnected(socket) {
-  broadcastTotalPlayers();
+
 }
 
 /**
@@ -144,7 +134,7 @@ function onClientConnected(socket) {
  * client - The disconnected client object
  */
 function onClientDisconnected(client) {
-  broadcastTotalPlayers();
+
 }
 
 /**
@@ -153,13 +143,5 @@ function onClientDisconnected(client) {
  * data - The data sent from the client in JSON string format
  */
 function onClientMessage(socket, data) {
-  var json = JSON.parse(data);
-
-  if(json['PGE_WS_KEY_1']) {
-    // Buzz all players
-    log('Buzzing...');
-    for(var i = 0; i < clients.length; i += 1) {
-      clients[i].socket.send(JSON.stringify({ 'PGE_WS_KEY_1': 1 }));
-    }
-  }
+  
 }
