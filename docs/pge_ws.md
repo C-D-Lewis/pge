@@ -13,6 +13,12 @@ specific data, as shown in the example of `onClientConnected()` shown below. If
 you need more, add them to your own implementation. If you do, don't forget to
 update the value of `PGE_WS_NUM_KEYS` in `pge/modules/pge_ws.h`!
 
+You should repurpose your keys in the following manner:
+
+```
+#define PGE_WS_KEY_0 TOTAL_PLAYERS
+```
+
 
 ## Preparing the Server
 
