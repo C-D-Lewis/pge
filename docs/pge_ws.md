@@ -1,7 +1,9 @@
 # PGE WebSocket Documentation
 
 This module is aimed at enabling easy communication from a game to an
-implementation of the `ws-server` example Node.js server.
+implementation of the 
+[`ws-server`](https://github.com/C-D-Lewis/pge-examples/tree/websocket-buzz/ws-server) 
+example Node.js server.
 
 
 ## About AppMessage Keys
