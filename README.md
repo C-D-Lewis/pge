@@ -1,6 +1,7 @@
 # pge
 
-Simple looping game engine for Pebble.
+Simple looping game engine for Pebble. This repo is designed to be cloned into
+an existing Pebble project's `src` directory.
 
 ## Installation
 
