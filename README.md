@@ -2,7 +2,7 @@
 
 Simple looping game engine for Pebble.
 
-## Installationi
+## Installation
 
 1. `pebble new-project your_game_project`
 2. `cd your_game_project/src`
@@ -22,6 +22,12 @@ Simple looping game engine for Pebble.
 - Basic game title screen template.
 - Simple highscore mechanism.
 - WebSocket-based client-server abstraction.
+
+
+## Examples
+
+Get example implementations of PGE games in the 
+[pge-examples](https://github.com/C-D-Lewis/pge-examples) repo.
 
 
 ## Basic Template App
