@@ -18,6 +18,9 @@
 
 #include <pebble.h>
 
+// Number of seconds between framerate calculations
+#define PGE_FRAMERATE_INTERVAL_S 1 
+
 /********************************** Engine ***********************************/
 
 // Function for user to place their per-frame game logic
@@ -72,3 +75,7 @@ void pge_manual_advance();
  */
 Window* pge_get_window();
 
+/**
+ * Get the average framerate, averaged over PGE_FRAMERATE_INTERVAL_S seconds
+ */
+int pge_get_average_framerate();

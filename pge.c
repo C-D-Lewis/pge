@@ -13,6 +13,8 @@ static PGEClickHandler *s_click_handler;
 
 static bool s_button_states[3];
 static int s_framerate = 1000 / 30;
+static int s_frame_counter, s_avg_framerate;
+static time_t s_last_report;
 
 // Internal prototypes
 static void game_window_load(Window *window);
@@ -100,7 +102,22 @@ Window* pge_get_window() {
   return s_game_window;
 }
 
+int pge_get_average_framerate() {
+  return s_avg_framerate;
+}
+
 /************************* Engine Internal Functions **************************/
+
+static void count_framerate() {
+  time_t now = time(NULL);
+  if(now - s_last_report > PGE_FRAMERATE_INTERVAL_S) {
+    s_last_report = now;
+    s_avg_framerate = s_frame_counter / PGE_FRAMERATE_INTERVAL_S;
+    s_frame_counter = 0;
+  } else {
+    s_frame_counter++;
+  }
+}
 
 static void game_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
@@ -144,6 +161,7 @@ static void draw_frame_update_proc(Layer *layer, GContext *ctx) {
   if(s_logic_handler != NULL && s_render_handler != NULL) {
     s_render_handler(ctx);
     s_logic_handler();
+    count_framerate();
   } else {
     APP_LOG(APP_LOG_LEVEL_ERROR, "Loop or Render handler not set!");
   }
