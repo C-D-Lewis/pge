@@ -12,6 +12,7 @@ static PGERenderHandler *s_render_handler;
 static PGEClickHandler *s_click_handler;
 
 static bool s_button_states[3];
+static bool s_is_paused;
 static int s_framerate = 1000 / 30;
 static int s_frame_counter, s_avg_framerate;
 static time_t s_last_report;
@@ -104,6 +105,28 @@ Window* pge_get_window() {
 
 int pge_get_average_framerate() {
   return s_avg_framerate;
+}
+
+void pge_pause() {
+  if(!s_is_paused){
+    s_is_paused = true;
+
+    if(s_render_timer) {
+      app_timer_cancel(s_render_timer);
+      s_render_timer = NULL;
+    }
+  }
+}
+
+void pge_resume() {
+  if(s_is_paused) {
+    s_is_paused = false;
+    s_render_timer = app_timer_register(1000 / s_framerate, frame_timer_handler, NULL);
+  }
+}
+
+bool pge_is_paused() {
+  return s_is_paused;
 }
 
 /************************* Engine Internal Functions **************************/

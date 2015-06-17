@@ -79,3 +79,18 @@ Window* pge_get_window();
  * Get the average framerate, averaged over PGE_FRAMERATE_INTERVAL_S seconds
  */
 int pge_get_average_framerate();
+
+/**
+ * Pause rendering
+ */
+void pge_pause();
+
+/**
+ * Resume rendering
+ */
+void pge_resume();
+
+/**
+ * Get whether the engine is paused or not
+ */
+bool pge_is_paused();
