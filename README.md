@@ -8,7 +8,7 @@ an existing Pebble project's `src` directory.
 1. `pebble new-project your_game_project`
 2. `cd your_game_project/src`
 3. `git clone https://github.com/C-D-Lewis/pge`
-4. `#include pge/pge.h`
+4. `#include "pge/pge.h"`
 
 
 ## Features
