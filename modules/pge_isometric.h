@@ -5,11 +5,11 @@
  * 
  * Author: Chris Lewis
  */
-#ifdef PBL_COLOR
-
 #pragma once
  
 #include <pebble.h>
+
+#include "../universal_fb/universal_fb.h"
 
 #define PGE_ISOMETRIC_OPTIMIZE_FILL_BOX // Only draw front of a box to save time
 
@@ -80,5 +80,3 @@ void pge_isometric_draw_pixel(Vec3 point, GColor color);
  * Draw an isometric rectangle filled with a texture
  */
 void pge_isometric_fill_textured_rect(Vec3 origin, GBitmap *texture);
-
-#endif

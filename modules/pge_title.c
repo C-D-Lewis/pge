@@ -120,7 +120,7 @@ void pge_title_push(char *title, char *select_action, char *down_action, GColor 
   if(!s_window) {
     s_window = window_create();
     window_set_click_config_provider(s_window, click_config_provider);
-#ifdef PBL_SDK_2
+#if defined(PBL_SDK_2)
     window_set_fullscreen(s_window, true);
 #endif
     window_set_window_handlers(s_window, (WindowHandlers) {

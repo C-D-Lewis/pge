@@ -24,9 +24,9 @@ void pge_sprite_set_anim_frame(PGESprite *this, int resource_id) {
 }
 
 void pge_sprite_draw(PGESprite *this, GContext *ctx) {
-#ifdef PBL_PLATFORM_APLITE
+#if defined(PBL_SDK_2)
   GRect bounds = this->bitmap->bounds;
-#elif PBL_PLATFORM_BASALT
+#elif defined(PBL_SDK_3)
   GRect bounds = gbitmap_get_bounds(this->bitmap);
 #endif
   graphics_draw_bitmap_in_rect(ctx, this->bitmap, GRect(this->position.x, this->position.y, bounds.size.w, bounds.size.h));
@@ -48,10 +48,10 @@ void pge_sprite_move(PGESprite *this, int dx, int dy) {
 }
 
 bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2) {
-#ifdef PBL_PLATFORM_APLITE
+#if defined(PBL_SDK_2)
   GRect bounds1 = sprite1->bitmap->bounds;
   GRect bounds2 = sprite2->bitmap->bounds;
-#elif PBL_PLATFORM_BASALT
+#elif defined(PBL_SDK_3)
   GRect bounds1 = gbitmap_get_bounds(sprite1->bitmap);
   GRect bounds2 = gbitmap_get_bounds(sprite2->bitmap);
 #endif
@@ -69,9 +69,9 @@ bool pge_check_collision(PGESprite* sprite1, PGESprite *sprite2) {
 }
 
 GRect pge_sprite_get_bounds(PGESprite *this) {
-#ifdef PBL_PLATFORM_APLITE
+#if defined(PBL_SDK_2)
   GRect bounds = this->bitmap->bounds;
-#elif PBL_PLATFORM_BASALT
+#elif defined(PBL_SDK_3)
   GRect bounds = gbitmap_get_bounds(this->bitmap);
 #endif
   return GRect(this->position.x, this->position.y, bounds.size.w, bounds.size.h);

@@ -1,5 +1,3 @@
-#ifdef PBL_COLOR
-
 #include "pge_isometric.h"
 
 static bool s_enabled = true;
@@ -10,15 +8,7 @@ static GSize s_fb_size;
 static uint8_t *s_fb_data = NULL;
 
 static void set_pixel(GPoint pixel, GColor color) {
-  if(pixel.x >= 0 && pixel.x < 144 && pixel.y >= 0 && pixel.y < 168) {
-    memset(&s_fb_data[(pixel.y * s_fb_size.w) + pixel.x], (uint8_t)color.argb, 1);
-  }
-}
-
-static void set_pixel_value(GPoint pixel, uint8_t value) {
-  if(pixel.x >= 0 && pixel.x < 144 && pixel.y >= 0 && pixel.y < 168) {
-    memset(&s_fb_data[(pixel.y * s_fb_size.w) + pixel.x], value, 1);
-  }
+  universal_fb_set_pixel_color(s_fb, pixel, color);
 }
 
 /**
@@ -125,7 +115,7 @@ void pge_isometric_fill_box(Vec3 origin, GSize size, int z_height, GColor color)
   // Draw only front for speed when PGE_ISOMETRIC_OPTIMIZE_FILL_BOX is defined
   int z = 0;
   for(z = origin.z; z < origin.z + z_height; z++) {
-#ifdef PGE_ISOMETRIC_OPTIMIZE_FILL_BOX
+#if defined(PGE_ISOMETRIC_OPTIMIZE_FILL_BOX)
     // Right
     GPoint start = pge_isometric_project(Vec3(origin.x + size.w, origin.y, z));
     GPoint finish = pge_isometric_project(Vec3(origin.x + size.w, origin.y + size.h, z));
@@ -188,10 +178,8 @@ void pge_isometric_fill_textured_rect(Vec3 origin, GBitmap *texture) {
     for(int y = 0; y < tex_size.h; y++) {
       for(int x = 0; x < tex_size.w; x++) {
         uint8_t value = tex_data[(y * bytes_per_row) + x];
-        set_pixel_value(pge_isometric_project(Vec3(origin.x + x, origin.y + y, z)), value);
+        set_pixel(pge_isometric_project(Vec3(origin.x + x, origin.y + y, z)), (GColor)value);
       }
     }
   }
 }
-
-#endif

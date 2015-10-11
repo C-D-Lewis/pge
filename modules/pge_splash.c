@@ -147,7 +147,7 @@ static void splash_init() {
   // Create Window
   s_splash_window = window_create();
   window_set_background_color(s_splash_window, GColorBlack);
-#ifdef PBL_SDK_2
+#if defined(PBL_SDK_2)
   window_set_fullscreen(s_splash_window, true);
 #endif
   window_set_click_config_provider(s_splash_window, click_config_provider);
