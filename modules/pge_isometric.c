@@ -5,10 +5,11 @@ static GPoint s_projection_offset;
 
 static GBitmap *s_fb = NULL;
 static GSize s_fb_size;
+static GBitmapDataRowInfo s_info;
 static uint8_t *s_fb_data = NULL;
 
 static void set_pixel(GPoint pixel, GColor color) {
-  universal_fb_set_pixel_color(s_fb, pixel, color);
+  universal_fb_set_pixel_color(s_info, gbitmap_get_bounds(s_fb), pixel, color);
 }
 
 /**
@@ -21,6 +22,8 @@ static void bresenham_line(GPoint start, GPoint finish, GColor color) {
   int sy = (start.y < finish.y) ? 1 : -1;
   int err = ((dx > dy) ? dx : -dy) / 2;
   int e2;
+
+  s_info = gbitmap_get_data_row_info(s_fb, start.y);
   while(true) {
     set_pixel(GPoint(start.x, start.y), color);
     if(start.x == finish.x && start.y == finish.y) {
@@ -34,6 +37,7 @@ static void bresenham_line(GPoint start, GPoint finish, GColor color) {
     if(e2 < dy) {
       err += dx;
       start.y += sy;
+      s_info = gbitmap_get_data_row_info(s_fb, start.y);
     }
   }
 }
@@ -165,6 +169,7 @@ void pge_isometric_draw_box(Vec3 origin, GSize size, int z_height, GColor color)
 }
 
 void pge_isometric_draw_pixel(Vec3 point, GColor color) {
+  s_info = gbitmap_get_data_row_info(s_fb, point.y);
   set_pixel(pge_isometric_project(point), color);
 }
 
@@ -176,6 +181,7 @@ void pge_isometric_fill_textured_rect(Vec3 origin, GBitmap *texture) {
   
   for(int z = origin.z; z < origin.z + 2; z++) {
     for(int y = 0; y < tex_size.h; y++) {
+      s_info = gbitmap_get_data_row_info(s_fb, origin.y);
       for(int x = 0; x < tex_size.w; x++) {
         uint8_t value = tex_data[(y * bytes_per_row) + x];
         set_pixel(pge_isometric_project(Vec3(origin.x + x, origin.y + y, z)), (GColor)value);
