@@ -1,7 +1,7 @@
 /**
  * PGE - A simple game engine for Pebble
  *
- * Author: 
+ * Author:
  * Chris Lewis
  *
  * Source and example:
@@ -19,7 +19,7 @@
 #include <pebble.h>
 
 // Number of seconds between framerate calculations
-#define PGE_FRAMERATE_INTERVAL_S 1 
+#define PGE_FRAMERATE_INTERVAL_S 1
 
 /********************************** Engine ***********************************/
 
@@ -43,7 +43,7 @@ void pge_deinit();
  *
  * Note: The Click handler can be NULL to not implement
  */
-void pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
+void pge_begin(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler);
 
 /**
  * Finish the game and clean up
@@ -64,6 +64,11 @@ void pge_set_framerate(int new_rate);
  * Set the fullscreen background image
  */
 void pge_set_background(int bg_resource_id);
+
+/**
+  * Set the window's background color
+  */
+void pge_set_background_color(GColor color);
 
 /**
  * Manually request a new frame to be rendered

@@ -35,7 +35,7 @@ int main(void) {
   pge_deinit();
 }
 
-void pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
+void pge_begin(PGELogicHandler *logic_handler, PGERenderHandler *render_handler, PGEClickHandler *click_handler) {
   s_logic_handler = logic_handler;
   s_render_handler = render_handler;
 
@@ -43,7 +43,7 @@ void pge_begin(GColor window_color, PGELogicHandler *logic_handler, PGERenderHan
 #if defined(PBL_SDK_2)
   window_set_fullscreen(s_game_window, true);
 #endif
-  window_set_background_color(s_game_window, window_color);
+  window_set_background_color(s_game_window, GColorBlack);
   window_set_window_handlers(s_game_window, (WindowHandlers) {
     .load = game_window_load,
     .unload = game_window_unload
@@ -78,7 +78,7 @@ bool pge_get_button_state(ButtonId button) {
       return s_button_states[1];
     case BUTTON_ID_DOWN:
       return s_button_states[2];
-    default: 
+    default:
       return false;
   }
 }
@@ -93,6 +93,10 @@ void pge_set_background(int bg_resource_id) {
   }
   s_bg_bitmap = gbitmap_create_with_resource(bg_resource_id);
   bitmap_layer_set_bitmap(s_bg_layer, s_bg_bitmap);
+}
+
+void pge_set_background_color(GColor color) {
+  window_set_background_color(s_game_window, color);
 }
 
 void pge_manual_advance() {
