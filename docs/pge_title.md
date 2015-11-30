@@ -4,7 +4,7 @@
 
 Using `pge_title.h` allows easy creation of a simple game title screen. It is
 assumed that the title screen will be the first thing the user sees, and so at
-the bottom of the Window stack. 
+the bottom of the Window stack.
 
 The default button configuration assigns the UP button to toggling the backlight
 permanently on or off for the life of the app. Thus, developers should choose
@@ -32,7 +32,7 @@ action.
 
         static void title_click(int button_id) {
           if(button_id == BUTTON_ID_SELECT) {
-            pge_begin(GColorBlack, logic, draw, click);
+            pge_begin(logic, draw, click);
           }
         }
 

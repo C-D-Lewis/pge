@@ -55,7 +55,7 @@ function onClientMessage(socket, data) {
 The client **MUST** wait for the phone to signal PebbleKit JS is ready with the
 'ready' event. To accomodate for this, prepare PGE WS in app initialization,
 supplying the URL, and two handlers for when the connection attempt returns, and
-when data is received. 
+when data is received.
 
 When the 'ready' event is received, the connection will be attempted and the
 result passed to the `PGEWSConnectedHandler`. At this point, each successfully
@@ -68,12 +68,12 @@ static void ws_connection_handler(bool successful) {
 }
 
 static void ws_received_handler() {
-  
+
 }
 
 void pge_init() {
   // Start engine
-  pge_begin(GColorBlack, logic, draw, click);
+  pge_begin(logic, draw, click);
 
   // Prepare WS for web communication with local server
   pge_ws_begin("ws://192.168.1.4:5000", ws_connection_handler, ws_received_handler);

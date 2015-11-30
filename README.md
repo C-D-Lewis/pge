@@ -25,12 +25,6 @@ an existing Pebble project's `src` directory.
 - WebSocket-based client-server abstraction.
 
 
-## Examples
-
-Get example implementations of PGE games in the 
-[pge-examples](https://github.com/C-D-Lewis/pge-examples) repo.
-
-
 ## Basic Template App
 
 To begin a new game watchapp, begin with the template file in `/docs/template.c.sample`:
@@ -41,7 +35,7 @@ To begin a new game watchapp, begin with the template file in `/docs/template.c.
  */
 
 #include <pebble.h>
- 
+
 #include "pge/pge.h"
 
 static Window *s_game_window;
@@ -63,7 +57,7 @@ static void game_click(int button_id, bool long_click) {
 
 void pge_init() {
   // Start the game
-  pge_begin(GColorBlack, game_logic, game_draw, game_click);
+  pge_begin(game_logic, game_draw, game_click);
 
   // Keep a Window reference for adding other UI
   s_game_window = pge_get_window();
