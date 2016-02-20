@@ -6,6 +6,7 @@
  
 #include "universal_fb.h"
 
+#if defined(PBL_BW)
 static bool byte_get_bit(uint8_t *byte, uint8_t bit) {
   return ((*byte) >> bit) & 1;
 }
@@ -13,6 +14,7 @@ static bool byte_get_bit(uint8_t *byte, uint8_t bit) {
 static void byte_set_bit(uint8_t *byte, uint8_t bit, uint8_t value) {
   *byte ^= (-value ^ *byte) & (1 << bit);
 }
+#endif
 
 /************************************ API *************************************/
 
