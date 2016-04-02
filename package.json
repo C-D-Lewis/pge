@@ -1,0 +1,19 @@
+{
+    "name": "pge",
+    "version": "0.1.0",
+    "description": "Simple looping game engine for Pebble",
+    "keywords": ["pebble", "pge", "game"],
+    "license": "MIT",
+    "author": "Chris Lewis <bonsitm@gmail.com>",
+    "dependencies": {
+        "universal_fb": "0.1.0"
+    },
+    "pebble": {
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ]
+    }
+}
