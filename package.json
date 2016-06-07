@@ -10,6 +10,7 @@
     "universal_fb": "0.1.0"
   },
   "pebble": {
+    "projectType": "package",
     "sdkVersion": "3",
     "targetPlatforms": [
       "aplite",
