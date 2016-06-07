@@ -3,8 +3,20 @@
 #
 # Feel free to customize this to your needs.
 #
+import os
+import shutil
+import waflib
+
 top = '.'
 out = 'build'
+
+
+def distclean(ctx):
+    if os.path.exists('dist.zip'):
+        os.remove('dist.zip')
+    if os.path.exists('dist'):
+        shutil.rmtree('dist')
+    waflib.Scripting.distclean(ctx)
 
 
 def options(ctx):
@@ -30,3 +42,7 @@ def build(ctx):
     ctx.pbl_bundle(includes=ctx.path.ant_glob('include/**/*.h'),
                    js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']),
                    bin_type='lib')
+
+    if ctx.cmd == 'clean':
+        for n in ctx.path.ant_glob(['dist/**/*', 'dist.zip'], quiet=True):
+            n.delete()
