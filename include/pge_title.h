@@ -1,7 +1,7 @@
 #pragma once
 
 #include <pebble.h>
-#include "../pge.h"
+#include "pge.h"
 
 #define PGE_TITLE_LENGTH_MAX 32
 #define PGE_TITLE_ACTION_MAX 16

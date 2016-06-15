@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pebble.h"
-#include "../pge.h"  // GLine
+#include "pge.h"  // GLine
 
 // Convenience types
 typedef struct GLine {
