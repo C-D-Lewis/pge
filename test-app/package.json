@@ -3,7 +3,7 @@
   "author": "Chris Lewis",
   "private": true,
   "dependencies": {
-    "pebble-pge": "1.2.0"  
+    "pebble-pge": "1.4.0"  
   },
   "keywords": [
     "pebble-app"
