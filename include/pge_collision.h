@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pebble.h"
+#include <pebble.h>
 #include "pge.h"  // GLine
 
 // Convenience types
