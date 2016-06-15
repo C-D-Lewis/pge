@@ -1,3 +1,4 @@
+#include <pebble.h>
 #include "pge.h"
 
 // State
