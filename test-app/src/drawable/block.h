@@ -1,7 +1,7 @@
 #pragma once
 
 #include <pebble.h>
-#include "../pge/modules/pge_isometric.h"
+#include <pebble-pge/pge_isometric.h>
 
 #define BLOCK_HEIGHT 20
 #define BLOCK_SIZE GSize(BLOCK_HEIGHT, BLOCK_HEIGHT)

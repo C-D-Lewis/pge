@@ -4,7 +4,7 @@
 
 #include <pebble.h>
 
-#include "pge/pge.h"
+#include <pge/pge.h>
 #include "drawable/block.h"
 
 #define NUM_BLOCKS 4
