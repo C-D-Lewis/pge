@@ -1,9 +1,6 @@
+
 # Ignore build generated files
-build/
-dist/
+build
 
 # Ignore waf lock file
 .lock-waf*
-
-# Ignore installed node modules
-node_modules/
