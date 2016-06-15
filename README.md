@@ -1,14 +1,12 @@
 # pge
 
-Simple looping game engine for Pebble. This repo is designed to be cloned into
-an existing Pebble project's `src` directory.
+Simple looping game engine for Pebble. Available on
+[NPM](https://www.npmjs.com/package/pebble-pge).
+
 
 ## Installation
 
-1. `pebble new-project your_game_project`
-2. `cd your_game_project/src`
-3. `git clone https://github.com/C-D-Lewis/pge`
-4. `#include "pge/pge.h"`
+`pebble package install pebble-pge`
 
 
 ## Features
@@ -36,31 +34,23 @@ To begin a new game watchapp, begin with the template file in `/docs/template.c.
 
 #include <pebble.h>
 
-#include "pge/pge.h"
-
-static Window *s_game_window;
+#include <pge/pge.h>
 
 static void game_logic() {
   // Per-frame game logic here
-
 }
 
 static void game_draw(GContext *ctx) {
   // Per-frame game rendering here
-
 }
 
 static void game_click(int button_id, bool long_click) {
   // Process click events
-
 }
 
 void pge_init() {
   // Start the game
   pge_begin(game_logic, game_draw, game_click);
-
-  // Keep a Window reference for adding other UI
-  s_game_window = pge_get_window();
 }
 
 void pge_deinit() {
