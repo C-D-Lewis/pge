@@ -1,5 +1,7 @@
 /**
  * This is the bare minimum to make a looping game with PGE!
+ *
+ * Includes some example moviong block entities.
  */
 
 #include <pebble.h>
@@ -9,7 +11,7 @@
 
 #define NUM_BLOCKS 4
 #define MAX_HEIGHT 90
- #define DURATION  2000
+#define DURATION  2000
 
 static Block* s_blocks[NUM_BLOCKS];
 
